@@ -1,3 +1,9 @@
+## Time Logging
+
+```
+    currentTime = 46m
+```
+
 ## ENUMS
 
 ```mermaid
