@@ -39,13 +39,37 @@
       "options": {
         "targetName": "test"
       }
+    },
+    {
+      "name": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "testTargetName": "test",
+        "serveTargetName": "serve",
+        "devTargetName": "dev",
+        "previewTargetName": "preview",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps"
+      }
+    },
+    {
+      "name": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "e2e"
+      }
     }
   ],
   "fileMap": {
     "nonProjectFiles": [
       {
         "file": ".gitignore",
-        "hash": "1541037322279015173"
+        "hash": "6914448432625071260"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "10945013772211001795"
       },
       {
         "file": ".vscode/launch.json",
@@ -57,7 +81,7 @@
       },
       {
         "file": "eslint.config.mjs",
-        "hash": "7952676282655520759"
+        "hash": "10412651243721938732"
       },
       {
         "file": "jest.config.ts",
@@ -69,15 +93,15 @@
       },
       {
         "file": "nx.json",
-        "hash": "7930214934980051402"
+        "hash": "12825652974822397776"
       },
       {
         "file": "package-lock.json",
-        "hash": "17487288594895623983"
+        "hash": "15368003578994304450"
       },
       {
         "file": "package.json",
-        "hash": "12570962366921522198"
+        "hash": "5059630394280352642"
       },
       {
         "file": "tsconfig.base.json",
@@ -85,7 +109,11 @@
       },
       {
         "file": "tsconfig.json",
-        "hash": "9653281876515288849"
+        "hash": "17513736401546482226"
+      },
+      {
+        "file": "vitest.workspace.ts",
+        "hash": "8851963806934849101"
       }
     ],
     "projectFileMap": {
@@ -143,10 +171,128 @@
           "hash": "13770706446579168008"
         }
       ],
+      "dashboard": [
+        {
+          "file": "apps/dashboard/eslint.config.mjs",
+          "hash": "3041506319679362645",
+          "deps": [
+            "npm:@nx/eslint-plugin"
+          ]
+        },
+        {
+          "file": "apps/dashboard/index.html",
+          "hash": "8586766377946887913"
+        },
+        {
+          "file": "apps/dashboard/package.json",
+          "hash": "5649681402287924082"
+        },
+        {
+          "file": "apps/dashboard/postcss.config.js",
+          "hash": "15972724582657845432"
+        },
+        {
+          "file": "apps/dashboard/public/favicon.ico",
+          "hash": "9303420814833116677"
+        },
+        {
+          "file": "apps/dashboard/src/app/app.spec.tsx",
+          "hash": "16074579237003120754",
+          "deps": [
+            "npm:@testing-library/react",
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "apps/dashboard/src/app/app.tsx",
+          "hash": "9483003706401752646",
+          "deps": [
+            "npm:react-router-dom"
+          ]
+        },
+        {
+          "file": "apps/dashboard/src/app/nx-welcome.tsx",
+          "hash": "1775940914884046162"
+        },
+        {
+          "file": "apps/dashboard/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/dashboard/src/main.tsx",
+          "hash": "557740932075335270",
+          "deps": [
+            "npm:react",
+            "npm:react-router-dom",
+            "npm:react-dom"
+          ]
+        },
+        {
+          "file": "apps/dashboard/src/styles.css",
+          "hash": "9540575453073076294"
+        },
+        {
+          "file": "apps/dashboard/tailwind.config.js",
+          "hash": "13090734457927965885",
+          "deps": [
+            "npm:@nx/react"
+          ]
+        },
+        {
+          "file": "apps/dashboard/tsconfig.app.json",
+          "hash": "5619882590475092989"
+        },
+        {
+          "file": "apps/dashboard/tsconfig.json",
+          "hash": "9240132813632071828"
+        },
+        {
+          "file": "apps/dashboard/tsconfig.spec.json",
+          "hash": "5535593306512760996"
+        },
+        {
+          "file": "apps/dashboard/vite.config.ts",
+          "hash": "13257586281014984956",
+          "deps": [
+            "npm:vite",
+            "npm:@vitejs/plugin-react"
+          ]
+        }
+      ],
       "backend": [
         {
           "file": "apps/backend/.spec.swcrc",
           "hash": "18201067170784284381"
+        },
+        {
+          "file": "apps/backend/dist/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/backend/dist/main.js",
+          "hash": "11951766193249986630",
+          "deps": [
+            [
+              "npm:@nestjs/common",
+              "dynamic"
+            ],
+            [
+              "npm:@nestjs/core",
+              "dynamic"
+            ],
+            [
+              "npm:tslib",
+              "dynamic"
+            ]
+          ]
+        },
+        {
+          "file": "apps/backend/dist/package-lock.json",
+          "hash": "9117554053985801290"
+        },
+        {
+          "file": "apps/backend/dist/package.json",
+          "hash": "8013859273543765199"
         },
         {
           "file": "apps/backend/eslint.config.mjs",
@@ -239,8 +385,41 @@
             "npm:@nx/webpack"
           ]
         }
+      ],
+      "dashboard-e2e": [
+        {
+          "file": "apps/dashboard-e2e/eslint.config.mjs",
+          "hash": "11747643397756768678",
+          "deps": [
+            "npm:eslint-plugin-playwright"
+          ]
+        },
+        {
+          "file": "apps/dashboard-e2e/package.json",
+          "hash": "17747796130392413058"
+        },
+        {
+          "file": "apps/dashboard-e2e/playwright.config.ts",
+          "hash": "15441908908758473172",
+          "deps": [
+            "npm:@playwright/test",
+            "npm:@nx/playwright",
+            "npm:@nx/devkit"
+          ]
+        },
+        {
+          "file": "apps/dashboard-e2e/src/example.spec.ts",
+          "hash": "16019101014373124625",
+          "deps": [
+            "npm:@playwright/test"
+          ]
+        },
+        {
+          "file": "apps/dashboard-e2e/tsconfig.json",
+          "hash": "15001458170383955177"
+        }
       ]
     }
   },
-  "externalNodesHash": "6170763478383152896"
+  "externalNodesHash": "4800596089082810420"
 }

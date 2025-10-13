@@ -2,3 +2,5 @@ null
 test-output
 node_modules
 .env
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
