@@ -304,11 +304,16 @@
             },
             "cache": true,
             "inputs": [
-              "default",
+              "{projectRoot}/package.json",
+              "{workspaceRoot}/tsconfig.base.json",
+              "{projectRoot}/tsconfig.json",
+              "{projectRoot}/jest.config.ts",
+              "{projectRoot}/src/**/*.ts",
               "^default"
             ],
             "outputs": [
               "{projectRoot}/out-tsc/backend-e2e/**/*.d.ts",
+              "{projectRoot}/out-tsc/backend-e2e/**/*.d.ts.map",
               "{projectRoot}/out-tsc/backend-e2e/tsconfig.tsbuildinfo"
             ],
             "syncGenerators": [
@@ -428,11 +433,22 @@
               }
             ],
             "outputs": [
+              "{projectRoot}/**/*.js",
+              "{projectRoot}/**/*.cjs",
+              "{projectRoot}/**/*.mjs",
+              "{projectRoot}/**/*.jsx",
+              "{projectRoot}/**/*.js.map",
+              "{projectRoot}/**/*.jsx.map",
+              "{projectRoot}/**/*.d.ts",
+              "{projectRoot}/**/*.d.cts",
+              "{projectRoot}/**/*.d.mts",
+              "{projectRoot}/**/*.d.ts.map",
+              "{projectRoot}/**/*.d.cts.map",
+              "{projectRoot}/**/*.d.mts.map",
+              "{projectRoot}/tsconfig.tsbuildinfo",
               "{projectRoot}/dist/**/*.d.ts",
-              "{projectRoot}/dist/**/*.d.ts.map",
               "{projectRoot}/dist/tsconfig.app.tsbuildinfo",
               "{projectRoot}/out-tsc/vitest/**/*.d.ts",
-              "{projectRoot}/out-tsc/vitest/**/*.d.ts.map",
               "{projectRoot}/out-tsc/vitest/tsconfig.tsbuildinfo"
             ],
             "syncGenerators": [
@@ -735,8 +751,24 @@
             },
             "cache": true,
             "inputs": [
-              "default",
-              "^default"
+              "{projectRoot}/package.json",
+              "{workspaceRoot}/tsconfig.base.json",
+              "{projectRoot}/tsconfig.json",
+              "{projectRoot}/tsconfig.app.json",
+              "{projectRoot}/tsconfig.spec.json",
+              "{projectRoot}/src/**/*.ts",
+              "{workspaceRoot}/libs/shared/src/index.ts",
+              "!{projectRoot}/out-tsc",
+              "!{projectRoot}/dist",
+              "!{projectRoot}/jest.config.ts",
+              "!{projectRoot}/src/**/*.spec.ts",
+              "!{projectRoot}/src/**/*.test.ts",
+              "!{projectRoot}/eslint.config.js",
+              "!{projectRoot}/eslint.config.cjs",
+              "!{projectRoot}/eslint.config.mjs",
+              {
+                "dependentTasksOutputFiles": "**/*.d.ts"
+              }
             ],
             "outputs": [
               "{projectRoot}/**/*.js",
@@ -1063,6 +1095,176 @@
         ],
         "$schema": "../../node_modules/nx/schemas/project-schema.json",
         "sourceRoot": "apps/backend/src",
+        "implicitDependencies": []
+      }
+    },
+    "shared": {
+      "name": "shared",
+      "type": "lib",
+      "data": {
+        "root": "libs/shared",
+        "targets": {
+          "typecheck": {
+            "dependsOn": [
+              "build",
+              "^typecheck"
+            ],
+            "options": {
+              "cwd": "libs/shared",
+              "command": "tsc --build --emitDeclarationOnly"
+            },
+            "cache": true,
+            "inputs": [
+              "default",
+              {
+                "dependentTasksOutputFiles": "**/*.d.ts"
+              }
+            ],
+            "outputs": [],
+            "syncGenerators": [
+              "@nx/js:typescript-sync"
+            ],
+            "metadata": {
+              "technologies": [
+                "typescript"
+              ],
+              "description": "Runs type-checking for the project.",
+              "help": {
+                "command": "npx tsc --build --help",
+                "example": {
+                  "args": [
+                    "--force"
+                  ]
+                }
+              }
+            },
+            "executor": "nx:run-commands",
+            "configurations": {},
+            "parallelism": true
+          },
+          "build": {
+            "dependsOn": [
+              "^build"
+            ],
+            "options": {
+              "cwd": "libs/shared",
+              "command": "tsc --build tsconfig.lib.json"
+            },
+            "cache": true,
+            "inputs": [
+              "{projectRoot}/package.json",
+              "{workspaceRoot}/tsconfig.base.json",
+              "{projectRoot}/tsconfig.lib.json",
+              "{projectRoot}/src/**/*.ts",
+              "^default"
+            ],
+            "outputs": [
+              "{projectRoot}/dist"
+            ],
+            "syncGenerators": [
+              "@nx/js:typescript-sync"
+            ],
+            "metadata": {
+              "technologies": [
+                "typescript"
+              ],
+              "description": "Builds the project with `tsc`.",
+              "help": {
+                "command": "npx tsc --build --help",
+                "example": {
+                  "args": [
+                    "--force"
+                  ]
+                }
+              }
+            },
+            "executor": "nx:run-commands",
+            "configurations": {},
+            "parallelism": true
+          },
+          "build-deps": {
+            "dependsOn": [
+              "^build"
+            ],
+            "configurations": {},
+            "options": {},
+            "parallelism": true,
+            "executor": "nx:noop"
+          },
+          "watch-deps": {
+            "continuous": true,
+            "dependsOn": [
+              "build-deps"
+            ],
+            "executor": "nx:run-commands",
+            "options": {
+              "command": "npx nx watch --projects shared --includeDependentProjects -- npx nx build-deps shared"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "lint": {
+            "cache": true,
+            "options": {
+              "cwd": "libs/shared",
+              "command": "eslint ."
+            },
+            "inputs": [
+              "default",
+              "^default",
+              "{workspaceRoot}/eslint.config.mjs",
+              "{workspaceRoot}/libs/shared/eslint.config.mjs",
+              "{workspaceRoot}/tools/eslint-rules/**/*",
+              {
+                "externalDependencies": [
+                  "eslint"
+                ]
+              }
+            ],
+            "outputs": [
+              "{options.outputFile}"
+            ],
+            "metadata": {
+              "technologies": [
+                "eslint"
+              ],
+              "description": "Runs ESLint on project",
+              "help": {
+                "command": "npx eslint --help",
+                "example": {
+                  "options": {
+                    "max-warnings": 0
+                  }
+                }
+              }
+            },
+            "executor": "nx:run-commands",
+            "configurations": {},
+            "parallelism": true
+          }
+        },
+        "name": "shared",
+        "tags": [
+          "npm:private"
+        ],
+        "metadata": {
+          "targetGroups": {},
+          "js": {
+            "packageName": "shared",
+            "packageVersion": "0.0.1",
+            "packageExports": {
+              "./package.json": "./package.json",
+              ".": {
+                "fullstack-open": "./src/index.ts",
+                "types": "./dist/index.d.ts",
+                "import": "./dist/index.js",
+                "default": "./dist/index.js"
+              }
+            },
+            "packageMain": "./dist/index.js",
+            "isInPackageManagerWorkspaces": true
+          }
+        },
         "implicitDependencies": []
       }
     }
@@ -16684,6 +16886,11 @@
       },
       {
         "source": "dashboard",
+        "target": "shared",
+        "type": "static"
+      },
+      {
+        "source": "dashboard",
         "target": "npm:react",
         "type": "static"
       },
@@ -16761,7 +16968,24 @@
       },
       {
         "source": "backend",
+        "target": "shared",
+        "type": "static"
+      },
+      {
+        "source": "backend",
         "target": "npm:@nx/webpack",
+        "type": "static"
+      }
+    ],
+    "shared": [
+      {
+        "source": "shared",
+        "target": "npm:jsonc-eslint-parser",
+        "type": "dynamic"
+      },
+      {
+        "source": "shared",
+        "target": "npm:tslib",
         "type": "static"
       }
     ],
@@ -38682,5 +38906,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1760375837125
+  "computedAt": 1760376906258
 }

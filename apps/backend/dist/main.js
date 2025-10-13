@@ -58,6 +58,12 @@ let AppController = class AppController {
         this.appService = appService;
     }
     getData() {
+        const user = {
+            id: 1,
+            name: "John Doe",
+            email: "john.doe@example.com",
+        };
+        console.log("User:", user);
         return this.appService.getData();
     }
 };
