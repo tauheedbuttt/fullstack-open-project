@@ -5,3 +5,8 @@ node_modules
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
 dist/
+# Nx cache and workspace data
+.nx/cache/
+.nx/workspace-data/
+# Logs
+*.log
