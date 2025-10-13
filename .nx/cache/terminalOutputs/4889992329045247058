@@ -1,3 +1,0 @@
-> tsc --build tsconfig.lib.json
-
-
