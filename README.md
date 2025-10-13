@@ -1,7 +1,7 @@
 ## Time Logging
 
 ```
-    currentTime = 46m
+    currentTime = 2h 16m
 ```
 
 ## ENUMS
