@@ -2,4 +2,3 @@ null
 test-output
 node_modules
 .env
-dist
