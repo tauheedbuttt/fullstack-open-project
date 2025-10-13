@@ -44,48 +44,48 @@
   "fileMap": {
     "nonProjectFiles": [
       {
+        "file": "jest.preset.js",
+        "hash": "13737983450217408137"
+      },
+      {
         "file": "eslint.config.mjs",
         "hash": "7952676282655520759"
-      },
-      {
-        "file": ".vscode/launch.json",
-        "hash": "4095267532870178451"
-      },
-      {
-        "file": "tsconfig.base.json",
-        "hash": "6447669521210401691"
-      },
-      {
-        "file": "tsconfig.json",
-        "hash": "9653281876515288849"
-      },
-      {
-        "file": "package-lock.json",
-        "hash": "17487288594895623983"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "9213394085107209752"
       },
       {
         "file": "package.json",
         "hash": "12570962366921522198"
       },
       {
-        "file": "jest.config.ts",
-        "hash": "14236175072743533737"
-      },
-      {
         "file": "nx.json",
         "hash": "7930214934980051402"
       },
       {
-        "file": "jest.preset.js",
-        "hash": "13737983450217408137"
+        "file": ".vscode/launch.json",
+        "hash": "4095267532870178451"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "2272634659775528763"
+      },
+      {
+        "file": "jest.config.ts",
+        "hash": "14236175072743533737"
+      },
+      {
+        "file": "tsconfig.json",
+        "hash": "9653281876515288849"
       },
       {
         "file": "README.md",
         "hash": "12042317968085635161"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "17487288594895623983"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "6447669521210401691"
       }
     ],
     "projectFileMap": {
@@ -93,40 +93,6 @@
         {
           "file": "apps/backend/.spec.swcrc",
           "hash": "18201067170784284381"
-        },
-        {
-          "file": "apps/backend/dist/assets/.gitkeep",
-          "hash": "3244421341483603138"
-        },
-        {
-          "file": "apps/backend/dist/main.js",
-          "hash": "1670659080591095628",
-          "deps": [
-            [
-              "npm:@nestjs/common",
-              "dynamic"
-            ],
-            [
-              "npm:@nestjs/core",
-              "dynamic"
-            ],
-            [
-              "npm:tslib",
-              "dynamic"
-            ]
-          ]
-        },
-        {
-          "file": "apps/backend/dist/main.js.map",
-          "hash": "10044234649181384862"
-        },
-        {
-          "file": "apps/backend/dist/package-lock.json",
-          "hash": "9117554053985801290"
-        },
-        {
-          "file": "apps/backend/dist/package.json",
-          "hash": "8013859273543765199"
         },
         {
           "file": "apps/backend/eslint.config.mjs",

@@ -10695,37 +10695,17 @@
     "backend": [
       {
         "source": "backend",
-        "target": "npm:@nestjs/common",
-        "type": "dynamic"
-      },
-      {
-        "source": "backend",
-        "target": "npm:@nestjs/common",
-        "type": "static"
-      },
-      {
-        "source": "backend",
-        "target": "npm:@nestjs/core",
-        "type": "dynamic"
-      },
-      {
-        "source": "backend",
-        "target": "npm:@nestjs/core",
-        "type": "static"
-      },
-      {
-        "source": "backend",
-        "target": "npm:tslib",
-        "type": "dynamic"
-      },
-      {
-        "source": "backend",
-        "target": "npm:tslib",
-        "type": "static"
-      },
-      {
-        "source": "backend",
         "target": "npm:@nestjs/testing",
+        "type": "static"
+      },
+      {
+        "source": "backend",
+        "target": "npm:@nestjs/common",
+        "type": "static"
+      },
+      {
+        "source": "backend",
+        "target": "npm:@nestjs/core",
         "type": "static"
       },
       {
@@ -10741,6 +10721,11 @@
       {
         "source": "backend",
         "target": "npm:rxjs",
+        "type": "static"
+      },
+      {
+        "source": "backend",
+        "target": "npm:tslib",
         "type": "static"
       },
       {
@@ -24448,5 +24433,5 @@
   },
   "version": "6.0",
   "errors": [],
-  "computedAt": 1760375428752
+  "computedAt": 1760375468365
 }
