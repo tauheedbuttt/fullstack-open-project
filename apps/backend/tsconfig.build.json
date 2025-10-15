@@ -10,9 +10,4 @@
     "test",
     "**/*spec.ts"
   ],
-  "references": [
-    {
-      "path": "../../libs/shared/tsconfig.lib.json"
-    }
-  ]
 }

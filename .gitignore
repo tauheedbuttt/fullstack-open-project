@@ -10,3 +10,4 @@ dist/
 .nx/workspace-data/
 # Logs
 *.log
+.vercel
