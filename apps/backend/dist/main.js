@@ -85,7 +85,12 @@ const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
 let AppService = class AppService {
     getData() {
-        return ({ message: 'Hello API' });
+        const user = {
+            name: "John Doe",
+            id: 30,
+            email: "john.doe@example.com",
+        };
+        return { message: "Hello API", user };
     }
 };
 exports.AppService = AppService;
