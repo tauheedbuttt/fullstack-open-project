@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, { useRef, useState } from 'react';
+import { IUser } from "@libs/shared";
+import React, { useRef, useState } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -9,12 +10,17 @@ import {
   StatusBar,
   TouchableOpacity,
   Linking,
-} from 'react-native';
-import Svg, { G, Path } from 'react-native-svg';
+} from "react-native";
+import Svg, { G, Path } from "react-native-svg";
 
 export const App = () => {
   const [whatsNextYCoord, setWhatsNextYCoord] = useState<number>(0);
   const scrollViewRef = useRef<null | ScrollView>(null);
+  const user: IUser = {
+    name: "John Doe",
+    email: "john.doe@example.com",
+    id: 30,
+  };
 
   return (
     <>
@@ -32,7 +38,9 @@ export const App = () => {
           style={styles.scrollView}
         >
           <View style={styles.section}>
-            <Text style={styles.textLg}>Hello there,</Text>
+            <Text style={styles.textLg}>
+              Hello there, {JSON.stringify(user)}
+            </Text>
             <Text
               style={[styles.textXL, styles.appTitleText]}
               testID="heading"
@@ -86,7 +94,7 @@ export const App = () => {
                 style={[styles.listItem, styles.learning]}
                 onPress={() =>
                   Linking.openURL(
-                    'https://nx.dev/getting-started/intro?utm_source=nx-project'
+                    "https://nx.dev/getting-started/intro?utm_source=nx-project"
                   )
                 }
               >
@@ -128,7 +136,7 @@ export const App = () => {
               <TouchableOpacity
                 style={[styles.listItem, styles.learning]}
                 onPress={() =>
-                  Linking.openURL('https://nx.dev/blog/?utm_source=nx-project')
+                  Linking.openURL("https://nx.dev/blog/?utm_source=nx-project")
                 }
               >
                 <Svg
@@ -170,7 +178,7 @@ export const App = () => {
                 style={[styles.listItem, styles.learning]}
                 onPress={() =>
                   Linking.openURL(
-                    'https://www.youtube.com/@NxDevtools/videos?utm_source=nx-project'
+                    "https://www.youtube.com/@NxDevtools/videos?utm_source=nx-project"
                   )
                 }
               >
@@ -202,7 +210,7 @@ export const App = () => {
                 style={[styles.listItem, styles.learning]}
                 onPress={() =>
                   Linking.openURL(
-                    'https://nx.dev/nx-api/expo/documents/overview'
+                    "https://nx.dev/nx-api/expo/documents/overview"
                   )
                 }
               >
@@ -246,7 +254,7 @@ export const App = () => {
           <View style={styles.section}>
             <TouchableOpacity
               onPress={() =>
-                Linking.openURL('https://nx.dev/nx-cloud?utm_source=nx-project')
+                Linking.openURL("https://nx.dev/nx-cloud?utm_source=nx-project")
               }
             >
               <View style={[styles.listItem, styles.shadowBox]}>
@@ -274,7 +282,7 @@ export const App = () => {
             <TouchableOpacity
               onPress={() =>
                 Linking.openURL(
-                  'https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console&utm_source=nx-project'
+                  "https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console&utm_source=nx-project"
                 )
               }
             >
@@ -309,7 +317,7 @@ export const App = () => {
             <TouchableOpacity
               onPress={() =>
                 Linking.openURL(
-                  'https://plugins.jetbrains.com/plugin/21060-nx-console'
+                  "https://plugins.jetbrains.com/plugin/21060-nx-console"
                 )
               }
             >
@@ -349,7 +357,7 @@ export const App = () => {
           <View style={styles.section}>
             <TouchableOpacity
               onPress={() =>
-                Linking.openURL('https://nx.dev/nx-cloud?utm_source=nx-project')
+                Linking.openURL("https://nx.dev/nx-cloud?utm_source=nx-project")
               }
             >
               <View style={styles.shadowBox}>
@@ -387,11 +395,11 @@ export const App = () => {
                   </View>
                 </View>
                 <View style={styles.listItemTextContainer}>
-                <Text style={[styles.textXS, styles.textLight]}>
+                  <Text style={[styles.textXS, styles.textLight]}>
                     You can activate distributed tasks executions and caching by
                     running:
                   </Text>
-                  </View>
+                </View>
                 <View style={styles.codeBlock}>
                   <Text style={[styles.monospace]}>nx connect</Text>
                 </View>
@@ -598,21 +606,21 @@ export const App = () => {
 };
 const styles = StyleSheet.create({
   scrollView: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
   },
   codeBlock: {
-    backgroundColor: 'rgba(55, 65, 81, 1)',
+    backgroundColor: "rgba(55, 65, 81, 1)",
     marginVertical: 12,
     padding: 12,
     borderRadius: 4,
   },
   monospace: {
-    color: '#ffffff',
-    fontFamily: 'Courier New',
+    color: "#ffffff",
+    fontFamily: "Courier New",
     marginVertical: 4,
   },
   comment: {
-    color: '#cccccc',
+    color: "#cccccc",
   },
   marginBottomSm: {
     marginBottom: 6,
@@ -624,13 +632,13 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   textLight: {
-    fontWeight: '300',
+    fontWeight: "300",
   },
   textBold: {
-    fontWeight: '500',
+    fontWeight: "500",
   },
   textCenter: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   text2XS: {
     fontSize: 12,
@@ -654,16 +662,16 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
   textSubtle: {
-    color: '#6b7280',
+    color: "#6b7280",
   },
   section: {
     marginVertical: 12,
     marginHorizontal: 12,
   },
   shadowBox: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 24,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOpacity: 0.15,
     shadowOffset: {
       width: 1,
@@ -674,9 +682,9 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   listItem: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
   },
   listItemTextContainer: {
     marginLeft: 12,
@@ -684,31 +692,31 @@ const styles = StyleSheet.create({
   },
   appTitleText: {
     paddingTop: 12,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   hero: {
     borderRadius: 12,
-    backgroundColor: '#143055',
+    backgroundColor: "#143055",
     padding: 36,
     marginBottom: 24,
   },
   heroTitle: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   heroTitleText: {
-    color: '#ffffff',
+    color: "#ffffff",
     marginLeft: 12,
   },
   heroText: {
-    color: '#ffffff',
+    color: "#ffffff",
     marginVertical: 12,
   },
   whatsNextButton: {
-    backgroundColor: '#ffffff',
+    backgroundColor: "#ffffff",
     paddingVertical: 16,
     borderRadius: 8,
-    width: '50%',
+    width: "50%",
     marginTop: 24,
   },
   learning: {
@@ -716,7 +724,7 @@ const styles = StyleSheet.create({
   },
   love: {
     marginTop: 12,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 });
 

@@ -16,14 +16,14 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.tauheedbutt.fullstack.open.mobile"
     },
     "web": {
       "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      
       [
         "expo-splash-screen",
         {
@@ -33,6 +33,11 @@
           "backgroundColor": "#ffffff"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "37e0180a-41b9-487c-a776-10991eeb1938"
+      }
+    }
   }
 }

@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": "../../",
     "outDir": "dist",
     "types": [
       "node"
@@ -41,6 +42,12 @@
     "**/*.js",
     "**/*.jsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
+    "expo-env.d.ts",
+    "../../libs/shared/src/index.ts"
+  ],
+  "references": [
+    {
+      "path": "../../libs/shared/tsconfig.lib.json"
+    }
   ]
 }
