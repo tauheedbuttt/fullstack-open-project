@@ -6,8 +6,8 @@
 ![playground repo](image.png)
 ![current-repo](image-2.png)
 
-currentTime in this repo = 5h 25m
-[playgroundRepo](https://github.com/tauheedbuttt/testing-nx) = 1h 50m
+[playgroundRepo](https://github.com/tauheedbuttt/testing-nx) = 1h 50m  
+currentTime in this repo = 5h 25m  
 totalTime = 7h 05m
 
 ## ENUMS
