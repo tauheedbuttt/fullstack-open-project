@@ -1,25 +1,39 @@
 /// <reference types='vitest' />
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import svgr from "vite-plugin-svgr";
+import { join } from "path";
 
 export default defineConfig(() => ({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/apps/dashboard',
-  server:{
+  cacheDir: "../../node_modules/.vite/apps/dashboard",
+  server: {
     port: 3002,
-    host: 'localhost',
+    host: "localhost",
   },
-  preview:{
+  preview: {
     port: 3002,
-    host: 'localhost',
+    host: "localhost",
   },
-  plugins: [react()],
+  resolve: {
+    alias: {
+      "@": join(__dirname, "src"),
+    },
+  },
+  plugins: [
+    svgr({
+      svgrOptions: {
+        icon: true,
+      },
+    }),
+    react(),
+  ],
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],
   // },
   build: {
-    outDir: './dist',
+    outDir: "./dist",
     emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
@@ -27,15 +41,15 @@ export default defineConfig(() => ({
     },
   },
   test: {
-    name: 'dashboard',
+    name: "dashboard",
     watch: false,
     globals: true,
-    environment: 'jsdom',
-    include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    reporters: ['default'],
+    environment: "jsdom",
+    include: ["{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    reporters: ["default"],
     coverage: {
-      reportsDirectory: './test-output/vitest/coverage',
-      provider: 'v8' as const,
-    }
+      reportsDirectory: "./test-output/vitest/coverage",
+      provider: "v8" as const,
+    },
   },
 }));

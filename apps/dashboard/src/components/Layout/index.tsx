@@ -1,8 +1,22 @@
+import Header from "./Header";
+import Sidebar from "./Sidebar";
+
 interface LayoutProps {
   children?: React.ReactNode;
 }
 const Layout = ({ children }: LayoutProps) => {
-  return <div>{children}</div>;
+  return (
+    <main className="flex min-h-screen">
+      <Sidebar />
+      <div className="flex flex-1 flex-col border">
+        <header>
+          <Header />
+        </header>
+        <main>{children}</main>
+        <footer>Footer</footer>
+      </div>
+    </main>
+  );
 };
 
 export default Layout;
