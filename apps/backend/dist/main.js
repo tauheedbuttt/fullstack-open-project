@@ -5,23 +5,17 @@
 /* 1 */
 /***/ ((module) => {
 
-module.exports = require("@nestjs/common");
-
-/***/ }),
-/* 2 */
-/***/ ((module) => {
-
 module.exports = require("@nestjs/core");
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AppModule = void 0;
-const tslib_1 = __webpack_require__(4);
-const common_1 = __webpack_require__(1);
+const tslib_1 = __webpack_require__(3);
+const common_1 = __webpack_require__(4);
 const app_controller_1 = __webpack_require__(5);
 const app_service_1 = __webpack_require__(6);
 let AppModule = class AppModule {
@@ -37,10 +31,16 @@ exports.AppModule = AppModule = tslib_1.__decorate([
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ ((module) => {
 
 module.exports = require("tslib");
+
+/***/ }),
+/* 4 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/common");
 
 /***/ }),
 /* 5 */
@@ -50,20 +50,14 @@ module.exports = require("tslib");
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AppController = void 0;
-const tslib_1 = __webpack_require__(4);
-const common_1 = __webpack_require__(1);
+const tslib_1 = __webpack_require__(3);
+const common_1 = __webpack_require__(4);
 const app_service_1 = __webpack_require__(6);
 let AppController = class AppController {
     constructor(appService) {
         this.appService = appService;
     }
     getData() {
-        const user = {
-            id: 1,
-            name: "John Doe",
-            email: "john.doe@example.com",
-        };
-        console.log("User:", user);
         return this.appService.getData();
     }
 };
@@ -87,8 +81,8 @@ exports.AppController = AppController = tslib_1.__decorate([
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AppService = void 0;
-const tslib_1 = __webpack_require__(4);
-const common_1 = __webpack_require__(1);
+const tslib_1 = __webpack_require__(3);
+const common_1 = __webpack_require__(4);
 let AppService = class AppService {
     getData() {
         return ({ message: 'Hello API' });
@@ -133,25 +127,26 @@ var __webpack_exports__ = {};
 (() => {
 var exports = __webpack_exports__;
 
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const common_1 = __webpack_require__(1);
-const core_1 = __webpack_require__(2);
-const app_module_1 = __webpack_require__(3);
+exports["default"] = handler;
+const core_1 = __webpack_require__(1);
+const app_module_1 = __webpack_require__(2);
+let cachedApp;
 async function bootstrap() {
-    const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    const globalPrefix = "api";
-    app.setGlobalPrefix(globalPrefix);
-    const port = process.env.PORT || 3001;
-    await app.listen(port);
-    common_1.Logger.log(`🚀 Application is running on: http://localhost:${port}/${globalPrefix}`);
+    const app = await core_1.NestFactory.create(app_module_1.AppModule); // no express passed
+    app.setGlobalPrefix("api");
+    await app.init();
+    return app.getHttpAdapter().getInstance(); // get internal express instance
 }
-bootstrap();
+async function handler(req, res) {
+    if (!cachedApp) {
+        cachedApp = await bootstrap();
+    }
+    cachedApp(req, res);
+}
 
 })();
 
+module.exports = __webpack_exports__;
 /******/ })()
 ;
