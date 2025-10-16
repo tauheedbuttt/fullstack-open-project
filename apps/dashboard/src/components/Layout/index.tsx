@@ -9,10 +9,8 @@ const Layout = ({ children }: LayoutProps) => {
     <main className="flex min-h-screen">
       <Sidebar />
       <div className="flex flex-1 flex-col border">
-        <header>
-          <Header />
-        </header>
-        <main>{children}</main>
+        <Header />
+        <main className="bg-">{children}</main>
         <footer>Footer</footer>
       </div>
     </main>
