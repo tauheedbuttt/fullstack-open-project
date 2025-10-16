@@ -1,7 +1,7 @@
-## Time Logging
-
 <!--START_SECTION:waka-->
 <!--END_SECTION:waka-->
+
+## Time Logging
 
 ## ENUMS
 
