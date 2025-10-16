@@ -4,6 +4,7 @@ import {
   CardIcon,
   DashboardIcon,
   HouseIcon,
+  OwnersIcon,
   ReportIcon,
   RiderIcon,
   SettingIcon,
@@ -18,6 +19,16 @@ const Sidebar = () => {
       name: "Dashboard",
       route: routes.dashboard,
       icon: DashboardIcon,
+    },
+    {
+      name: "Riders",
+      route: routes.riders,
+      icon: RiderIcon,
+    },
+    {
+      name: "Owners",
+      route: routes.owners,
+      icon: OwnersIcon,
     },
     {
       name: "Houses",
@@ -35,18 +46,13 @@ const Sidebar = () => {
       icon: ReportIcon,
     },
     {
-      name: "Riders",
-      route: routes.riders,
-      icon: RiderIcon,
-    },
-    {
       name: "Settings",
       route: routes.settings,
       icon: SettingIcon,
     },
   ];
   return (
-    <aside className="w-64 bg-white border-r border-gray-100 h-screen fixed left-0 top-0 flex flex-col">
+    <aside className="w-64 bg-white border-r border-gray-100 h-screen flex flex-col br-0">
       {/* Header */}
       <Link
         to={routes.dashboard}
@@ -61,7 +67,7 @@ const Sidebar = () => {
         </div>
       </Link>
       {/* Pages */}
-      <nav className="p-4 flex flex-col gap-2">
+      <nav className="p-4 flex flex-col gap-2 overflow-y-auto flex-1">
         {pages.map((page) => (
           <Link
             key={page.name}

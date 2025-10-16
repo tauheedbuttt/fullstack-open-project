@@ -2,6 +2,7 @@ import { routes } from "../../config/routeConfig";
 import Login from "../../pages/Auth/Login";
 import Dashboard from "../../pages/Dashboard";
 import Houses from "../../pages/Houses";
+import Owners from "../../pages/Owners";
 import Payments from "../../pages/Payments";
 import Reports from "../../pages/Reports";
 import Riders from "../../pages/Riders";
@@ -31,6 +32,10 @@ export const dashboardRoutes = [
   {
     path: routes.settings,
     element: Settings,
+  },
+  {
+    path: routes.owners,
+    element: Owners,
   },
 ];
 

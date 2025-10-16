@@ -1,3 +1,4 @@
+import Breadcrumb from "./Breadcrumb";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 
@@ -10,8 +11,10 @@ const Layout = ({ children }: LayoutProps) => {
       <Sidebar />
       <div className="flex flex-1 flex-col border">
         <Header />
-        <main className="bg-">{children}</main>
-        <footer>Footer</footer>
+        <div className="bg-gray-50 h-full w-full px-6 py-2">
+          <Breadcrumb />
+          {children}
+        </div>
       </div>
     </main>
   );

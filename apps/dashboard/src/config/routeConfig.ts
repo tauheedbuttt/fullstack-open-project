@@ -6,4 +6,5 @@ export const routes = {
   riders: "/riders",
   settings: "/settings",
   login: "/login",
+  owners: "/owners",
 };
