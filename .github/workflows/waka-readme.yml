@@ -13,10 +13,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Update README with WakaTime statss
-        uses: anmol098/waka-readme-stats@v5
+      - name: Get all repos
+        id: get-repos
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          script: |
+            const allRepos = await github.paginate(github.rest.repos.listForAuthenticatedUser, {
+              visibility: "all"
+            });
+            const currentRepo = process.env.GITHUB_REPOSITORY; // owner/repo
+            const ignored = allRepos
+              .map(r => r.name)
+              .filter(name => `${process.env.GITHUB_REPOSITORY}`.split("/")[1] !== name)
+              .join(",");
+            console.log("IGNORED_REPOS=" + ignored);
+            return ignored;
+          result-encoding: string
+
+      - name: Update README with WakaTime stats
+        uses: miermontoto/waka-readme-stats@v5
         with:
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          DEBUG: true
-          REPOS: tauheedbuttt/fullstack-open-project
+          DEBUG_LOGGING: true
+          IGNORED_REPOS: ${{ steps.get-repos.outputs.result }}
