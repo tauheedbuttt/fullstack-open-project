@@ -39,3 +39,4 @@ jobs:
           DEBUG_LOGGING: true
           IGNORED_REPOS: ${{ steps.get-repos.outputs.result }}
           PUSH_BRANCH_NAME: main
+          SECTION_NAME: waka-timestats
