@@ -40,3 +40,9 @@ jobs:
           IGNORED_REPOS: ${{ steps.get-repos.outputs.result }}
           PUSH_BRANCH_NAME: main
           SECTION_NAME: waka-timestats
+          SHOW_LINES_OF_CODE: true
+          SHOW_PROFILE_VIEWS: false
+          SHOW_LANGUAGE: false
+          SHOW_OS: false
+          SHOW_PROJECTS: false
+          SHOW_LANGUAGE_PER_REPO: false
