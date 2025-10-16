@@ -1,12 +1,14 @@
 ## Time Logging
 
-```
-    currentTime in this repo = 2h 16m
-    [playgroundRepo](https://github.com/tauheedbuttt/testing-nx) = 1h 50m
-    ![alt text](image.png)
+![playground repo](image.png)
+![current repo](image-1.png)
 
-    totalTime = 4h 6m
-```
+<!--START_SECTION:waka-->
+<!--END_SECTION:waka-->
+
+currentTime in this repo = 2h 21m
+[playgroundRepo](https://github.com/tauheedbuttt/testing-nx) = 1h 50m
+totalTime = 4h 6m
 
 ## ENUMS
 
