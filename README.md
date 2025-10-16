@@ -1,14 +1,7 @@
 ## Time Logging
 
-![playground repo](image.png)
-![current repo](image-1.png)
-
 <!--START_SECTION:waka-->
 <!--END_SECTION:waka-->
-
-currentTime in this repo = 2h 21m
-[playgroundRepo](https://github.com/tauheedbuttt/testing-nx) = 1h 50m
-totalTime = 4h 6m
 
 ## ENUMS
 
