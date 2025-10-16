@@ -4,7 +4,13 @@ node_modules
 .env
 vite.config.*.timestamp*
 vitest.config.*.timestamp*
-dist/
+
+# Ignore all dist folders
+**/dist/
+
+# Except this one
+!apps/backend/dist/
+
 # Nx cache and workspace data
 .nx/cache/
 .nx/workspace-data/
