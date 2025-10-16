@@ -4,11 +4,11 @@
 ## Time Logging
 
 ![playground repo](image.png)
-![current repo](image-1.png)
+![current-repo](image-2.png)
 
-currentTime in this repo = 2h 21m
+currentTime in this repo = 5h 25m
 [playgroundRepo](https://github.com/tauheedbuttt/testing-nx) = 1h 50m
-totalTime = 4h 6m
+totalTime = 7h 05m
 
 ## ENUMS
 
