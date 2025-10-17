@@ -42,10 +42,10 @@ const OTPStep = ({ email, nextStep }: OTPStepProps) => {
         }}
         numInputs={6}
         renderSeparator={<span></span>}
-        renderInput={(props) => <Input {...props} className="w-full" />}
+        renderInput={(props) => <Input {...props} />}
         containerStyle={{
-          justifyContent: "space-between",
-          gap: 10,
+          justifyContent: "center",
+          gap: 5,
           marginTop: 10,
           marginBottom: 10,
         }}
