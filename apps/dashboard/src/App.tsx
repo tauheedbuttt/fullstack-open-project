@@ -1,11 +1,14 @@
 import Layout from "./components/Layout";
 import Router from "./components/Router";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const App = () => {
   return (
-    <Layout>
-      <Router />
-    </Layout>
+    <ErrorBoundary>
+      <Layout>
+        <Router />
+      </Layout>
+    </ErrorBoundary>
   );
 };
 
