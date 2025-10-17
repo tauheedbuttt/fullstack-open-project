@@ -49,7 +49,7 @@ const Login = () => {
           />
         ))}
         <div className="flex items-center justify-between">
-          <Link to={routes.forgotPassword} className="text-sm text-theme">
+          <Link to={routes.auth.forgotPassword} className="text-sm text-theme">
             Forgot Password?
           </Link>
         </div>

@@ -1,5 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { authRoutes, dashboardRoutes } from "./routes";
+import NotFound from "../../pages/NotFound";
 
 const Router = () => {
   return (
@@ -12,6 +13,9 @@ const Router = () => {
       {authRoutes.map((route) => (
         <Route key={route.path} path={route.path} element={<route.element />} />
       ))}
+
+      {/* Fallbacks */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

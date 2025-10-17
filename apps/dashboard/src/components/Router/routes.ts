@@ -1,4 +1,5 @@
 import { routes } from "../../config/routeConfig";
+import ForgotPassword from "../../pages/Auth/ForgotPassword";
 import Login from "../../pages/Auth/Login";
 import Dashboard from "../../pages/Dashboard";
 import Houses from "../../pages/Houses";
@@ -41,7 +42,11 @@ export const dashboardRoutes = [
 
 export const authRoutes = [
   {
-    path: routes.login,
+    path: routes.auth.login,
     element: Login,
+  },
+  {
+    path: routes.auth.forgotPassword,
+    element: ForgotPassword,
   },
 ];

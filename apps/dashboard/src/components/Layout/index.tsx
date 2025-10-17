@@ -10,9 +10,16 @@ interface LayoutProps {
 }
 const Layout = ({ children }: LayoutProps) => {
   const location = useLocation();
-  const isAuth = routes.login === location.pathname;
+  const isAuth = Object.values(routes.auth).includes(location.pathname);
+  const notFound =
+    [...Object.values(routes), ...Object.values(routes.auth)].includes(
+      location.pathname
+    ) === false;
+
   return isAuth ? (
     <AuthLayout>{children}</AuthLayout>
+  ) : notFound ? (
+    children
   ) : (
     <div className="flex min-h-screen">
       <Sidebar />
