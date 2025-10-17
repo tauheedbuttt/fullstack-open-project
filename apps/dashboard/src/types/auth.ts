@@ -8,3 +8,7 @@ export interface LoginForm {
 export interface LoginFormInputs extends InputProps {
   name: keyof LoginForm;
 }
+
+export interface ForgotStepProps {
+  nextStep: VoidFunction;
+}

@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { cn } from "../../utils/utils";
 
 type ButtonType = "primary" | "secondary" | "text";
 
@@ -20,16 +21,26 @@ type VariantProps = {
   [key in ButtonType]: Variant;
 };
 
-const Button = ({ variant = "primary", text, icon, ...props }: ButtonProps) => {
+const Button = ({
+  variant = "primary",
+  text,
+  icon,
+  className,
+  disabled,
+  ...props
+}: ButtonProps) => {
   const variants: VariantProps = {
     primary: {
-      className: "bg-primary text-white hover:bg-primary",
+      className: cn("bg-primary text-white", !disabled && "hover:bg-primary"),
     },
     secondary: {
-      className: "bg-gray-500 text-white hover:bg-gray-600",
+      className: cn("bg-gray-500 text-white", !disabled && "hover:bg-gray-600"),
     },
     text: {
-      className: "bg-transparent text-gray-700 hover:bg-gray-50",
+      className: cn(
+        "bg-transparent text-gray-700",
+        !disabled && "hover:bg-gray-50"
+      ),
     },
   };
 
@@ -37,8 +48,11 @@ const Button = ({ variant = "primary", text, icon, ...props }: ButtonProps) => {
     <button
       className={clsx(
         "px-4 py-2 rounded flex items-center justify-center gap-2",
-        variants[variant].className
+        variants[variant].className,
+        className,
+        disabled && "opacity-50"
       )}
+      disabled={disabled}
       {...props}
     >
       {icon}
