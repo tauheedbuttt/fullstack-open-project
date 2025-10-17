@@ -7,4 +7,5 @@ export const routes = {
   settings: "/settings",
   login: "/login",
   owners: "/owners",
+  forgotPassword: "/forgot-password",
 };

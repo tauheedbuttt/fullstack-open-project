@@ -7,6 +7,7 @@ import SettingIcon from "./svgs/setting.svg?react";
 import RiderIcon from "./svgs/rider.svg?react";
 import SearchIcon from "./svgs/search.svg?react";
 import NotificationIcon from "./svgs/notification.svg?react";
+import LogoIcon from "./svgs/logo.svg?react";
 
 export {
   DashboardIcon,
@@ -18,4 +19,5 @@ export {
   RiderIcon,
   SearchIcon,
   NotificationIcon,
+  LogoIcon,
 };

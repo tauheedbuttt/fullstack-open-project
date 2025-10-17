@@ -4,9 +4,10 @@ interface AvatarProps {
   alt: string;
   src?: string;
   size?: number;
+  icon?: React.ReactNode;
 }
 
-const Avatar = ({ alt, src, size }: AvatarProps) => {
+const Avatar = ({ alt, src, size, icon }: AvatarProps) => {
   const first = alt.charAt(0).toUpperCase();
   const last = alt.split(first).pop()?.charAt(0).toUpperCase();
   return (
@@ -28,8 +29,13 @@ const Avatar = ({ alt, src, size }: AvatarProps) => {
             size ? `w-${size} h-${size}` : "w-10 h-10"
           )}
         >
-          {first}
-          {last}
+          {icon && icon}
+          {!icon && (
+            <>
+              {first}
+              {last}
+            </>
+          )}
         </div>
       )}
     </div>

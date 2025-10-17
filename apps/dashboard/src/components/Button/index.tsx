@@ -2,7 +2,11 @@ import clsx from "clsx";
 
 type ButtonType = "primary" | "secondary" | "text";
 
-interface ButtonProps {
+interface ButtonProps
+  extends React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  > {
   variant?: ButtonType;
   text?: string;
   icon?: React.ReactNode;
@@ -16,7 +20,7 @@ type VariantProps = {
   [key in ButtonType]: Variant;
 };
 
-const Button = ({ variant = "primary", text, icon }: ButtonProps) => {
+const Button = ({ variant = "primary", text, icon, ...props }: ButtonProps) => {
   const variants: VariantProps = {
     primary: {
       className: "bg-primary text-white hover:bg-primary",
@@ -32,9 +36,10 @@ const Button = ({ variant = "primary", text, icon }: ButtonProps) => {
   return (
     <button
       className={clsx(
-        "px-4 py-2 rounded flex items-center gap-2",
+        "px-4 py-2 rounded flex items-center justify-center gap-2",
         variants[variant].className
       )}
+      {...props}
     >
       {icon}
       {text && <span>{text}</span>}
