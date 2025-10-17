@@ -11,17 +11,18 @@ import Stepper from "../../../components/Stepper";
 const ForgotPassword = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+  const [email, setEmail] = useState("");
 
   const nextStep = () => setStep((prev) => prev + 1);
 
   const steps: { [key in number]: JSX.Element } = {
-    1: <EmailStep nextStep={nextStep} />,
-    2: <OTPStep nextStep={nextStep} />,
+    1: <EmailStep nextStep={nextStep} setEmail={setEmail} />,
+    2: <OTPStep nextStep={nextStep} email={email} />,
     3: <PasswordStep nextStep={nextStep} />,
   };
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       <Stepper
         steps={Object.keys(steps).map((key) => ({
           label: ``,
