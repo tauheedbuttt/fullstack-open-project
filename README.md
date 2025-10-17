@@ -7,8 +7,8 @@
 ![current-repo](image-2.png)
 
 [playgroundRepo](https://github.com/tauheedbuttt/testing-nx) = 1h 50m  
-currentTime in this repo = 5h 25m  
-totalTime = 7h 05m
+currentTime in this repo = 8h 37m  
+totalTime = 10h 27m
 
 ## ENUMS
 
