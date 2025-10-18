@@ -1,5 +1,7 @@
 <!-- WAKATIME:START -->
-Total coding time: **11 hrs 31 mins**
+
+Total coding time: **Loading...**
+
 <!-- WAKATIME:END -->
 
 ## Time Logging
