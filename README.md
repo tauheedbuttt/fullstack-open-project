@@ -1,5 +1,8 @@
-<!--START_SECTION:waka-->
-<!--END_SECTION:waka-->
+<!-- WAKATIME:START -->
+
+Total coding time: **Loading...**
+
+<!-- WAKATIME:END -->
 
 ## Time Logging
 
