@@ -7,9 +7,16 @@ interface CardProps {
   children?: React.ReactNode;
   className?: string;
   to?: string;
+  rightTitleElement?: JSX.Element;
 }
 
-const Card = ({ title, children, className, to = "" }: CardProps) => {
+const Card = ({
+  title,
+  children,
+  className,
+  to = "",
+  rightTitleElement,
+}: CardProps) => {
   const TitleWrapper = to ? Link : "div";
   return (
     <div
@@ -18,11 +25,14 @@ const Card = ({ title, children, className, to = "" }: CardProps) => {
         className
       )}
     >
-      {title && (
-        <TitleWrapper to={to} className="font-medium mb-5">
-          {title}
-        </TitleWrapper>
-      )}
+      <div className="flex justify-between items-center mb-5">
+        {title && (
+          <TitleWrapper to={to} className="font-medium">
+            {title}
+          </TitleWrapper>
+        )}
+        {rightTitleElement}
+      </div>
       <div className="w-full">{children}</div>
     </div>
   );

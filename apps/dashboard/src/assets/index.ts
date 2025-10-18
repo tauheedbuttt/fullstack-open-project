@@ -11,6 +11,9 @@ import LogoIcon from "./svgs/logo.svg?react";
 import ArrowLeftIcon from "./svgs/arrow-left.svg?react";
 import DollarIcon from "./svgs/dollar.svg?react";
 import TrendIcon from "./svgs/trend.svg?react";
+import EditIcon from "./svgs/edit.svg?react";
+import EyeIcon from "./svgs/eye.svg?react";
+import CrossIcon from "./svgs/cross.svg?react";
 
 export {
   DashboardIcon,
@@ -26,4 +29,7 @@ export {
   ArrowLeftIcon,
   DollarIcon,
   TrendIcon,
+  EditIcon,
+  EyeIcon,
+  CrossIcon,
 };
