@@ -3,10 +3,20 @@ import Card from "../../components/Card";
 import Input from "../../components/Input";
 import Table, { TableColumn } from "../../components/Table";
 import useBreadcrumb from "../../hooks/useBreadcrumb";
-import { CrossIcon, EditIcon, EyeIcon } from "../../assets";
+import { CrossIcon, EditIcon, EyeIcon, PlusIcon } from "../../assets";
 import { useState } from "react";
+import { useActionContext } from "../../context/ActionContext";
 
 const Riders = () => {
+  useActionContext([
+    {
+      icon: <PlusIcon />,
+      text: "Add Rider",
+      onClick: () => {
+        console.log("Add Rider clicked");
+      },
+    },
+  ]);
   useBreadcrumb("Riders", "Manage collection riders and their assignments.");
 
   const [filters, setFilters] = useState({

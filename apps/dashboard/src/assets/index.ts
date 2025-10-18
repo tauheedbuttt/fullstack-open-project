@@ -14,6 +14,7 @@ import TrendIcon from "./svgs/trend.svg?react";
 import EditIcon from "./svgs/edit.svg?react";
 import EyeIcon from "./svgs/eye.svg?react";
 import CrossIcon from "./svgs/cross.svg?react";
+import PlusIcon from "./svgs/plus.svg?react";
 
 export {
   DashboardIcon,
@@ -32,4 +33,5 @@ export {
   EditIcon,
   EyeIcon,
   CrossIcon,
+  PlusIcon,
 };

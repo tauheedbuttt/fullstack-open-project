@@ -1,7 +1,7 @@
 import clsx from "clsx";
-import React from "react";
 import Button from "../Button";
 import TableSkeleton from "./TableSkeleton";
+import { Action } from "../../types";
 
 export interface TableColumn<T> {
   label: string;
@@ -9,18 +9,12 @@ export interface TableColumn<T> {
   onClick?: () => void;
 }
 
-export interface TableAction<T> {
-  icon?: React.ReactNode;
-  text?: string;
-  onClick: (row: T) => void;
-}
-
 interface TableProps<T> {
   isFetching?: boolean;
   rows: { [key in keyof T]: any }[]; // anything can come as value in row
   columns: TableColumn<T>[];
   rowOnClick?: (row: T) => void;
-  actions?: TableAction<T>[];
+  actions?: Action<T>[];
 }
 
 const Table = <T,>({
