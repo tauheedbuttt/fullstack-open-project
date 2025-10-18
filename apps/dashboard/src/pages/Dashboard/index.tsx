@@ -20,6 +20,7 @@ import StatCard from "../../components/StatCard";
 import useBreadcrumb from "../../hooks/useBreadcrumb";
 import React from "react";
 import { routes } from "../../config/routeConfig";
+import Table, { TableColumn } from "../../components/Table";
 
 const Dashboard = () => {
   useBreadcrumb("Dashboard", "Welcome back! Here's what's happening in D-12.");
@@ -102,6 +103,40 @@ const Dashboard = () => {
     { name: "Sara Ahmed", registeredAt: "Oct 5, 2025", house: "H-256" },
   ];
 
+  const rows = [
+    {
+      houseId: "H-101",
+      owner: "Ali Raza",
+      amount: "PKR 5,000",
+      status: "Pending",
+    },
+    {
+      houseId: "H-202",
+      owner: "Sara Khan",
+      amount: "PKR 4,500",
+      status: "Pending",
+    },
+    {
+      houseId: "H-303",
+      owner: "Omar Farooq",
+      amount: "PKR 6,200",
+      status: "Pending",
+    },
+    {
+      houseId: "H-404",
+      owner: "Nida Hussain",
+      amount: "PKR 5,800",
+      status: "Pending",
+    },
+  ];
+
+  const columns: TableColumn<(typeof rows)[0]>[] = [
+    { label: "HouseID", field: "houseId" },
+    { label: "Owner", field: "owner" },
+    { label: "Amount", field: "amount" },
+    { label: "Status", field: "status" },
+  ];
+
   return (
     <div className="flex flex-col gap-6">
       {/* Stat Cards */}
@@ -147,7 +182,9 @@ const Dashboard = () => {
           to={routes.payments}
           className="flex-1"
           title={"Pending Payments"}
-        ></Card>
+        >
+          <Table columns={columns} rows={rows} />
+        </Card>
         <Card
           to={routes.riders}
           className="flex-1 flex flex-col gap-2"
