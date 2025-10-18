@@ -18,7 +18,7 @@ function fetchWakaTimeStats() {
       )}`,
       method: "GET",
       headers: {
-        Authorization: `Bearer ${WAKATIME_API_KEY}`,
+        Authorization: `Basic ${WAKATIME_API_KEY}`,
       },
     };
 
