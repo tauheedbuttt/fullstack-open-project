@@ -2,6 +2,8 @@
 
 Total coding time: **Loading...**
 
+[![WakaTime](https://wakatime.com/badge.svg)](https://wakatime.com)
+
 <!-- WAKATIME:END -->
 
 ## Time Logging
