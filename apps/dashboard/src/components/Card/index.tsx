@@ -23,7 +23,7 @@ const Card = ({ title, children, className, to = "" }: CardProps) => {
           {title}
         </TitleWrapper>
       )}
-      <div>{children}</div>
+      <div className="w-full">{children}</div>
     </div>
   );
 };
