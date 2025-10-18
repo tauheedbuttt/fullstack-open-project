@@ -29,7 +29,7 @@ const Stepper = ({ steps, currentStep, setStep }: StepperProps) => {
                 className={cn(
                   `!rounded-full`,
                   !isCompleted &&
-                    "bg-gray-200 !text-secondary !hover:text-white"
+                    "!bg-gray-200 !text-secondary !hover:text-white"
                 )}
                 variant="primary"
               />
