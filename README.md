@@ -1,9 +1,7 @@
 <!-- WAKATIME:START -->
+Total coding time: **11 hrs 27 mins**
 
-Total coding time: **Loading...**
-
-[![WakaTime](https://wakatime.com/badge.svg)](https://wakatime.com)
-
+[![WakaTime](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/2111531b-3097-433a-8fe1-332419720db3.svg)](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/2111531b-3097-433a-8fe1-332419720db3)
 <!-- WAKATIME:END -->
 
 ## Time Logging
