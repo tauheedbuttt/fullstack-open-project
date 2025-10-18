@@ -18,7 +18,7 @@ function fetchWakaTimeStats() {
       )}`,
       method: "GET",
       headers: {
-        Authorization: `Basic ${WAKATIME_API_KEY}`,
+        Authorization: `Bearer ${WAKATIME_API_KEY}`,
       },
     };
 
@@ -48,8 +48,9 @@ function fetchWakaTimeStats() {
   });
 }
 
-function updateReadme(totalTime) {
+function updateReadme(totalTime, projectUrl) {
   const readmePath = "README.md";
+  const badgeDataPath = "wakatime-badge.json";
 
   if (!fs.existsSync(readmePath)) {
     console.error("Error: README.md not found");
@@ -58,22 +59,42 @@ function updateReadme(totalTime) {
 
   let readme = fs.readFileSync(readmePath, "utf8");
 
-  // Create the stats badge/line
-  const statsLine = `**⏱️ Total Time on ${PROJECT_NAME}:** ${totalTime}`;
+  // Create badge data JSON for shields.io endpoint
+  const badgeData = {
+    schemaVersion: 1,
+    label: PROJECT_NAME,
+    message: totalTime,
+    color: "blue",
+  };
 
-  // Check if stats already exist in README (first line only)
+  // Write badge data to file
+  fs.writeFileSync(badgeDataPath, JSON.stringify(badgeData, null, 2));
+  console.log("Created/updated wakatime-badge.json");
+
+  // GitHub raw URL for the badge data
+  const githubRepo = process.env.GITHUB_REPOSITORY || "username/repo";
+  const badgeJsonUrl = `https://raw.githubusercontent.com/${githubRepo}/main/wakatime-badge.json`;
+  const encodedBadgeUrl = encodeURIComponent(badgeJsonUrl);
+
+  // Create shields.io badge with clickable link
+  const badge = `[![WakaTime](https://img.shields.io/endpoint?url=${encodedBadgeUrl})](${projectUrl})`;
+
+  // Create the stats line
+  const statsLine = `${badge}`;
+
+  // Check if badge already exists in README (first line only)
   const lines = readme.split("\n");
-  const statsRegex = /\*\*⏱️ Total Time on .*?\*\*:/;
+  const badgeRegex = /\[\!\[WakaTime\]/;
 
-  if (statsRegex.test(lines[0])) {
+  if (badgeRegex.test(lines[0])) {
     // Replace the first line
     lines[0] = statsLine;
     readme = lines.join("\n");
-    console.log("Updated existing WakaTime stats in README.md");
+    console.log("Updated existing WakaTime badge in README.md");
   } else {
-    // Add stats at the very top
+    // Add badge at the very top
     readme = `${statsLine}\n\n${readme}`;
-    console.log("Added WakaTime stats to README.md");
+    console.log("Added WakaTime badge to README.md");
   }
 
   fs.writeFileSync(readmePath, readme);
@@ -95,9 +116,15 @@ async function main() {
     console.log(`Total seconds: ${total_seconds}`);
     console.log(`Date range: ${range.start_text} - ${range.end_text}`);
 
-    updateReadme(text);
+    // Generate project URL
+    const projectUrl = `https://wakatime.com/@current/projects/${encodeURIComponent(
+      PROJECT_NAME
+    )}`;
+
+    updateReadme(text, projectUrl);
 
     console.log("✓ README.md updated successfully");
+    console.log("✓ wakatime-badge.json created successfully");
   } catch (error) {
     console.error("Error:", error.message);
     process.exit(1);
