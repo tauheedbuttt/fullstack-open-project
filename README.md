@@ -1,3 +1,5 @@
+[![WakaTime](https://img.shields.io/badge/project-11%20hrs%2050%20mins-blue)](https://wakatime.com/@current/projects/project)
+
 **⏱️ Total Time on project:** 11 hrs 50 mins
 
 ## Time Logging
