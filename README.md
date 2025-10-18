@@ -1,18 +1,6 @@
-<!-- WAKATIME:START -->
+[![WakaTime](https://img.shields.io/badge/project-11%20hrs%2055%20mins-blue)](https://wakatime.com/@436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/projects/rzpbwqrxrj?start=2025-10-12&end=2025-10-18)
 
-Total coding time: **Loading...**
-
-<!-- WAKATIME:END -->
-
-## Time Logging
-
-[![wakatime](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/ad9d83ad-f56d-4fb8-a3f9-234f4d037069.svg)](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/ad9d83ad-f56d-4fb8-a3f9-234f4d037069)
-
-[![wakatime](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/2111531b-3097-433a-8fe1-332419720db3.svg)](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/2111531b-3097-433a-8fe1-332419720db3)
-
-[playgroundRepo](https://github.com/tauheedbuttt/testing-nx) = 1h 50m  
-currentTime in this repo = 8h 37m  
-totalTime = 10h 27m
+**⏱️ Total Time on project:** 11 hrs 50 mins
 
 ## ENUMS
 
