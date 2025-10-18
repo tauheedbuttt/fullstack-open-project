@@ -2,15 +2,6 @@
 
 **⏱️ Total Time on project:** 11 hrs 50 mins
 
-## Time Logging
-
-![playground repo](image.png)
-![current repo](image-1.png)
-
-currentTime in this repo = 2h 21m
-[playgroundRepo](https://github.com/tauheedbuttt/testing-nx) = 1h 50m
-totalTime = 4h 6m
-
 ## ENUMS
 
 ```mermaid
