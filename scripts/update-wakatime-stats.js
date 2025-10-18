@@ -50,7 +50,6 @@ function fetchWakaTimeStats() {
 
 function updateReadme(totalTime, projectUrl) {
   const readmePath = "README.md";
-  const badgeDataPath = "wakatime-badge.json";
 
   if (!fs.existsSync(readmePath)) {
     console.error("Error: README.md not found");
@@ -59,28 +58,13 @@ function updateReadme(totalTime, projectUrl) {
 
   let readme = fs.readFileSync(readmePath, "utf8");
 
-  // Create badge data JSON for shields.io endpoint
-  const badgeData = {
-    schemaVersion: 1,
-    label: PROJECT_NAME,
-    message: totalTime,
-    color: "blue",
-  };
+  // Create static shields.io badge with encoded values
+  const label = encodeURIComponent(PROJECT_NAME);
+  const message = encodeURIComponent(totalTime);
+  const color = "blue";
 
-  // Write badge data to file
-  fs.writeFileSync(badgeDataPath, JSON.stringify(badgeData, null, 2));
-  console.log("Created/updated wakatime-badge.json");
-
-  // GitHub raw URL for the badge data
-  const githubRepo = process.env.GITHUB_REPOSITORY || "username/repo";
-  const badgeJsonUrl = `https://raw.githubusercontent.com/${githubRepo}/main/wakatime-badge.json`;
-  const encodedBadgeUrl = encodeURIComponent(badgeJsonUrl);
-
-  // Create shields.io badge with clickable link
-  const badge = `[![WakaTime](https://img.shields.io/endpoint?url=${encodedBadgeUrl})](${projectUrl})`;
-
-  // Create the stats line
-  const statsLine = `${badge}`;
+  // Create shields.io static badge with clickable link
+  const badge = `[![WakaTime](https://img.shields.io/badge/${label}-${message}-${color})](${projectUrl})`;
 
   // Check if badge already exists in README (first line only)
   const lines = readme.split("\n");
@@ -88,12 +72,12 @@ function updateReadme(totalTime, projectUrl) {
 
   if (badgeRegex.test(lines[0])) {
     // Replace the first line
-    lines[0] = statsLine;
+    lines[0] = badge;
     readme = lines.join("\n");
     console.log("Updated existing WakaTime badge in README.md");
   } else {
     // Add badge at the very top
-    readme = `${statsLine}\n\n${readme}`;
+    readme = `${badge}\n\n${readme}`;
     console.log("Added WakaTime badge to README.md");
   }
 
@@ -124,7 +108,6 @@ async function main() {
     updateReadme(text, projectUrl);
 
     console.log("✓ README.md updated successfully");
-    console.log("✓ wakatime-badge.json created successfully");
   } catch (error) {
     console.error("Error:", error.message);
     process.exit(1);
