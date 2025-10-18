@@ -5,11 +5,13 @@ on:
     branches:
       - main
   pull_request:
-  workflow_dispatch:  # allows manual trigger from Actions tab
+  workflow_dispatch:
 
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # 👈 this line ensures this specific job can push
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -38,9 +40,7 @@ jobs:
           echo "Updating README.md..."
           sed -i '/<!-- WAKATIME:START -->/,/<!-- WAKATIME:END -->/c\<!-- WAKATIME:START -->\nTotal coding time: **${{ steps.wakatime.outputs.human_readable }}**\n<!-- WAKATIME:END -->' README.md
 
-      - name: Commit changes
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Commit and push changes
         run: |
           if git diff --quiet; then
             echo "No changes to commit."
@@ -49,9 +49,5 @@ jobs:
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add README.md
             git commit -m "🕒 Update WakaTime stats"
-
-            # Authenticate using GITHUB_TOKEN
-            git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-
             git push origin HEAD:${{ github.head_ref || github.ref_name }}
           fi
