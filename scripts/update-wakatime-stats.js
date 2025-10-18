@@ -101,9 +101,7 @@ async function main() {
     console.log(`Date range: ${range.start_text} - ${range.end_text}`);
 
     // Generate project URL
-    const projectUrl = `https://wakatime.com/@current/projects/${encodeURIComponent(
-      PROJECT_NAME
-    )}`;
+    const projectUrl = `https://wakatime.com/@436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/projects/rzpbwqrxrj?start=2025-10-12&end=2025-10-18`;
 
     updateReadme(text, projectUrl);
 
