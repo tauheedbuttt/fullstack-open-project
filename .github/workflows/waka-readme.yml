@@ -10,12 +10,13 @@ on:
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # 👈 this line ensures this specific job can push
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref || github.ref_name }}
-          persist-credentials: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -39,7 +40,7 @@ jobs:
           echo "Updating README.md..."
           sed -i '/<!-- WAKATIME:START -->/,/<!-- WAKATIME:END -->/c\<!-- WAKATIME:START -->\nTotal coding time: **${{ steps.wakatime.outputs.human_readable }}**\n<!-- WAKATIME:END -->' README.md
 
-      - name: Commit changes
+      - name: Commit and push changes
         run: |
           if git diff --quiet; then
             echo "No changes to commit."
