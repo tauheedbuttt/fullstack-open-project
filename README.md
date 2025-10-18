@@ -1,7 +1,9 @@
 <!-- WAKATIME:START -->
-Total coding time: **11 hrs 27 mins**
 
-${badge_markdown}
+Total coding time: **Loading...**
+
+[![WakaTime](https://wakatime.com/badge.svg)](https://wakatime.com)
+
 <!-- WAKATIME:END -->
 
 ## Time Logging

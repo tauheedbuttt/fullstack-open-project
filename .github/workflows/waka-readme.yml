@@ -45,11 +45,16 @@ jobs:
           echo "badge_link=$badge_link" >> $GITHUB_OUTPUT
 
       - name: Update README.md
+        env:
+          HUMAN_READABLE: ${{ steps.wakatime.outputs.human_readable }}
+          BADGE_URL: ${{ steps.wakatime.outputs.badge_url }}
+          BADGE_LINK: ${{ steps.wakatime.outputs.badge_link }}
         run: |
           echo "Updating README.md..."
-          badge_markdown="[![WakaTime](${{ steps.wakatime.outputs.badge_url }})](${{ steps.wakatime.outputs.badge_link }})"
+          badge_markdown="[![WakaTime](${BADGE_URL})](${BADGE_LINK})"
 
-          sed -i '/<!-- WAKATIME:START -->/,/<!-- WAKATIME:END -->/c\<!-- WAKATIME:START -->\nTotal coding time: **${{ steps.wakatime.outputs.human_readable }}**\n\n${badge_markdown}\n<!-- WAKATIME:END -->' README.md
+          # Use Bash variable expansion properly
+          sed -i "/<!-- WAKATIME:START -->/,/<!-- WAKATIME:END -->/c\\<!-- WAKATIME:START -->\nTotal coding time: **${HUMAN_READABLE}**\n\n${badge_markdown}\n<!-- WAKATIME:END -->" README.md
 
       - name: Commit and push changes
         run: |
