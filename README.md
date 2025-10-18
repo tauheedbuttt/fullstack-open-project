@@ -6,8 +6,8 @@
 ![playground repo](image.png)
 ![current-repo](image-2.png)
 
-[![wakatime](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/ad9d83ad-f56d-4fb8-a3f9-234f4d037069.svg)](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/ad9d83ad-f56d-4fb8-a3f9-234f4d037069)
-[![wakatime](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/2111531b-3097-433a-8fe1-332419720db3.svg)](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/2111531b-3097-433a-8fe1-332419720db3)
+[![wakatime](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/ad9d83ad-f56d-4fb8-a3f9-234f4d037069.svg)](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/ad9d83ad-f56d-4fb8-a3f9-234f4d037069).
+[![wakatime](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/2111531b-3097-433a-8fe1-332419720db3.svg)](https://wakatime.com/badge/user/436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/project/2111531b-3097-433a-8fe1-332419720db3).
 
 [playgroundRepo](https://github.com/tauheedbuttt/testing-nx) = 1h 50m  
 currentTime in this repo = 8h 37m  
