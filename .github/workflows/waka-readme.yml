@@ -9,44 +9,34 @@ on:
 jobs:
   update-readme:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write   # 👈 this line ensures this specific job can push
+    
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref || github.ref_name }}
-
-      - name: Set up Node.js
+          fetch-depth: 0
+          
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Fetch WakaTime stats
-        id: wakatime
+          
+      - name: Run WakaTime stats update
+        env:
+          WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
+          PROJECT_NAME: ${{ vars.PROJECT_NAME || 'project' }}
+        run: node ./scripts/update-wakatime-stats.js
+        
+      - name: Check for changes
+        id: git-check
         run: |
-          echo "Fetching WakaTime stats..."
-          response=$(curl -s -u "${{ secrets.WAKATIME_API_KEY }}:" "https://wakatime.com/api/v1/users/current/all_time_since_today?project=project")
-
-          total_seconds=$(echo $response | jq -r '.data.total_seconds')
-          human_readable=$(echo $response | jq -r '.data.text')
-
-          echo "total_seconds=$total_seconds" >> $GITHUB_OUTPUT
-          echo "human_readable=$human_readable" >> $GITHUB_OUTPUT
-
-      - name: Update README.md
+          git diff --exit-code README.md || echo "changed=true" >> $GITHUB_OUTPUT
+          
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changed == 'true'
         run: |
-          echo "Updating README.md..."
-          sed -i '/<!-- WAKATIME:START -->/,/<!-- WAKATIME:END -->/c\<!-- WAKATIME:START -->\nTotal coding time: **${{ steps.wakatime.outputs.human_readable }}**\n<!-- WAKATIME:END -->' README.md
-
-      - name: Commit and push changes
-        run: |
-          if git diff --quiet; then
-            echo "No changes to commit."
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add README.md
-            git commit -m "🕒 Update WakaTime stats"
-            git push origin HEAD:${{ github.head_ref || github.ref_name }}
-          fi
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git commit -m "📊 Update WakaTime stats"
+          git push
