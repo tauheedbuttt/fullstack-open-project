@@ -9,6 +9,8 @@ import SearchIcon from "./svgs/search.svg?react";
 import NotificationIcon from "./svgs/notification.svg?react";
 import LogoIcon from "./svgs/logo.svg?react";
 import ArrowLeftIcon from "./svgs/arrow-left.svg?react";
+import DollarIcon from "./svgs/dollar.svg?react";
+import TrendIcon from "./svgs/trend.svg?react";
 
 export {
   DashboardIcon,
@@ -22,4 +24,6 @@ export {
   NotificationIcon,
   LogoIcon,
   ArrowLeftIcon,
+  DollarIcon,
+  TrendIcon,
 };

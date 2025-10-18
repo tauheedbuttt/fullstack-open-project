@@ -2,7 +2,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
-import { join } from "path";
+import { resolve } from "path";
+// import { join } from "path";
 
 export default defineConfig(() => ({
   root: __dirname,
@@ -17,7 +18,7 @@ export default defineConfig(() => ({
   },
   resolve: {
     alias: {
-      "@": join(__dirname, "src"),
+      "@libs/shared": resolve(__dirname, "../../libs/shared/src/index.ts"),
     },
   },
   plugins: [
