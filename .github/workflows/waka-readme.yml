@@ -11,7 +11,8 @@ jobs:
   update-readme:
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # 👈 this line ensures this specific job can push
+      contents: write
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -23,22 +24,32 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Fetch WakaTime stats
+      - name: Fetch WakaTime stats + badge
         id: wakatime
         run: |
           echo "Fetching WakaTime stats..."
-          response=$(curl -s -u "${{ secrets.WAKATIME_API_KEY }}:" "https://wakatime.com/api/v1/users/current/all_time_since_today?project=project")
+          project_id="2111531b-3097-433a-8fe1-332419720db3"
+          
+          # Stats
+          stats=$(curl -s -u "${{ secrets.WAKATIME_API_KEY }}:" "https://wakatime.com/api/v1/users/current/all_time_since_today?project=$project_id")
+          total_seconds=$(echo $stats | jq -r '.data.total_seconds')
+          human_readable=$(echo $stats | jq -r '.data.text')
 
-          total_seconds=$(echo $response | jq -r '.data.total_seconds')
-          human_readable=$(echo $response | jq -r '.data.text')
+          # Badge
+          badge_data=$(curl -s -u "${{ secrets.WAKATIME_API_KEY }}:" "https://wakatime.com/api/v1/users/current/projects/$project_id")
+          badge_url=$(echo $badge_data | jq -r '.data.badge.url')
+          badge_link=$(echo $badge_data | jq -r '.data.badge.link')
 
-          echo "total_seconds=$total_seconds" >> $GITHUB_OUTPUT
           echo "human_readable=$human_readable" >> $GITHUB_OUTPUT
+          echo "badge_url=$badge_url" >> $GITHUB_OUTPUT
+          echo "badge_link=$badge_link" >> $GITHUB_OUTPUT
 
       - name: Update README.md
         run: |
           echo "Updating README.md..."
-          sed -i '/<!-- WAKATIME:START -->/,/<!-- WAKATIME:END -->/c\<!-- WAKATIME:START -->\nTotal coding time: **${{ steps.wakatime.outputs.human_readable }}**\n<!-- WAKATIME:END -->' README.md
+          badge_markdown="[![WakaTime](${{ steps.wakatime.outputs.badge_url }})](${{ steps.wakatime.outputs.badge_link }})"
+
+          sed -i '/<!-- WAKATIME:START -->/,/<!-- WAKATIME:END -->/c\<!-- WAKATIME:START -->\nTotal coding time: **${{ steps.wakatime.outputs.human_readable }}**\n\n${badge_markdown}\n<!-- WAKATIME:END -->' README.md
 
       - name: Commit and push changes
         run: |
@@ -48,6 +59,6 @@ jobs:
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add README.md
-            git commit -m "🕒 Update WakaTime stats"
+            git commit -m "🕒 Update WakaTime stats and badge"
             git push origin HEAD:${{ github.head_ref || github.ref_name }}
           fi
