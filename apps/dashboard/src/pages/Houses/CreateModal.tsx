@@ -154,7 +154,7 @@ const CreateModal = ({ variant }: CreateModalProps) => {
           <div className="flex gap-2 w-full">
             <Input
               label="Name"
-              name="name"
+              name="owner.name"
               value={values.owner.name}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -164,7 +164,7 @@ const CreateModal = ({ variant }: CreateModalProps) => {
             />
             <Input
               label="Phone Number"
-              name="phone"
+              name="owner.phone"
               value={values.owner.phone}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -177,7 +177,7 @@ const CreateModal = ({ variant }: CreateModalProps) => {
           <div className="flex gap-2 w-full">
             <Input
               label="Email"
-              name="email"
+              name="owner.email"
               value={values.owner.email}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -187,7 +187,7 @@ const CreateModal = ({ variant }: CreateModalProps) => {
             />
             <Input
               label="CNIC"
-              name="cnic"
+              name="owner.cnic"
               value={values.owner.cnic}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -199,7 +199,7 @@ const CreateModal = ({ variant }: CreateModalProps) => {
           {/* Status */}
           <Input
             label="Status"
-            name="status"
+            name="owner.status"
             value={values.owner.status}
             onChange={handleChange}
             onBlur={handleBlur}
