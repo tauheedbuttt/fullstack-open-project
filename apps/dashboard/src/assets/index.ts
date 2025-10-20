@@ -22,6 +22,7 @@ import WhatsappIcon from "./svgs/whatsapp.svg?react";
 import EmailIcon from "./svgs/email.svg?react";
 import LocationIcon from "./svgs/location.svg?react";
 import CalendarIcon from "./svgs/calendar.svg?react";
+import DownloadIcon from "./svgs/download.svg?react";
 
 export {
   DashboardIcon,
@@ -48,4 +49,5 @@ export {
   EmailIcon,
   LocationIcon,
   CalendarIcon,
+  DownloadIcon,
 };

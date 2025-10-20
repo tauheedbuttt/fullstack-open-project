@@ -7,4 +7,5 @@ export const modal = {
   createHouse: "create-house",
   editHouse: "edit-house",
   mapView: "map-view",
+  viewPayment: "view-payment",
 };
