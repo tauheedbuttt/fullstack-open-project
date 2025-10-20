@@ -14,6 +14,7 @@ import {
   PhoneIcon,
 } from "../../assets";
 import Table, { TableColumn } from "../../components/Table";
+import InfoWithIcon from "../../components/InfoWithIcon";
 
 const ViewModal = () => {
   const { data } = useSelector(
@@ -71,7 +72,7 @@ const ViewModal = () => {
       period: "March 2024",
       amount: "PKR 5,000",
       date: new Date().toISOString(),
-      status: IPaymentStatus.SKIPPED,
+      status: IPaymentStatus.PENDING,
     },
   ];
 
@@ -91,24 +92,7 @@ const ViewModal = () => {
     >
       <div>
         {/* Info */}
-        <div className="flex gap-3 ">
-          {info.map((section, idx) => (
-            <div
-              key={idx}
-              className="flex-1 flex flex-col border rounded-xl p-4 gap-4"
-            >
-              {section.map(({ label, value, icon }) => (
-                <div key={label} className="flex gap-3 items-center">
-                  <Avatar icon={icon} alt={label} />
-                  <div className="flex flex-col flex-1">
-                    <div className="text-sm text-gray-500">{label}</div>
-                    <div className="text-sm font-medium">{value}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+        <InfoWithIcon info={info} />
         {/* Payment History */}
         <div className="flex flex-col gap-3 mt-4">
           <span>Payment History</span>
