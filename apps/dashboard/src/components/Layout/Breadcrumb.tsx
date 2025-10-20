@@ -11,7 +11,7 @@ const Breadcrumb = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   return (
-    <div className="flex items-center justify-between border-b px-6">
+    <div className="flex items-center justify-between px-6">
       <div className="py-6 flex flex-col gap-1">
         <h3 className="text-2xl">{title}</h3>
         <span className="text-[15px] text-secondary">{subtitle}</span>
