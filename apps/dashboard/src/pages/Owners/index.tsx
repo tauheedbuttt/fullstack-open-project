@@ -7,6 +7,7 @@ import Card from "../../components/Card";
 import Input from "../../components/Input";
 import { EditIcon, EyeIcon, WhatsappIcon } from "../../assets";
 import ViewModal from "./ViewModal";
+import EditModal from "./EditModal";
 
 const Owners = () => {
   const { openModal: openEditModal } = useModal(modal.editOwner);
@@ -101,6 +102,7 @@ const Owners = () => {
         <Table columns={columns} rows={rows} actions={actions} />
       </Card>
       <ViewModal />
+      <EditModal />
     </Fragment>
   );
 };
