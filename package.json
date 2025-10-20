@@ -84,6 +84,7 @@
     "@nestjs/common": "^11.0.0",
     "@nestjs/core": "^11.0.0",
     "@nestjs/platform-express": "^11.0.0",
+    "@radix-ui/react-dialog": "^1.1.6",
     "@reduxjs/toolkit": "^2.9.0",
     "@vercel/node": "^5.4.0",
     "axios": "^1.6.0",

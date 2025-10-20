@@ -6,7 +6,12 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Action } from "../types";
+import { Action as BaseAction } from "../types";
+
+export interface Action<T> extends Omit<BaseAction<T>, "onClick"> {
+  modal?: string;
+  onClick?: VoidFunction;
+}
 
 interface ActionContextType {
   actions: Action<unknown>[];
@@ -14,13 +19,16 @@ interface ActionContextType {
   unregisterActions: () => void;
 }
 
-const ActionContext = createContext<ActionContextType | undefined>(undefined);
+export const ActionContext = createContext<ActionContextType | undefined>(
+  undefined
+);
 
 export const ActionProvider = ({ children }: { children: ReactNode }) => {
   const [actions, setActions] = useState<Action<unknown>[]>([]);
 
   const registerActions = (items: Action<unknown>[]) => {
-    setActions((prev) => [...prev, ...items]);
+    if (actions.length > 0 && items.length !== 0) return; // prevent overwriting existing actions with empty array
+    setActions(items);
   };
 
   const unregisterActions = () => {
@@ -47,9 +55,8 @@ export const useActionContext = (items?: Action<unknown>[]) => {
   useEffect(() => {
     if (items) {
       registerActions(items);
-      return () => unregisterActions();
     }
-  }, [items, registerActions, unregisterActions]);
+  }, [items]);
 
   return { registerActions, unregisterActions, actions };
 };

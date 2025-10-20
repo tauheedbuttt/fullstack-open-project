@@ -1,7 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { AppDispatch } from ".";
-import { Action } from "../types";
 
 export interface BreadcrumbState {
   title: string;
