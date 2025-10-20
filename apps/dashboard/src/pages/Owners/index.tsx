@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import useBreadcrumb from "../../hooks/useBreadcrumb";
 import useModal from "../../hooks/useModal";
 import { modal } from "../../config/modal";
@@ -6,6 +6,7 @@ import Table, { TableColumn } from "../../components/Table";
 import Card from "../../components/Card";
 import Input from "../../components/Input";
 import { EditIcon, EyeIcon, WhatsappIcon } from "../../assets";
+import ViewModal from "./ViewModal";
 
 const Owners = () => {
   const { openModal: openEditModal } = useModal(modal.editOwner);
@@ -78,24 +79,29 @@ const Owners = () => {
   ];
 
   return (
-    <Card
-      title={"All Owners"}
-      rightTitleElement={
-        <div className="flex gap-2">
-          {/* Search */}
-          <Input
-            variant="search"
-            placeholder="Search owners..."
-            className="border-0 w-full"
-            inputClassName="bg-gray-100 text-primary"
-            value={filters.search}
-            onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-          />
-        </div>
-      }
-    >
-      <Table columns={columns} rows={rows} actions={actions} />
-    </Card>
+    <Fragment>
+      <Card
+        title={"All Owners"}
+        rightTitleElement={
+          <div className="flex gap-2">
+            {/* Search */}
+            <Input
+              variant="search"
+              placeholder="Search owners..."
+              className="border-0 w-full"
+              inputClassName="bg-gray-100 text-primary"
+              value={filters.search}
+              onChange={(e) =>
+                setFilters({ ...filters, search: e.target.value })
+              }
+            />
+          </div>
+        }
+      >
+        <Table columns={columns} rows={rows} actions={actions} />
+      </Card>
+      <ViewModal />
+    </Fragment>
   );
 };
 

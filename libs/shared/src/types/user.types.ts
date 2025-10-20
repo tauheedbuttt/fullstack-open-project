@@ -1,3 +1,4 @@
+import { IHouse } from "./house.types.js";
 import { ISector } from "./sector.types.js";
 
 export enum IUserStatus {
@@ -22,5 +23,6 @@ export interface IUser {
   status: IUserStatus;
   role: IUserRole;
   sector?: ISector;
+  house?: IHouse;
   createdAt: string;
 }
