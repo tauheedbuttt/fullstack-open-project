@@ -7,10 +7,12 @@ import {
   useState,
 } from "react";
 import { Action as BaseAction } from "../types";
+import { ButtonType } from "../components/Button";
 
 export interface Action<T> extends Omit<BaseAction<T>, "onClick"> {
   modal?: string;
   onClick?: VoidFunction;
+  variant?: ButtonType;
 }
 
 interface ActionContextType {

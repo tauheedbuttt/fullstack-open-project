@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { cn } from "../../utils/utils";
 
-type ButtonType = "primary" | "secondary" | "text";
+export type ButtonType = "primary" | "secondary" | "text" | "outlined";
 
 interface ButtonProps
   extends React.DetailedHTMLProps<
@@ -39,6 +39,12 @@ const Button = ({
     text: {
       className: cn(
         "bg-transparent text-gray-700",
+        !disabled && "hover:bg-gray-50"
+      ),
+    },
+    outlined: {
+      className: cn(
+        "border border-gray-300 text-gray-700",
         !disabled && "hover:bg-gray-50"
       ),
     },

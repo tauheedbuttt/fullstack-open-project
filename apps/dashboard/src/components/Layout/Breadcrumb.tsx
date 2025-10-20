@@ -17,7 +17,7 @@ const Breadcrumb = () => {
         <span className="text-[15px] text-secondary">{subtitle}</span>
       </div>
       {actions && (
-        <div className="flex gap-1">
+        <div className="flex gap-2">
           {actions.map((action, actionIndex) => (
             <Button
               key={actionIndex}
@@ -30,6 +30,7 @@ const Breadcrumb = () => {
               icon={action.icon}
               text={action.text}
               className="!p-2"
+              variant={action.variant}
             />
           ))}
         </div>

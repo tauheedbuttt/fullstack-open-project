@@ -4,4 +4,7 @@ export const modal = {
   viewRider: "view-rider",
   editOwner: "edit-owner",
   viewOwner: "view-owner",
+  createHouse: "create-house",
+  editHouse: "edit-house",
+  mapView: "map-view",
 };
