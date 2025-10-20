@@ -47,7 +47,7 @@ const Button = ({
   return (
     <button
       className={clsx(
-        "px-4 py-2 rounded flex items-center justify-center gap-2",
+        "px-4 py-2 rounded-xl flex items-center justify-center gap-2 text-sm",
         variants[variant].className,
         className,
         disabled && "opacity-50"

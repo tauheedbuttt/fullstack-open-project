@@ -13,7 +13,7 @@ export interface InputProps
   label?: string;
   error?: string;
   inputClassName?: string;
-  options?: { value: string; label: string }[];
+  options?: { value: any; label: string }[];
 }
 
 export interface BaseComponentProps {
