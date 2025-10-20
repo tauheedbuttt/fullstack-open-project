@@ -12,15 +12,15 @@ import { useState } from "react";
 import { IHouseStatus } from "shared";
 
 const Houses = () => {
-  const { openModal: openEditModal } = useModal(modal.editRider);
+  const { openModal: openEditModal } = useModal(modal.editHouse);
 
   useBreadcrumb("Houses Management", "Manage houses and their assignments.", [
-    {
-      icon: <LocationIcon />,
-      text: "Map View",
-      modal: modal.mapView,
-      variant: "outlined",
-    },
+    // {
+    //   icon: <LocationIcon />,
+    //   text: "Map View",
+    //   modal: modal.mapView,
+    //   variant: "outlined",
+    // },
     {
       icon: <PlusIcon />,
       text: "Add House",
