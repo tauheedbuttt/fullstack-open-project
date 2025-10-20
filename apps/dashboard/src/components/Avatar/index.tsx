@@ -5,9 +5,10 @@ interface AvatarProps {
   src?: string;
   size?: number;
   icon?: React.ReactNode;
+  className?: string;
 }
 
-const Avatar = ({ alt, src, size, icon }: AvatarProps) => {
+const Avatar = ({ alt, src, size, icon, className }: AvatarProps) => {
   const first = alt.charAt(0).toUpperCase();
   const last = alt.split(first).pop()?.charAt(0).toUpperCase();
   return (
@@ -26,7 +27,8 @@ const Avatar = ({ alt, src, size, icon }: AvatarProps) => {
         <div
           className={clsx(
             `rounded-full bg-primary flex items-center justify-center text-white`,
-            size ? `w-${size} h-${size}` : "w-10 h-10"
+            size ? `w-${size} h-${size}` : "w-10 h-10",
+            className
           )}
         >
           {icon && icon}

@@ -22,4 +22,5 @@ export interface IUser {
   status: IUserStatus;
   role: IUserRole;
   sector?: ISector;
+  createdAt: string;
 }

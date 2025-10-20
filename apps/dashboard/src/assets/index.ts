@@ -16,6 +16,8 @@ import EyeIcon from "./svgs/eye.svg?react";
 import CrossIcon from "./svgs/cross.svg?react";
 import PlusIcon from "./svgs/plus.svg?react";
 import CrossOutlinedIcon from "./svgs/cross-outlined.svg?react";
+import PhoneIcon from "./svgs/phone.svg?react";
+import UserIcon from "./svgs/user.svg?react";
 
 export {
   DashboardIcon,
@@ -36,4 +38,6 @@ export {
   CrossIcon,
   PlusIcon,
   CrossOutlinedIcon,
+  PhoneIcon,
+  UserIcon,
 };

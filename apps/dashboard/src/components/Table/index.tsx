@@ -15,6 +15,7 @@ interface TableProps<T> {
   columns: TableColumn<T>[];
   rowOnClick?: (row: T) => void;
   actions?: Action<T>[];
+  className?: string;
 }
 
 const Table = <T,>({
@@ -23,9 +24,10 @@ const Table = <T,>({
   isFetching,
   rowOnClick,
   actions,
+  className,
 }: TableProps<T>) => {
   return (
-    <table className="w-full table-auto">
+    <table className={clsx("w-full table-auto", className)}>
       <thead>
         <tr className="border-b">
           {columns.map((column) => (

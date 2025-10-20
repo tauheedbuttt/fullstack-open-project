@@ -7,3 +7,12 @@
 .separator {
     @apply border-b border-gray-200 my-4;
 }
+
+.no-scrollbar {
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+}
