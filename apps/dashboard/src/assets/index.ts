@@ -18,6 +18,7 @@ import PlusIcon from "./svgs/plus.svg?react";
 import CrossOutlinedIcon from "./svgs/cross-outlined.svg?react";
 import PhoneIcon from "./svgs/phone.svg?react";
 import UserIcon from "./svgs/user.svg?react";
+import WhatsappIcon from "./svgs/whatsapp.svg?react";
 
 export {
   DashboardIcon,
@@ -40,4 +41,5 @@ export {
   CrossOutlinedIcon,
   PhoneIcon,
   UserIcon,
+  WhatsappIcon,
 };
