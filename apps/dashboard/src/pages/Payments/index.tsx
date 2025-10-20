@@ -59,7 +59,7 @@ const Payments = () => {
       amount: 28000,
       date: new Date().toDateString,
       rider: "Omar Farooq",
-      status: IPaymentStatus.SKIPPED,
+      status: IPaymentStatus.COMPLETED,
     },
   ];
   const columns: TableColumn<(typeof rows)[0]>[] = [
