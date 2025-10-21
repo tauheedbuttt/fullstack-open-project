@@ -71,7 +71,7 @@ const GenerateReport = () => {
   ];
 
   return (
-    <Card title={"Report Filters"}>
+    <Card title={"Report Filters"} className="border">
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         {/* filters */}
         <div className="flex gap-4">

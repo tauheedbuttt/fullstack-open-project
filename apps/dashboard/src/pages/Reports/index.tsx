@@ -1,5 +1,9 @@
 import useBreadcrumb from "../../hooks/useBreadcrumb";
 import GenerateReport from "./GenerateReport";
+import RevenueChart from "./RevenueChart";
+import Stats from "./Stats";
+import TopPerformingRiders from "./TopPerformingRiders";
+import TopPerformingSectors from "./TopPerformingSectors";
 
 const Reports = () => {
   useBreadcrumb(
@@ -9,12 +13,12 @@ const Reports = () => {
   return (
     <div className="flex flex-col gap-6">
       <GenerateReport />
-      {/* Stats */}
-      {/* Revenue vs Target (2025) */}
+      <Stats />
+      <RevenueChart />
       {/* Riders & Sector Collection */}
       <div className="flex gap-4">
-        {/* Top Performing Riders */}
-        {/* Top Performing Sectors */}
+        <TopPerformingRiders />
+        <TopPerformingSectors />
       </div>
     </div>
   );
