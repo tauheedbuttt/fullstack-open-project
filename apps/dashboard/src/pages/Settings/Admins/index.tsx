@@ -1,6 +1,6 @@
 import { Fragment } from "react/jsx-runtime";
 import { IUserStatus } from "shared";
-import { PlusIcon, TrashIcon, UserIcon } from "../../../assets";
+import { OwnersIcon, PlusIcon, TrashIcon, UserIcon } from "../../../assets";
 import Button from "../../../components/Button";
 import Card from "../../../components/Card";
 import Table, { TableColumn } from "../../../components/Table";
@@ -49,7 +49,7 @@ const Admins = () => {
   return (
     <Fragment>
       <Card
-        icon={<UserIcon />}
+        icon={<OwnersIcon />}
         title={"Admins Management"}
         className=" flex-1 border"
         rightTitleElement={
