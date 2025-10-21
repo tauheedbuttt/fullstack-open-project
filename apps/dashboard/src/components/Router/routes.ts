@@ -1,0 +1,52 @@
+import { routes } from "../../config/routeConfig";
+import ForgotPassword from "../../pages/Auth/ForgotPassword";
+import Login from "../../pages/Auth/Login";
+import Dashboard from "../../pages/Dashboard";
+import Houses from "../../pages/Houses";
+import Owners from "../../pages/Owners";
+import Payments from "../../pages/Payments";
+import Reports from "../../pages/Reports";
+import Riders from "../../pages/Riders";
+import Settings from "../../pages/Settings";
+
+export const dashboardRoutes = [
+  {
+    path: routes.dashboard,
+    element: Dashboard,
+  },
+  {
+    path: routes.houses,
+    element: Houses,
+  },
+  {
+    path: routes.payments,
+    element: Payments,
+  },
+  {
+    path: routes.reports,
+    element: Reports,
+  },
+  {
+    path: routes.riders,
+    element: Riders,
+  },
+  {
+    path: routes.settings,
+    element: Settings,
+  },
+  {
+    path: routes.owners,
+    element: Owners,
+  },
+];
+
+export const authRoutes = [
+  {
+    path: routes.auth.login,
+    element: Login,
+  },
+  {
+    path: routes.auth.forgotPassword,
+    element: ForgotPassword,
+  },
+];
