@@ -2,10 +2,10 @@ import { useFormik } from "formik";
 import { SettingIcon } from "../../assets";
 import Card from "../../components/Card";
 import { SettingsFormInputs } from "../../types/settings";
-import { ISettings } from "shared";
 import Input from "../../components/Input";
 import { formikError } from "../../utils/utils";
 import Button from "../../components/Button";
+import { settingsValidation } from "../../validations/settings";
 
 const Preferences = () => {
   const formik = useFormik({
@@ -16,6 +16,7 @@ const Preferences = () => {
       gracePeriod: 0,
       isEmail: "false",
     },
+    validationSchema: settingsValidation,
     onSubmit: (values) => {
       console.log(values);
     },

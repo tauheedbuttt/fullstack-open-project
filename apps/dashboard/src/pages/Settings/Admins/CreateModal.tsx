@@ -6,7 +6,7 @@ import { modal } from "../../../config/modal";
 import useModal from "../../../hooks/useModal";
 import { AdminFormInputs } from "../../../types/admins";
 import { formikError } from "../../../utils/utils";
-import { adminValidation } from "../../../validations/admins";
+import { adminValidation } from "../../../validations/settings";
 
 const CreateModal = () => {
   const { closeModal } = useModal(modal.createAdmin);

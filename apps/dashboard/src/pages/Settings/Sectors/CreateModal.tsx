@@ -10,7 +10,7 @@ import { SectorFormInputs } from "../../../types/sector";
 import Input from "../../../components/Input";
 import { formikError } from "../../../utils/utils";
 import Button from "../../../components/Button";
-import { sectorValidation } from "../../../validations/sector";
+import { sectorValidation } from "../../../validations/settings";
 
 const CreateModal = () => {
   const { closeModal } = useModal(modal.createSector);
