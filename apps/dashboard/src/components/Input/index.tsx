@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { SearchIcon } from "../../assets";
+import { CalendarIcon, SearchIcon } from "../../assets";
 import Select from "./Select";
 
 type InputTypes = "search" | "password" | "select";
@@ -23,6 +23,7 @@ export interface BaseComponentProps {
 interface VariantProps {
   icon?: React.FC<React.SVGProps<SVGSVGElement>>;
   component?: React.FC<BaseComponentProps>;
+  type?: React.HTMLInputTypeAttribute;
 }
 
 const Input = ({

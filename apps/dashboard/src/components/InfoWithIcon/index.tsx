@@ -16,7 +16,13 @@ const InfoWithIcon = ({ info }: { info: InfoItem[][] }) => {
         >
           {section.map(({ label, value, icon }) => (
             <div key={label} className="flex gap-3 items-center">
-              {icon && <Avatar icon={icon} alt={label} />}
+              {icon && (
+                <Avatar
+                  className="bg-primary/20 !text-theme"
+                  icon={icon}
+                  alt={label}
+                />
+              )}
               <div className="flex flex-col flex-1">
                 <div className="text-sm text-gray-500">{label}</div>
                 <div className="text-sm font-medium">{value}</div>
