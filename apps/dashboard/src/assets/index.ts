@@ -23,6 +23,7 @@ import EmailIcon from "./svgs/email.svg?react";
 import LocationIcon from "./svgs/location.svg?react";
 import CalendarIcon from "./svgs/calendar.svg?react";
 import DownloadIcon from "./svgs/download.svg?react";
+export { default as TrashIcon } from "./svgs/trash.svg?react";
 
 export {
   DashboardIcon,

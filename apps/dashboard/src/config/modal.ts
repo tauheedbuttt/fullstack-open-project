@@ -8,4 +8,6 @@ export const modal = {
   editHouse: "edit-house",
   mapView: "map-view",
   viewPayment: "view-payment",
+  createSector: "create-sector",
+  createAdmin: "create-admin",
 };

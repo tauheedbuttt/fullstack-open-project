@@ -8,6 +8,7 @@ interface CardProps {
   className?: string;
   to?: string;
   rightTitleElement?: JSX.Element;
+  icon?: JSX.Element;
 }
 
 const Card = ({
@@ -16,6 +17,7 @@ const Card = ({
   className,
   to = "",
   rightTitleElement,
+  icon,
 }: CardProps) => {
   const TitleWrapper = to ? Link : "div";
   return (
@@ -26,11 +28,14 @@ const Card = ({
       )}
     >
       <div className="flex justify-between items-center mb-5">
-        {title && (
-          <TitleWrapper to={to} className="font-medium">
-            {title}
-          </TitleWrapper>
-        )}
+        <div className="flex items-center gap-2">
+          <div className="text-theme">{icon}</div>
+          {title && (
+            <TitleWrapper to={to} className="font-medium">
+              {title}
+            </TitleWrapper>
+          )}
+        </div>
         {rightTitleElement}
       </div>
       <div className="w-full">{children}</div>
