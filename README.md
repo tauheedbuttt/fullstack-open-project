@@ -2,7 +2,7 @@
 
 **⏱️ Total Time on project:** 11 hrs 50 mins
 
-## ENUMSs
+## ENUMS
 
 ```mermaid
 
