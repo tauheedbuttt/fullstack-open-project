@@ -1,8 +1,9 @@
 import clsx from "clsx";
-import { CalendarIcon, SearchIcon } from "../../assets";
+import { SearchIcon } from "../../assets";
 import Select from "./Select";
+import Toggle from "./Toggle";
 
-type InputTypes = "search" | "password" | "select";
+type InputTypes = "search" | "password" | "select" | "toggle";
 
 export interface InputProps
   extends React.DetailedHTMLProps<
@@ -11,6 +12,7 @@ export interface InputProps
   > {
   variant?: InputTypes;
   label?: string;
+  subLabel?: string;
   error?: string;
   inputClassName?: string;
   options?: { value: any; label: string }[];
@@ -24,12 +26,14 @@ interface VariantProps {
   icon?: React.FC<React.SVGProps<SVGSVGElement>>;
   component?: React.FC<BaseComponentProps>;
   type?: React.HTMLInputTypeAttribute;
+  containerClassName?: string;
 }
 
 const Input = ({
   variant,
   className,
   label,
+  subLabel,
   error,
   inputClassName,
   ...props
@@ -42,16 +46,32 @@ const Input = ({
       component: Select,
     },
     password: {},
+    toggle: {
+      containerClassName: "!flex-row items-center justify-between",
+    },
   };
   const Icon = variant && variants[variant]?.icon;
   const Component = variant && variants[variant]?.component;
+  const containerClassName = variant && variants[variant]?.containerClassName;
   return (
-    <div className={clsx("flex flex-col text-sm", className)}>
-      {label && (
-        <label htmlFor={props.id} className="text-sm font-medium mb-1 block">
-          {label}
-        </label>
-      )}
+    <div
+      className={clsx("flex flex-col text-sm", className, containerClassName)}
+    >
+      <div>
+        {label && (
+          <label htmlFor={props.id} className="text-sm font-medium mb-1 block">
+            {label}
+          </label>
+        )}
+        {subLabel && (
+          <label
+            htmlFor={props.id}
+            className="text-xs font-light text-secondary mb-1 block"
+          >
+            {subLabel}
+          </label>
+        )}
+      </div>
       {Component && (
         <Component className={clsx("w-full", inputClassName)} {...props} />
       )}

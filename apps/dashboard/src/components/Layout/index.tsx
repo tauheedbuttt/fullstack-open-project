@@ -25,9 +25,11 @@ const Layout = ({ children }: LayoutProps) => {
       <Sidebar />
       <div className="flex flex-1 flex-col border">
         <Header />
-        <main className="bg-gray-50 h-full w-full px-6 py-2">
-          <Breadcrumb />
-          {children}
+        <main className="bg-gray-50 h-full w-full px-6 py-2 flex justify-center">
+          <div className="flex flex-col w-full lg:max-w-7xl">
+            <Breadcrumb />
+            {children}
+          </div>
         </main>
       </div>
     </div>
