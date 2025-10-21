@@ -1,7 +1,6 @@
 import clsx from "clsx";
 import { SearchIcon } from "../../assets";
 import Select from "./Select";
-import Toggle from "./Toggle";
 
 type InputTypes = "search" | "password" | "select" | "toggle";
 

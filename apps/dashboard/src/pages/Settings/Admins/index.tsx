@@ -1,6 +1,6 @@
 import { Fragment } from "react/jsx-runtime";
 import { IUserStatus } from "shared";
-import { OwnersIcon, PlusIcon, TrashIcon, UserIcon } from "../../../assets";
+import { OwnersIcon, PlusIcon, TrashIcon } from "../../../assets";
 import Button from "../../../components/Button";
 import Card from "../../../components/Card";
 import Table, { TableColumn } from "../../../components/Table";

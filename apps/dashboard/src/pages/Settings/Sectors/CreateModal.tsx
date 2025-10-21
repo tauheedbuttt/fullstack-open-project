@@ -1,15 +1,15 @@
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
-import { ISector, IUser, IUserStatus } from "shared";
-import useModal from "../../../hooks/useModal";
+import { ISector } from "shared";
+import Button from "../../../components/Button";
+import Input from "../../../components/Input";
+import Modal from "../../../components/Modal";
 import { modal } from "../../../config/modal";
+import useModal from "../../../hooks/useModal";
 import { RootState } from "../../../store";
 import { ModalState } from "../../../store/modalSlice";
-import Modal from "../../../components/Modal";
 import { SectorFormInputs } from "../../../types/sector";
-import Input from "../../../components/Input";
 import { formikError } from "../../../utils/utils";
-import Button from "../../../components/Button";
 import { sectorValidation } from "../../../validations/settings";
 
 const CreateModal = () => {
