@@ -1,5 +1,5 @@
-import { IHouse } from "./house.types.js";
-import { ISector } from "./sector.types.js";
+import { IHouse } from "./house.types";
+import { ISector } from "./sector.types";
 
 export enum IUserStatus {
   ACTIVE = "Active",

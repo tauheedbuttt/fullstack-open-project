@@ -1,5 +1,5 @@
-import { IHouse } from "./house.types.js";
-import { IUser } from "./user.types.js";
+import { IHouse } from "./house.types";
+import { IUser } from "./user.types";
 
 export enum IPaymentStatus {
   PENDING = "Pending",

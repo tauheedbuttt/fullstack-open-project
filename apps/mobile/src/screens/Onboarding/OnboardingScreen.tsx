@@ -43,9 +43,9 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <View style={tw`flex-1 justify-center  bg-white p-12 flex-col gap-5`}>
+    <View style={tw`flex-1 justify-center  p-7 flex-col gap-5`}>
       {/* Skip Button */}
-      <View style={tw`absolute top-20 right-12`}>
+      <View style={tw`absolute top-20 right-7`}>
         <Button text="Skip" variant="text" onPress={handleSkip} />
       </View>
       {/* Step Details */}

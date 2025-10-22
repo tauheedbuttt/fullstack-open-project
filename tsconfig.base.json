@@ -6,11 +6,9 @@
     "emitDeclarationOnly": true,
     "importHelpers": true,
     "isolatedModules": true,
-    "lib": [
-      "es2022"
-    ],
-    "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "lib": ["es2022"],
+    "module": "commonjs",
+    "moduleResolution": "node",
     "noEmitOnError": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
@@ -19,16 +17,9 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
-    "customConditions": [
-      "fullstack-open"
-    ],
     "paths": {
-      "@libs/shared": [
-        "libs/shared/src/index.ts"
-      ],
-      "shared": [
-        "libs/shared/src/index.ts"
-      ]
+      "@libs/shared": ["libs/shared/src/index.ts"],
+      "shared": ["libs/shared/src/index.ts"]
     }
   }
 }
