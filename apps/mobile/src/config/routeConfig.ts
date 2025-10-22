@@ -3,4 +3,8 @@ export const routes = {
     splash: "/",
     onboarding: "/onboarding",
   },
+  auth: {
+    login: "/login",
+    forgetPassword: "/forget-password",
+  },
 };

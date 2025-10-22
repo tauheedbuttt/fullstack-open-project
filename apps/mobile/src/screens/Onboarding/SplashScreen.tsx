@@ -1,9 +1,9 @@
 import { Text, View } from "react-native";
-import tw from "../lib/tailwind";
+import tw from "../../lib/tailwind";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-native";
-import Logo from "../components/Logo";
-import { routes } from "../config/routeConfig";
+import Logo from "../../components/Logo";
+import { routes } from "../../config/routeConfig";
 
 const SplashScreen = () => {
   const navigate = useNavigate();

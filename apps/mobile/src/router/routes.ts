@@ -1,8 +1,11 @@
 import { routes } from "../config/routeConfig";
-import OnboardingScreen from "../screens/OnboardingScreen";
-import SplashScreen from "../screens/SplashScreen";
+import ForgetPasswordScreen from "../screens/Auth/ForgetPasswordScreen";
+import LoginScreen from "../screens/Auth/LoginScreen";
+import OnboardingScreen from "../screens/Onboarding/OnboardingScreen";
+import SplashScreen from "../screens/Onboarding/SplashScreen";
+import { Route } from "../types/route";
 
-export const onboardingRoutes = [
+export const onboardingRoutes: Route[] = [
   {
     route: routes.onboarding.splash,
     element: SplashScreen,
@@ -10,5 +13,16 @@ export const onboardingRoutes = [
   {
     route: routes.onboarding.onboarding,
     element: OnboardingScreen,
+  },
+];
+
+export const authRoutes: Route[] = [
+  {
+    route: routes.auth.login,
+    element: LoginScreen,
+  },
+  {
+    route: routes.auth.forgetPassword,
+    element: ForgetPasswordScreen,
   },
 ];
