@@ -1,18 +1,7 @@
-import { Text, View } from "react-native";
+import Router from "./router";
 
 const App = () => {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "white",
-      }}
-    >
-      <Text>App</Text>
-    </View>
-  );
+  return <Router />;
 };
 
 export default App;
