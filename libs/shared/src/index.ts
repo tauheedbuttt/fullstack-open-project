@@ -6,3 +6,4 @@ export * from "./types/house.types";
 export * from "./types/settings.types";
 export * from "./types/auth.types";
 export * from "./utils/index";
+export * from "./utils/validations";

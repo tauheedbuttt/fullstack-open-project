@@ -1,21 +1,12 @@
+import { ILoginRequest, IResetRequest } from "shared";
 import { InputProps } from "../components/Input";
 
-export interface LoginForm {
-  email: string;
-  password: string;
-}
-
-export interface ResetForm {
-  password: string;
-  confirmPassword: string;
-}
-
 export interface LoginFormInputs extends InputProps {
-  name: keyof LoginForm;
+  name: keyof ILoginRequest;
 }
 
 export interface ResetFormInputs extends InputProps {
-  name: keyof ResetForm;
+  name: keyof IResetRequest;
 }
 
 export interface ForgotStepProps {

@@ -1,7 +1,6 @@
 import * as Yup from "yup";
-import { loginValidationSchema as baseLoginValidationSchema } from "shared";
 
-export { resetPasswordValidationSchema } from "shared";
+import { loginValidationSchema as baseLoginValidationSchema } from "shared";
 
 export const loginValidationSchema = Yup.object({
   ...baseLoginValidationSchema,
