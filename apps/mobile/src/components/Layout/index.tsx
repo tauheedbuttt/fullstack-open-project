@@ -29,7 +29,7 @@ const Layout = ({
         </View>
       )}
       {showTabBar && <AppHeader variant="normal" {...headerProps} />}
-      <ScrollView contentContainerStyle={tw`flex-1 flex-col px-4`}>
+      <ScrollView contentContainerStyle={tw`flex-grow-1 flex-col px-4 py-3`}>
         {children}
       </ScrollView>
       {showTabBar && <TabBar />}

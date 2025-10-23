@@ -9,3 +9,6 @@ export { default as WalletIcon } from "./svgs/wallet.svg";
 export { default as DocIcon } from "./svgs/doc.svg";
 export { default as LogoutIcon } from "./svgs/logout.svg";
 export { default as SearchIcon } from "./svgs/search.svg";
+export { default as ClockIcon } from "./svgs/clock.svg";
+export { default as PhoneIcon } from "./svgs/phone.svg";
+export { default as HistoryIcon } from "./svgs/history.svg";

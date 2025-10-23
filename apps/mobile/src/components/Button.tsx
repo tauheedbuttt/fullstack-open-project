@@ -3,7 +3,7 @@ import { Style } from "twrnc";
 import tw from "../lib/tailwind";
 import { SvgProps } from "react-native-svg";
 
-type ButtonVariants = "primary" | "secondary" | "outlined" | "text";
+type ButtonVariants = "primary" | "secondary" | "outlined" | "text" | "white";
 
 interface ButtonProps extends TouchableOpacityProps {
   variant?: ButtonVariants;
@@ -50,6 +50,10 @@ const Button = ({
         !disabled && "hover:bg-gray-50"
       ),
       textStyle: tw`text-gray-700`,
+    },
+    white: {
+      style: tw.style("bg-white border-0", !disabled && "hover:bg-gray-100"),
+      textStyle: tw`text-theme`,
     },
   };
 
