@@ -14,7 +14,6 @@ const SplashScreen = () => {
   useEffect(() => {
     if (auth.role) {
       const isOwner = auth.role === IUserRole.OWNER;
-      console.log("Navigating to", isOwner ? "Owner Home" : "Rider Home");
       navigate(isOwner ? routes.owner.home : routes.rider.home);
       return;
     }

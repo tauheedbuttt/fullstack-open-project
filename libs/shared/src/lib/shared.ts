@@ -8,6 +8,7 @@ export const colors = {
   textPrimary: "#111827",
   textSecondary: "#6B7280",
   danger: "#c10007",
+  blue: "#2563eb",
 };
 
 export const test = "asd";

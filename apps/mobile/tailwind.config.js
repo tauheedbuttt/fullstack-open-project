@@ -9,6 +9,7 @@ module.exports = {
         primary: colors.primary,
         secondary: colors.secondary,
         danger: colors.danger,
+        blue: colors.blue,
       },
       textColor: {
         primary: colors.textPrimary,

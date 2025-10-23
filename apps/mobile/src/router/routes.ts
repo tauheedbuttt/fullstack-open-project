@@ -6,7 +6,7 @@ import SplashScreen from "../screens/Onboarding/SplashScreen";
 import OwnerHome from "../screens/Owner/Home";
 import Payments from "../screens/Owner/Payments";
 import OwnerProfile from "../screens/Owner/Profile";
-import Receipts from "../screens/Owner/Receipts";
+import Dashboard from "../screens/Owner/Dashboard";
 import Collections from "../screens/Rider/Collections";
 import RiderHome from "../screens/Rider/Home";
 import Houses from "../screens/Rider/Houses";
@@ -48,10 +48,10 @@ export const ownerRoutes: Route[] = [
     subtitle: "Track all your fee payments",
   },
   {
-    route: routes.owner.receipts,
-    element: Receipts,
-    title: "Receipts",
-    subtitle: "Download your payment receipts",
+    route: routes.owner.dashboard,
+    element: Dashboard,
+    title: "Dashboard",
+    subtitle: "View your payment statistics",
   },
   {
     route: routes.owner.profile,

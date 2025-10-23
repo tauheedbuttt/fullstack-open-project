@@ -10,7 +10,7 @@ export const routes = {
   owner: {
     home: "/owner/home",
     payments: "/owner/payments",
-    receipts: "/owner/receipts",
+    dashboard: "/owner/dashboard",
     profile: "/owner/profile",
   },
   rider: {

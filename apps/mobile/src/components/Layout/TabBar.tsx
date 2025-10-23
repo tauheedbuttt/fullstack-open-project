@@ -4,7 +4,7 @@ import { SvgProps } from "react-native-svg";
 import { useLocation, useNavigate } from "react-router-native";
 import { IUserRole } from "shared";
 import {
-  DocIcon,
+  DashboardIcon,
   DollarIcon,
   HouseIcon,
   LocationIcon,
@@ -28,8 +28,8 @@ const TabBar = () => {
 
   const ownerTabs: Tab[] = [
     { label: "Home", icon: HouseIcon, route: routes.owner.home },
+    { label: "Dashboard", icon: DashboardIcon, route: routes.owner.dashboard },
     { label: "Payments", icon: WalletIcon, route: routes.owner.payments },
-    { label: "Receipts", icon: DocIcon, route: routes.owner.receipts },
     { label: "Profile", icon: UserIcon, route: routes.owner.profile },
   ];
   const riderTabs: Tab[] = [

@@ -24,8 +24,8 @@ const QuickActions = () => {
   };
   const actions = [
     {
-      label: "View Receipts",
-      onPress: () => navigate(routes.owner.receipts),
+      label: "View Stats",
+      onPress: () => navigate(routes.owner.dashboard),
       icon: DollarIcon,
       style: tw`text-theme`,
       bgStyle: tw`bg-primary/10`,
@@ -34,12 +34,12 @@ const QuickActions = () => {
       label: "Contact Rider",
       onPress: onCall,
       icon: PhoneIcon,
-      style: tw`text-[#2563eb]`,
-      bgStyle: tw`bg-[#2563eb]/10`,
+      style: tw`text-blue`,
+      bgStyle: tw`bg-blue/10`,
     },
     {
       label: "Payment History",
-      onPress: () => navigate(routes.owner.receipts),
+      onPress: () => navigate(routes.owner.dashboard),
       icon: HistoryIcon,
       style: tw`text-green-600`,
       bgStyle: tw`bg-green-100`,
