@@ -3,6 +3,8 @@ import ForgetPasswordScreen from "../screens/Auth/ForgetPasswordScreen";
 import LoginScreen from "../screens/Auth/LoginScreen";
 import OnboardingScreen from "../screens/Onboarding/OnboardingScreen";
 import SplashScreen from "../screens/Onboarding/SplashScreen";
+import OwnerHome from "../screens/Owner/Home";
+import RiderHome from "../screens/Rider/Home";
 import { Route } from "../types/route";
 
 export const onboardingRoutes: Route[] = [
@@ -24,5 +26,19 @@ export const authRoutes: Route[] = [
   {
     route: routes.auth.forgetPassword,
     element: ForgetPasswordScreen,
+  },
+];
+
+export const ownerRoutes: Route[] = [
+  {
+    route: routes.owner.home,
+    element: OwnerHome,
+  },
+];
+
+export const riderRoutes: Route[] = [
+  {
+    route: routes.rider.home,
+    element: RiderHome,
   },
 ];

@@ -3,15 +3,23 @@ import { useNavigate } from "react-router-native";
 import LogoData from "../../components/LogoData";
 import { routes } from "../../config/routeConfig";
 import tw from "../../lib/tailwind";
+import useAuth from "../../hooks/useAuth";
+import { IUserRole } from "shared";
 
 const SplashScreen = () => {
   const navigate = useNavigate();
+  const { auth } = useAuth();
 
   useEffect(() => {
     setTimeout(() => {
-      navigate(routes.onboarding.onboarding);
+      if (auth) {
+        const isOwner = auth.role === IUserRole.OWNER;
+        navigate(isOwner ? routes.owner.home : routes.rider.home);
+      } else {
+        navigate(routes.onboarding.onboarding);
+      }
     }, 2000);
-  }, [navigate]);
+  }, [navigate, auth]);
 
   return (
     <LogoData

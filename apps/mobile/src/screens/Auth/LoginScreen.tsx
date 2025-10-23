@@ -9,9 +9,12 @@ import { LoginFormInputs } from "../../types/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-native";
 import { routes } from "../../config/routeConfig";
+import { loginValidationSchema } from "../../validation/auth";
+import useAuth from "../../hooks/useAuth";
 
 export default function LoginScreen() {
   const navigate = useNavigate();
+  const { onLogin } = useAuth();
 
   const [role, setRole] = useState<IUserRole | undefined>();
   const formik = useFormik({
@@ -19,8 +22,10 @@ export default function LoginScreen() {
       email: "",
       password: "",
     },
+    validationSchema: loginValidationSchema,
     onSubmit: (values) => {
-      console.log(role, values);
+      if (!role) return;
+      onLogin(role);
     },
   });
 

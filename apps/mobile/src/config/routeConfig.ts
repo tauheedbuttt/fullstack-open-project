@@ -7,4 +7,10 @@ export const routes = {
     login: "/login",
     forgetPassword: "/forget-password",
   },
+  owner: {
+    home: "/owner/home",
+  },
+  rider: {
+    home: "/rider/home",
+  },
 };

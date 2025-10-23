@@ -1,5 +1,10 @@
 import { NativeRouter, Route, Routes } from "react-router-native";
-import { authRoutes, onboardingRoutes } from "./routes";
+import {
+  authRoutes,
+  onboardingRoutes,
+  ownerRoutes,
+  riderRoutes,
+} from "./routes";
 import Layout from "../components/Layout";
 
 const Router = () => {
@@ -18,6 +23,18 @@ const Router = () => {
           />
         ))}
         {authRoutes.map(({ route, element: Element }) => (
+          <Route
+            key={route}
+            path={route}
+            element={
+              <Layout>
+                <Element />
+              </Layout>
+            }
+          />
+        ))}
+
+        {[...ownerRoutes, ...riderRoutes].map(({ route, element: Element }) => (
           <Route
             key={route}
             path={route}
