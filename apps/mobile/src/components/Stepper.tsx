@@ -29,7 +29,7 @@ const Stepper = ({ steps, currentStep, setStep }: StepperProps) => {
                 disabled={disabled}
                 onPress={() => setStep(stepNumber)}
                 style={tw.style(
-                  `rounded-full h-10 w-10`,
+                  `rounded-full h-10 w-10 p-0 flex items-center justify-center`,
                   !isCompleted &&
                     "!bg-gray-200 !text-secondary !hover:text-white"
                 )}
@@ -39,8 +39,8 @@ const Stepper = ({ steps, currentStep, setStep }: StepperProps) => {
             {index < steps.length - 1 && (
               <View
                 style={tw.style(
-                  "flex-1 border-2",
-                  isProgressComplete && "!border-primary"
+                  "flex-1 border-2 border-secondary/10",
+                  isProgressComplete && "border-primary"
                 )}
               />
             )}

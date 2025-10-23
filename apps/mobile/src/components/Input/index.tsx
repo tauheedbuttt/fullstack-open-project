@@ -51,6 +51,7 @@ const Input = ({ label, error, ...props }: InputProps) => {
               text={showPassword ? "Hide" : "Show"}
               variant="text"
               style={tw`p-0`}
+              textStyle={tw`text-sm`}
             />
           )}
         </View>

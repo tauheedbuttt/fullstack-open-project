@@ -74,7 +74,7 @@ export default function LoginScreen() {
           <Button
             text="Forgot Password?"
             variant="text"
-            textStyle={tw`text-theme`}
+            textStyle={tw`text-theme text-sm`}
             style={tw`self-end`}
             onPress={onForgotPassword}
           />

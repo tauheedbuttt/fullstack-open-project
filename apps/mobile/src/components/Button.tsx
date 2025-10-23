@@ -52,10 +52,12 @@ const Button = ({
       textStyle: tw`text-gray-700`,
     },
   };
+
+  textStyle = tw.style(variants[variant].textStyle, textStyle, "text-lg");
   return (
     <TouchableOpacity
       style={tw.style(
-        "flex-row px-4 py-2 rounded-lg flex items-center justify-center gap-2 text-sm",
+        "flex-row px-4 py-3 rounded-lg flex items-center justify-center gap-2",
         variants[variant].style,
         style,
         disabled && "opacity-50"
@@ -64,18 +66,8 @@ const Button = ({
       activeOpacity={0.7}
       {...props}
     >
-      {Icon && (
-        <Icon
-          style={tw.style(variants[variant].textStyle, textStyle)}
-          height={20}
-          width={20}
-        />
-      )}
-      {text && (
-        <Text style={tw.style(variants[variant].textStyle, textStyle)}>
-          {text}
-        </Text>
-      )}
+      {Icon && <Icon style={textStyle} height={20} width={20} />}
+      {text && <Text style={textStyle}>{text}</Text>}
     </TouchableOpacity>
   );
 };
