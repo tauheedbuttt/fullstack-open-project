@@ -12,3 +12,5 @@ export { default as SearchIcon } from "./svgs/search.svg";
 export { default as ClockIcon } from "./svgs/clock.svg";
 export { default as PhoneIcon } from "./svgs/phone.svg";
 export { default as HistoryIcon } from "./svgs/history.svg";
+export { default as DownloadIcon } from "./svgs/download.svg";
+export { default as PaidIcon } from "./svgs/paid.svg";

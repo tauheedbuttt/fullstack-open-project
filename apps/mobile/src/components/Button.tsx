@@ -3,7 +3,12 @@ import { Style } from "twrnc";
 import tw from "../lib/tailwind";
 import { SvgProps } from "react-native-svg";
 
-type ButtonVariants = "primary" | "secondary" | "outlined" | "text" | "white";
+export type ButtonVariants =
+  | "primary"
+  | "secondary"
+  | "outlined"
+  | "text"
+  | "white";
 
 interface ButtonProps extends TouchableOpacityProps {
   variant?: ButtonVariants;
@@ -13,6 +18,7 @@ interface ButtonProps extends TouchableOpacityProps {
   disabled?: boolean;
   style?: Style;
   textStyle?: Style;
+  iconSize?: number;
 }
 
 type VariantProps = {
@@ -29,6 +35,7 @@ const Button = ({
   disabled,
   style,
   textStyle,
+  iconSize = 20,
   ...props
 }: ButtonProps) => {
   const variants: VariantProps = {
@@ -70,7 +77,7 @@ const Button = ({
       activeOpacity={0.7}
       {...props}
     >
-      {Icon && <Icon style={textStyle} height={20} width={20} />}
+      {Icon && <Icon style={textStyle} height={iconSize} width={iconSize} />}
       {text && <Text style={textStyle}>{text}</Text>}
     </TouchableOpacity>
   );

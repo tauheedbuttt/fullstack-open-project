@@ -94,6 +94,7 @@
     "@vercel/node": "^5.4.0",
     "axios": "^1.6.0",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.18",
     "expo": "~53.0.10",
     "expo-splash-screen": "~0.30.9",
     "expo-status-bar": "~2.2.3",
