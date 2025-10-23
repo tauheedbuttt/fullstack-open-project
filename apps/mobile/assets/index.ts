@@ -1,3 +1,10 @@
 export { default as OwnersIcon } from "./svgs/owners.svg";
 export { default as CardIcon } from "./svgs/card.svg";
 export { default as GraphIcon } from "./svgs/graph.svg";
+export { default as HouseIcon } from "./svgs/house.svg";
+export { default as DollarIcon } from "./svgs/dollar.svg";
+export { default as UserIcon } from "./svgs/user.svg";
+export { default as LocationIcon } from "./svgs/location.svg";
+export { default as WalletIcon } from "./svgs/wallet.svg";
+export { default as DocIcon } from "./svgs/doc.svg";
+export { default as LogoutIcon } from "./svgs/logout.svg";

@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { IUserRole } from "shared";
-import { login } from "../features/authSlice";
+import { login, logout } from "../features/authSlice";
 import { type RootState } from "../store";
 
 const useAuth = () => {
@@ -9,8 +9,11 @@ const useAuth = () => {
   const onLogin = (role: IUserRole) => {
     dispatch(login({ role }));
   };
+  const onLogout = () => {
+    dispatch(logout());
+  };
 
-  return { onLogin, auth };
+  return { onLogin, onLogout, auth };
 };
 
 export default useAuth;

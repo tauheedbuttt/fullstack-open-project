@@ -26,6 +26,9 @@ export default function LoginScreen() {
     onSubmit: (values) => {
       if (!role) return;
       onLogin(role);
+      const baseHome =
+        role === IUserRole.OWNER ? routes.owner.home : routes.rider.home;
+      navigate(baseHome);
     },
   });
 

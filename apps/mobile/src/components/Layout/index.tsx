@@ -1,20 +1,25 @@
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import tw from "../../lib/tailwind";
+import TabBar from "./TabBar";
 
 type Props = {
   children?: React.ReactNode;
   showAppBar?: boolean;
+  showTabBar?: boolean;
 };
 
-const Layout = ({ children, showAppBar = true }: Props) => {
+const Layout = ({ children, showAppBar = true, showTabBar = false }: Props) => {
   return (
-    <View style={tw`flex-1 bg-primary/10 px-4`}>
+    <View style={tw`flex-1 bg-primary/10`}>
       {showAppBar && (
         <View style={tw`h-16 w-full items-center justify-center `}>
           {/* App Bar */}
         </View>
       )}
-      {children}
+      <ScrollView contentContainerStyle={tw`flex-1 flex-col px-4`}>
+        {children}
+      </ScrollView>
+      {showTabBar && <TabBar />}
     </View>
   );
 };

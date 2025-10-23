@@ -6,6 +6,7 @@ import {
   riderRoutes,
 } from "./routes";
 import Layout from "../components/Layout";
+import ProtectedRoute from "../components/Layout/ProtectedRoute";
 
 const Router = () => {
   return (
@@ -39,9 +40,11 @@ const Router = () => {
             key={route}
             path={route}
             element={
-              <Layout>
-                <Element />
-              </Layout>
+              <ProtectedRoute>
+                <Layout showTabBar={true}>
+                  <Element />
+                </Layout>
+              </ProtectedRoute>
             }
           />
         ))}

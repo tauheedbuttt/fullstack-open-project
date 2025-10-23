@@ -1,13 +1,14 @@
 import { Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import { Style } from "twrnc";
 import tw from "../lib/tailwind";
+import { SvgProps } from "react-native-svg";
 
 type ButtonVariants = "primary" | "secondary" | "outlined" | "text";
 
 interface ButtonProps extends TouchableOpacityProps {
   variant?: ButtonVariants;
   text?: string;
-  icon?: React.ReactNode;
+  Icon?: React.FC<SvgProps>;
   onPress?: () => void;
   disabled?: boolean;
   style?: Style;
@@ -24,7 +25,7 @@ type VariantProps = {
 const Button = ({
   variant = "primary",
   text,
-  icon,
+  Icon,
   disabled,
   style,
   textStyle,
@@ -54,7 +55,7 @@ const Button = ({
   return (
     <TouchableOpacity
       style={tw.style(
-        "px-4 py-2 rounded-lg flex items-center justify-center gap-2 text-sm",
+        "flex-row px-4 py-2 rounded-lg flex items-center justify-center gap-2 text-sm",
         variants[variant].style,
         style,
         disabled && "opacity-50"
@@ -63,7 +64,13 @@ const Button = ({
       activeOpacity={0.7}
       {...props}
     >
-      {icon}
+      {Icon && (
+        <Icon
+          style={tw.style(variants[variant].textStyle, textStyle)}
+          height={20}
+          width={20}
+        />
+      )}
       {text && (
         <Text style={tw.style(variants[variant].textStyle, textStyle)}>
           {text}
