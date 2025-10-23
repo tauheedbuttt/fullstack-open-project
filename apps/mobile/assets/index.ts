@@ -8,3 +8,4 @@ export { default as LocationIcon } from "./svgs/location.svg";
 export { default as WalletIcon } from "./svgs/wallet.svg";
 export { default as DocIcon } from "./svgs/doc.svg";
 export { default as LogoutIcon } from "./svgs/logout.svg";
+export { default as SearchIcon } from "./svgs/search.svg";

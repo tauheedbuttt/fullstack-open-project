@@ -35,19 +35,21 @@ const Router = () => {
           />
         ))}
 
-        {[...ownerRoutes, ...riderRoutes].map(({ route, element: Element }) => (
-          <Route
-            key={route}
-            path={route}
-            element={
-              <ProtectedRoute>
-                <Layout showTabBar={true}>
-                  <Element />
-                </Layout>
-              </ProtectedRoute>
-            }
-          />
-        ))}
+        {[...ownerRoutes, ...riderRoutes].map(
+          ({ route, element: Element, ...item }) => (
+            <Route
+              key={route}
+              path={route}
+              element={
+                <ProtectedRoute>
+                  <Layout showTabBar={true} {...item}>
+                    <Element />
+                  </Layout>
+                </ProtectedRoute>
+              }
+            />
+          )
+        )}
       </Routes>
     </NativeRouter>
   );

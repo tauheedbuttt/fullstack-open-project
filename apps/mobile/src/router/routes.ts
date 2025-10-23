@@ -39,18 +39,25 @@ export const ownerRoutes: Route[] = [
   {
     route: routes.owner.home,
     element: OwnerHome,
+    variant: "owner-home",
   },
   {
     route: routes.owner.payments,
     element: Payments,
+    title: "Payments",
+    subtitle: "Track all your fee payments",
   },
   {
     route: routes.owner.receipts,
     element: Receipts,
+    title: "Receipts",
+    subtitle: "Download your payment receipts",
   },
   {
     route: routes.owner.profile,
     element: OwnerProfile,
+    title: "Profile",
+    subtitle: "Manage your account",
   },
 ];
 
@@ -58,17 +65,24 @@ export const riderRoutes: Route[] = [
   {
     route: routes.rider.home,
     element: RiderHome,
+    variant: "rider-home",
   },
   {
     route: routes.rider.houses,
     element: Houses,
+    title: "Assigned Houses",
+    variant: "rider-houses",
   },
   {
     route: routes.rider.collections,
     element: Collections,
+    title: "Collections",
+    subtitle: "Track your collection history",
   },
   {
     route: routes.rider.profile,
     element: RiderProfile,
+    title: "Profile",
+    subtitle: "Manage your account",
   },
 ];

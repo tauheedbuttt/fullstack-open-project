@@ -52,12 +52,12 @@ const TabBar = () => {
 
   return (
     <View
-      style={tw`w-full flex-row justify-around items-center border-t border-gray-200 bg-white `}
+      style={tw`w-full flex-row justify-around items-center border-t border-gray-200 bg-white px-1`}
     >
       {tabs.map(({ icon: Icon, ...tab }) => (
         <TouchableOpacity
           key={tab.route}
-          style={tw`flex-col items-center gap-2  px-5 pb-5 pt-4`}
+          style={tw`flex-col items-center gap-2  px-5 pb-6 pt-4`}
           onPress={() => handlePress(tab.route)}
         >
           <Icon style={tab.isActive ? tw`text-theme` : tw`text-secondary`} />
