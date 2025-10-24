@@ -15,6 +15,11 @@ const Layout = ({
   showTabBar = false,
   ...headerProps
 }: Props) => {
+  const Container = headerProps.noTabBar
+    ? ({ contentContainerStyle, ...props }: any) => (
+        <View style={contentContainerStyle} {...props} />
+      )
+    : ScrollView;
   return (
     <View style={tw`flex-1 bg-primary/10`}>
       {showAppBar && (
@@ -29,10 +34,10 @@ const Layout = ({
         </View>
       )}
       {showTabBar && <AppHeader variant="normal" {...headerProps} />}
-      <ScrollView contentContainerStyle={tw`flex-grow-1 flex-col px-4 py-3`}>
+      <Container contentContainerStyle={tw`flex-grow-1 flex-col px-4 py-3`}>
         {children}
-      </ScrollView>
-      {showTabBar && <TabBar />}
+      </Container>
+      {showTabBar && !headerProps.noTabBar && <TabBar />}
     </View>
   );
 };

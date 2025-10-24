@@ -13,6 +13,7 @@ import Houses from "../screens/Rider/Houses";
 import RiderProfile from "../screens/Rider/Profile";
 import { Route } from "../types/route";
 import EditProfile from "../screens/EditProfile";
+import Payment from "../screens/Owner/Payment";
 
 export const onboardingRoutes: Route[] = [
   {
@@ -70,6 +71,14 @@ export const ownerRoutes: Route[] = [
     element: OwnerProfile,
     title: "Profile",
     subtitle: "Manage your account",
+  },
+  {
+    route: routes.owner.payment,
+    element: Payment,
+    title: "Pay Now",
+    subtitle: "Confirm your payment",
+    back: true,
+    noTabBar: true,
   },
 ];
 

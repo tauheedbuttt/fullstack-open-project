@@ -12,6 +12,7 @@ export const routes = {
     payments: "/owner/payments",
     dashboard: "/owner/dashboard",
     profile: "/owner/profile",
+    payment: "/owner/payment",
   },
   rider: {
     home: "/rider/home",

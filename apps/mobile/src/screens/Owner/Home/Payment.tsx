@@ -6,6 +6,8 @@ import Card from "../../../components/Card";
 import Chip from "../../../components/Chip";
 import tw from "../../../lib/tailwind";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-native";
+import { routes } from "../../../config/routeConfig";
 
 interface PaymentProps
   extends Pick<IPayment, "paymentId" | "amount" | "paymentDate"> {
@@ -18,6 +20,7 @@ const Payment = ({
   status = IPaymentStatus.PENDING,
   ...payment
 }: PaymentProps) => {
+  const navigate = useNavigate();
   const colors = {
     light: {
       background: "bg-white",
@@ -51,6 +54,10 @@ const Payment = ({
         },
       },
     },
+  };
+
+  const onPayNow = () => {
+    navigate(routes.owner.payment);
   };
   return (
     <Card style={tw`${colors[variant].background}`}>
@@ -95,6 +102,7 @@ const Payment = ({
           text="Pay Now"
           textStyle={tw`font-semibold`}
           style={tw`rounded-full`}
+          onPress={onPayNow}
         />
       )}
       {status === IPaymentStatus.COMPLETED && (

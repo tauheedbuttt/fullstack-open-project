@@ -19,6 +19,7 @@ interface Tab {
   label: string;
   icon: React.FC<SvgProps>;
   route: string;
+  stack?: string[];
 }
 
 const TabBar = () => {
@@ -29,8 +30,18 @@ const TabBar = () => {
   const ownerTabs: Tab[] = [
     { label: "Home", icon: HouseIcon, route: routes.owner.home },
     { label: "Dashboard", icon: DashboardIcon, route: routes.owner.dashboard },
-    { label: "Payments", icon: WalletIcon, route: routes.owner.payments },
-    { label: "Profile", icon: UserIcon, route: routes.owner.profile },
+    {
+      label: "Payments",
+      icon: WalletIcon,
+      route: routes.owner.payments,
+      stack: [routes.owner.payment],
+    },
+    {
+      label: "Profile",
+      icon: UserIcon,
+      route: routes.owner.profile,
+      stack: [routes.shared.editProfile],
+    },
   ];
   const riderTabs: Tab[] = [
     { label: "Home", icon: HouseIcon, route: routes.rider.home },
@@ -40,10 +51,14 @@ const TabBar = () => {
   ];
 
   const tabs = (auth.role === IUserRole.OWNER ? ownerTabs : riderTabs).map(
-    (item) => ({
-      ...item,
-      isActive: item.route === location.pathname,
-    })
+    (item) => {
+      const stack = [item.route, ...(item.stack || [])];
+      return {
+        ...item,
+        stack,
+        isActive: stack.includes(location.pathname),
+      };
+    }
   );
 
   const handlePress = (route: string) => {

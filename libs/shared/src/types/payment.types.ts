@@ -6,6 +6,11 @@ export enum IPaymentStatus {
   COMPLETED = "Completed",
 }
 
+export enum IPaymentDuration {
+  QUARTER = "Quarter",
+  MONTH = "Month",
+}
+
 export interface IPayment {
   paymentId: string;
   userId: string;
@@ -18,4 +23,10 @@ export interface IPayment {
   rider: IUser;
   recieptNumber?: string;
   collectionTime?: string; // ISO date string
+}
+
+export interface IPaymentDurationOptions {
+  number: number;
+  year: number;
+  type: IPaymentDuration;
 }
