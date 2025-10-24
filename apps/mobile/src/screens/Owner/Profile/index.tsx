@@ -1,12 +1,12 @@
 import { View } from "react-native";
 import Logout from "../../../components/Logout";
-import Info from "./Info";
 import tw from "../../../lib/tailwind";
+import Info from "./Info";
 import LinkedHouses from "./LinkedHouses";
 
 const OwnerProfile = () => {
   return (
-    <View style={tw`flex-col gap-4`}>
+    <View style={tw`flex-col  flex-1 gap-4`}>
       <Info />
       <LinkedHouses />
       <Logout />
