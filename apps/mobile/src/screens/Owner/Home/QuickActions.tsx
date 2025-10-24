@@ -1,27 +1,14 @@
-import { Linking, ScrollView, Text, TouchableOpacity } from "react-native";
+import { ScrollView, Text, TouchableOpacity } from "react-native";
 import { useNavigate } from "react-router-native";
 import { DollarIcon, HistoryIcon, PhoneIcon } from "../../../../assets";
 import Card from "../../../components/Card";
+import IconCard from "../../../components/IconCard";
 import { routes } from "../../../config/routeConfig";
 import tw from "../../../lib/tailwind";
-import IconCard from "../../../components/IconCard";
+import { onCall } from "../../../config/utils";
 
 const QuickActions = () => {
   const navigate = useNavigate();
-  const onCall = async () => {
-    const phone = "+1234567890"; // replace with the rider's number
-    const url = `tel:${phone}`;
-    try {
-      const supported = await Linking.canOpenURL(url);
-      if (supported) {
-        await Linking.openURL(url);
-      } else {
-        console.warn("Dialer not supported on this device:", url);
-      }
-    } catch (err) {
-      console.warn("Failed to open dialer:", err);
-    }
-  };
   const actions = [
     {
       label: "View Stats",
@@ -32,7 +19,7 @@ const QuickActions = () => {
     },
     {
       label: "Contact Rider",
-      onPress: onCall,
+      onPress: () => onCall("+1234567890"),
       icon: PhoneIcon,
       style: tw`text-blue`,
       bgStyle: tw`bg-blue/10`,

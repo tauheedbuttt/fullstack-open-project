@@ -19,3 +19,5 @@ export { default as CalendarIcon } from "./svgs/calendar.svg";
 export { default as UpIcon } from "./svgs/up.svg";
 export { default as DownIcon } from "./svgs/down.svg";
 export { default as DashboardIcon } from "./svgs/dashboard.svg";
+export { default as MailIcon } from "./svgs/email.svg";
+export { default as EditIcon } from "./svgs/edit.svg";
