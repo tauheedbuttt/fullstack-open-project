@@ -26,7 +26,7 @@ const QuickActions = () => {
     },
     {
       label: "Payment History",
-      onPress: () => navigate(routes.owner.dashboard),
+      onPress: () => navigate(routes.owner.payments),
       icon: HistoryIcon,
       style: tw`text-green-600`,
       bgStyle: tw`bg-green-100`,
