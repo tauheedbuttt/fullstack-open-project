@@ -6,6 +6,8 @@ import Input from "../../Input";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../store";
 import { setSearch } from "../../../features/searchSlice";
+import Button from "../../Button";
+import { useNavigate } from "react-router-native";
 
 export type AppVariants =
   | "owner-home"
@@ -17,10 +19,18 @@ export interface AppHeaderProps {
   variant?: AppVariants;
   title?: string;
   subtitle?: string;
+  back?: boolean;
 }
 
-const AppHeader = ({ variant = "normal", title, subtitle }: AppHeaderProps) => {
+const AppHeader = ({
+  variant = "normal",
+  title,
+  subtitle,
+  back,
+}: AppHeaderProps) => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const onBack = () => navigate(-1);
 
   const renderHeader = () => {
     switch (variant) {
@@ -34,7 +44,7 @@ const AppHeader = ({ variant = "normal", title, subtitle }: AppHeaderProps) => {
         );
       default:
         return (
-          <>
+          <View style={tw`w-full flex-col gap-2`}>
             <Text style={tw`font-medium text-xl`}>{title}</Text>
             {subtitle && (
               <Text style={tw`text-secondary text-sm`}>{subtitle}</Text>
@@ -48,17 +58,26 @@ const AppHeader = ({ variant = "normal", title, subtitle }: AppHeaderProps) => {
                 onChangeText={(text) => dispatch(setSearch(text))}
               />
             )}
-          </>
+          </View>
         );
     }
   };
   return (
     <View
       style={tw.style(
-        `min-h-18 w-full px-5 py-1 pb-5 gap-1 bg-white rounded-b-3xl `,
+        `flex-row items-center gap-3 min-h-18 w-full px-5 py-1 pb-5 bg-white rounded-b-3xl `,
         variant === "rider-home" && "bg-primary"
       )}
     >
+      {back && (
+        <Button
+          text="←"
+          variant="secondary"
+          style={tw`py-[1.5] px-2`}
+          textStyle={tw`text-primary`}
+          onPress={onBack}
+        />
+      )}
       {renderHeader()}
     </View>
   );

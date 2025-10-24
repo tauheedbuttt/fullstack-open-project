@@ -12,6 +12,7 @@ import RiderHome from "../screens/Rider/Home";
 import Houses from "../screens/Rider/Houses";
 import RiderProfile from "../screens/Rider/Profile";
 import { Route } from "../types/route";
+import EditProfile from "../screens/EditProfile";
 
 export const onboardingRoutes: Route[] = [
   {
@@ -35,7 +36,18 @@ export const authRoutes: Route[] = [
   },
 ];
 
+export const sharedRoutes: Route[] = [
+  {
+    route: routes.shared.editProfile,
+    element: EditProfile,
+    title: "Edit Profile",
+    subtitle: "Update your information",
+    back: true,
+  },
+];
+
 export const ownerRoutes: Route[] = [
+  ...sharedRoutes,
   {
     route: routes.owner.home,
     element: OwnerHome,
@@ -62,6 +74,7 @@ export const ownerRoutes: Route[] = [
 ];
 
 export const riderRoutes: Route[] = [
+  ...sharedRoutes,
   {
     route: routes.rider.home,
     element: RiderHome,

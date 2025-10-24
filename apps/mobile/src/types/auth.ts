@@ -1,4 +1,4 @@
-import { ILoginRequest, IResetRequest } from "shared";
+import { IChangeProfileRequest, ILoginRequest, IResetRequest } from "shared";
 import { InputProps } from "../components/Input";
 
 export interface LoginFormInputs extends InputProps {
@@ -7,4 +7,8 @@ export interface LoginFormInputs extends InputProps {
 
 export interface ResetFormInputs extends InputProps {
   name: keyof IResetRequest;
+}
+
+export interface ProfileFormInputs extends InputProps {
+  name: keyof IChangeProfileRequest;
 }

@@ -19,4 +19,7 @@ export const routes = {
     houses: "/rider/houses",
     collections: "/rider/collections",
   },
+  shared: {
+    editProfile: "/edit-profile",
+  },
 };

@@ -4,8 +4,11 @@ import Card from "../../../components/Card";
 import tw from "../../../lib/tailwind";
 import IconCard from "../../../components/IconCard";
 import Button from "../../../components/Button";
+import { useNavigate } from "react-router-native";
+import { routes } from "../../../config/routeConfig";
 
 const Info = () => {
+  const navigate = useNavigate();
   const contact = [
     { label: "Phone", value: "+1 234 567 8901", icon: PhoneIcon },
     { label: "Email", value: "john.doe@example.com", icon: MailIcon },
@@ -28,7 +31,11 @@ const Info = () => {
           </View>
         </View>
         {/* Edit Icon */}
-        <Button Icon={EditIcon} variant="text" />
+        <Button
+          Icon={EditIcon}
+          variant="text"
+          onPress={() => navigate(routes.shared.editProfile)}
+        />
       </View>
 
       {/* Contact Details */}
