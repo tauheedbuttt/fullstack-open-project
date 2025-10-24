@@ -1,10 +1,9 @@
+import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+import { DownIcon, UpIcon } from "../../../../assets";
+import Button from "../../../components/Button";
 import Card from "../../../components/Card";
 import tw from "../../../lib/tailwind";
-import { useState } from "react";
-import Button from "../../../components/Button";
-import { DownIcon, UpIcon } from "../../../../assets";
-import Chip from "../../../components/Chip";
 
 const YearlyOverview = () => {
   const [year, setYear] = useState<number | undefined>(undefined);
@@ -37,6 +36,10 @@ const YearlyOverview = () => {
       ],
     },
   ];
+
+  const onYear = (value: number) => () =>
+    setYear(year === value ? undefined : value);
+
   return (
     <Card>
       <Text style={tw`font-bold text-base`}>Payment History by Year</Text>
@@ -44,12 +47,7 @@ const YearlyOverview = () => {
         {years.map((item) => (
           <View key={item.year} style={tw`gap-2`}>
             {/* Card */}
-            <TouchableOpacity
-              onPress={() =>
-                setYear(year === item.year ? undefined : item.year)
-              }
-              activeOpacity={0.7}
-            >
+            <TouchableOpacity onPress={onYear(item.year)} activeOpacity={0.7}>
               <Card
                 key={item.year}
                 style={tw`flex-row justify-between border border-blue/50 bg-blue/10`}
@@ -78,6 +76,7 @@ const YearlyOverview = () => {
                     Icon={year === item.year ? UpIcon : DownIcon}
                     style={tw`bg-blue p-[2px]`}
                     textStyle={tw`text-white`}
+                    onPress={onYear(item.year)}
                   />
                 </View>
               </Card>
