@@ -13,7 +13,7 @@ const DuePayment = () => {
     navigate(routes.owner.payment);
   };
   return (
-    <Card style={tw`bg-blue flex-row items-start gap-2`}>
+    <Card style={tw`bg-primary flex-row items-start gap-2`}>
       <IconCard
         Icon={ClockIcon}
         bgStyle={tw`bg-white/20`}
@@ -28,7 +28,7 @@ const DuePayment = () => {
           text="Pay Now"
           variant="white"
           style={tw`py-2 px-3`}
-          textStyle={tw`text-sm text-blue font-bold`}
+          textStyle={tw`text-sm text-theme font-bold`}
           onPress={onPayNow}
         />
       </View>

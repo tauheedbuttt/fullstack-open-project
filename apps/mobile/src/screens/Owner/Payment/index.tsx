@@ -50,7 +50,7 @@ const Payment = () => {
   return (
     <View style={tw` flex-1 gap-4`}>
       {/* Screen */}
-      <ScrollView contentContainerStyle={tw`flex-col gap-4 pb-20 flex-grow-1`}>
+      <ScrollView contentContainerStyle={tw`flex-col gap-4 pb-26 flex-grow-1`}>
         {/* Info cards */}
         <View style={tw`flex-col gap-2`}>
           {info.map((item) => (
