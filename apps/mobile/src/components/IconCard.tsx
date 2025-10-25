@@ -3,7 +3,7 @@ import Card from "./Card";
 import tw from "../lib/tailwind";
 import { Style } from "twrnc";
 
-export type IconCardTypes = "primary" | "success";
+export type IconCardTypes = "primary" | "success" | "danger";
 
 interface IconCardProps {
   Icon: React.FC<SvgProps>;
@@ -23,6 +23,7 @@ const IconCard = ({
   const variants = {
     primary: { bgStyle: tw`bg-primary/10`, style: tw`text-theme` },
     success: { bgStyle: tw`bg-green-100`, style: tw`text-green-600` },
+    danger: { bgStyle: tw`bg-danger/10`, style: tw`text-danger` },
   };
   return (
     <Card style={[tw`p-2 rounded-xl`, variants[variant].bgStyle, bgStyle]}>

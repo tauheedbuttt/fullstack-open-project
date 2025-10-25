@@ -47,7 +47,12 @@ const TabBar = () => {
     { label: "Home", icon: HouseIcon, route: routes.rider.home },
     { label: "Houses", icon: LocationIcon, route: routes.rider.houses },
     { label: "Collections", icon: DollarIcon, route: routes.rider.collections },
-    { label: "Profile", icon: UserIcon, route: routes.rider.profile },
+    {
+      label: "Profile",
+      icon: UserIcon,
+      route: routes.rider.profile,
+      stack: [routes.shared.editProfile],
+    },
   ];
 
   const tabs = (auth.role === IUserRole.OWNER ? ownerTabs : riderTabs).map(

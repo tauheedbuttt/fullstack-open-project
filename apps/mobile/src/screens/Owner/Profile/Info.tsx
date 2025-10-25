@@ -1,18 +1,33 @@
 import { Text, View } from "react-native";
-import { EditIcon, MailIcon, PhoneIcon } from "../../../../assets";
+import {
+  EditIcon,
+  LocationIcon,
+  MailIcon,
+  PhoneIcon,
+} from "../../../../assets";
 import Card from "../../../components/Card";
 import tw from "../../../lib/tailwind";
 import IconCard from "../../../components/IconCard";
 import Button from "../../../components/Button";
 import { useNavigate } from "react-router-native";
 import { routes } from "../../../config/routeConfig";
+import { IUserRole } from "shared";
 
-const Info = () => {
+interface InfoProps {
+  name: string;
+  role: IUserRole;
+  email: string;
+  phone?: string;
+  sector?: string;
+}
+
+const Info = ({ phone, email, name, role, sector }: InfoProps) => {
   const navigate = useNavigate();
   const contact = [
-    { label: "Phone", value: "+1 234 567 8901", icon: PhoneIcon },
-    { label: "Email", value: "john.doe@example.com", icon: MailIcon },
-  ];
+    { label: "Email", value: email, icon: MailIcon },
+    { label: "Phone", value: phone, icon: PhoneIcon },
+    { label: "Assigned Sector", value: sector, icon: LocationIcon },
+  ].filter((item) => !!item.value);
   return (
     <Card style={tw`flex-col gap-6`}>
       {/* Name and Avatar */}
@@ -26,8 +41,8 @@ const Info = () => {
           </View>
           {/* Name, Role */}
           <View style={tw`flex-1`}>
-            <Text style={tw`font-semibold text-base`}>John Doe</Text>
-            <Text style={tw`text-secondary text-sm`}>Owner</Text>
+            <Text style={tw`font-semibold text-base`}>{name}</Text>
+            <Text style={tw`text-secondary text-sm`}>{role}</Text>
           </View>
         </View>
         {/* Edit Icon */}
