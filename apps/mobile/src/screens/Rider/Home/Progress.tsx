@@ -1,6 +1,7 @@
 import { Text, View } from "react-native";
 import Card from "../../../components/Card";
 import tw from "../../../lib/tailwind";
+import ProgressBar from "../../../components/ProgressBar";
 
 const Progress = () => {
   const total = 40;
@@ -16,17 +17,7 @@ const Progress = () => {
         </Text>
       </View>
       {/* Bar */}
-      <View style={tw`w-full h-2 my-4`}>
-        {/* back-bar */}
-        <View style={tw`bg-gray-100 flex-1 rounded-full`} />
-        {/* progress-bar */}
-        <View
-          style={tw.style(
-            `absolute bg-primary h-full rounded-full`,
-            percentage ? `w-[${percentage}%]` : ""
-          )}
-        />
-      </View>
+      <ProgressBar percentage={percentage} />
       {/* Indicator */}
       <Text style={tw`text-sm text-secondary`}>
         {percentage}% completed for today

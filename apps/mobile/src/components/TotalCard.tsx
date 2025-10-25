@@ -4,24 +4,28 @@ import Card from "./Card";
 import tw from "../lib/tailwind";
 import IconCard from "./IconCard";
 import { SvgProps } from "react-native-svg";
+import { Style } from "twrnc";
 
 type Props = {
-  Icon: React.FC<SvgProps | any>;
+  Icon?: React.FC<SvgProps | any>;
   title: string;
   value: string;
   subtitle: string;
+  style?: Style;
 };
 
-const TotalCard = ({ Icon, title, value, subtitle }: Props) => {
+const TotalCard = ({ Icon, title, value, subtitle, style }: Props) => {
   return (
-    <Card style={tw` bg-green-600 `}>
+    <Card style={tw.style(` bg-green-600 `, style)}>
       <View style={tw` flex-row justify-between items-center `}>
         <Text style={tw` text-white `}>{title}</Text>
-        <IconCard
-          Icon={Icon}
-          bgStyle={tw` bg-white/20 `}
-          style={tw` text-white `}
-        />
+        {Icon && (
+          <IconCard
+            Icon={Icon}
+            bgStyle={tw` bg-white/20 `}
+            style={tw` text-white `}
+          />
+        )}
       </View>
       <Text style={tw` text-white text-2xl font-bold mt-2 `}>{value}</Text>
       <Text style={tw` text-white/80 mt-1 text-sm`}>{subtitle}</Text>
