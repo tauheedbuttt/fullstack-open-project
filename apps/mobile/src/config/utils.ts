@@ -1,4 +1,5 @@
 import { Linking } from "react-native";
+import * as Location from "expo-location";
 import { IPaymentDuration } from "shared";
 
 export const onCall = async (phone: string) => {
@@ -57,3 +58,42 @@ export const getPaymentDurationOptions = (
 
   return durationOptions;
 };
+
+// Convert radius (in km) to delta values
+export function getRegionForRadius(
+  latitude: number,
+  longitude: number,
+  radiusInKm: number
+) {
+  const oneDegreeOfLatitudeInKm = 111.32;
+  const oneDegreeOfLongitudeInKm =
+    111.32 * Math.cos(latitude * (Math.PI / 180));
+
+  const latitudeDelta = (radiusInKm * 2) / oneDegreeOfLatitudeInKm;
+  const longitudeDelta = (radiusInKm * 2) / oneDegreeOfLongitudeInKm;
+
+  return {
+    latitude,
+    longitude,
+    latitudeDelta,
+    longitudeDelta,
+  };
+}
+
+export async function getCoordinatesFromAddress(
+  address: string,
+  radiusInKm: number
+) {
+  try {
+    const permission = await Location.getForegroundPermissionsAsync();
+    if (!permission) return;
+    const geocoded = await Location.geocodeAsync(address);
+    if (geocoded.length > 0) {
+      const { latitude, longitude } = geocoded[0];
+      return getRegionForRadius(latitude, longitude, radiusInKm);
+    }
+    return undefined;
+  } catch (error) {
+    console.error("Geocoding error:", error);
+  }
+}

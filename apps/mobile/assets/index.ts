@@ -22,3 +22,4 @@ export { default as DashboardIcon } from "./svgs/dashboard.svg";
 export { default as MailIcon } from "./svgs/email.svg";
 export { default as EditIcon } from "./svgs/edit.svg";
 export { default as CameraIcon } from "./svgs/camera.svg";
+export { default as PlayIcon } from "./svgs/play.svg";

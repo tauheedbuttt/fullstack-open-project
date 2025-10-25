@@ -10,7 +10,7 @@ export type ButtonVariants =
   | "text"
   | "white";
 
-interface ButtonProps extends TouchableOpacityProps {
+export interface ButtonProps extends TouchableOpacityProps {
   variant?: ButtonVariants;
   text?: string;
   Icon?: React.FC<SvgProps>;

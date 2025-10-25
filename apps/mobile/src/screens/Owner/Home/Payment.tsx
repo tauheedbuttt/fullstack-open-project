@@ -8,6 +8,7 @@ import tw from "../../../lib/tailwind";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-native";
 import { routes } from "../../../config/routeConfig";
+import { paymentStatusChip } from "../../../config/constants";
 
 interface PaymentProps
   extends Pick<IPayment, "paymentId" | "amount" | "paymentDate"> {
@@ -27,16 +28,7 @@ const Payment = ({
       text: "text-black",
       button: "primary",
       border: "border-gray-400",
-      status: {
-        [IPaymentStatus.COMPLETED]: {
-          text: "text-green-600",
-          background: "bg-green-100",
-        },
-        [IPaymentStatus.PENDING]: {
-          text: "text-theme",
-          background: "bg-primary/10",
-        },
-      },
+      status: paymentStatusChip,
     },
     dark: {
       background: "bg-primary",

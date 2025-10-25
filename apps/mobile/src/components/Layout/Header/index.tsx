@@ -21,6 +21,10 @@ export interface AppHeaderProps {
   subtitle?: string;
   back?: boolean;
   noTabBar?: boolean;
+  fab?: {
+    route: string;
+    text?: string;
+  };
 }
 
 const AppHeader = ({

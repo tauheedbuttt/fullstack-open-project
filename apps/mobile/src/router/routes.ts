@@ -88,6 +88,10 @@ export const riderRoutes: Route[] = [
     route: routes.rider.home,
     element: RiderHome,
     variant: "rider-home",
+    fab: {
+      route: routes.rider.collections,
+      text: "Start Collection",
+    },
   },
   {
     route: routes.rider.houses,
