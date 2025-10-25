@@ -8,6 +8,7 @@ export type ButtonVariants =
   | "secondary"
   | "outlined"
   | "text"
+  | "accent"
   | "white";
 
 export interface ButtonProps extends TouchableOpacityProps {
@@ -40,27 +41,28 @@ const Button = ({
 }: ButtonProps) => {
   const variants: VariantProps = {
     primary: {
-      style: tw.style("bg-primary", !disabled && "hover:bg-primary"),
+      style: tw.style("bg-primary"),
       textStyle: tw`text-white`,
     },
     secondary: {
-      style: tw.style("bg-gray-300", !disabled && "hover:bg-gray-600"),
+      style: tw.style("bg-gray-300"),
       textStyle: tw`text-secondary`,
     },
     text: {
-      style: tw.style("bg-transparent", !disabled && "hover:bg-gray-50"),
+      style: tw.style("bg-transparent"),
       textStyle: tw`text-gray-700`,
     },
     outlined: {
-      style: tw.style(
-        "border border-gray-300",
-        !disabled && "hover:bg-gray-50"
-      ),
+      style: tw.style("border border-gray-300"),
       textStyle: tw`text-gray-700`,
     },
     white: {
-      style: tw.style("bg-white border-0", !disabled && "hover:bg-gray-100"),
+      style: tw.style("bg-white border-0"),
       textStyle: tw`text-theme`,
+    },
+    accent: {
+      style: tw.style("bg-white/30 border-0"),
+      textStyle: tw`text-white`,
     },
   };
 

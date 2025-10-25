@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { authReducer } from "./features/authSlice";
 import { searchReducer } from "./features/searchSlice";
 import { modalReducer } from "./features/modalSlice";
+import { collectionReducer } from "./features/collectionSlice";
 
 const persistConfig = {
   key: "root",
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   search: searchReducer,
   modal: modalReducer,
+  collection: collectionReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

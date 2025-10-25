@@ -14,6 +14,7 @@ import RiderProfile from "../screens/Rider/Profile";
 import { Route } from "../types/route";
 import EditProfile from "../screens/EditProfile";
 import Payment from "../screens/Owner/Payment";
+import Collection from "../screens/Rider/Collection";
 
 export const onboardingRoutes: Route[] = [
   {
@@ -89,7 +90,7 @@ export const riderRoutes: Route[] = [
     element: RiderHome,
     variant: "rider-home",
     fab: {
-      route: routes.rider.collections,
+      route: routes.rider.collection,
       text: "Start Collection",
     },
   },
@@ -110,5 +111,12 @@ export const riderRoutes: Route[] = [
     element: RiderProfile,
     title: "Profile",
     subtitle: "Manage your account",
+  },
+  {
+    route: routes.rider.collection,
+    element: Collection,
+    title: "Collection Mode",
+    subtitle: "Complete your rounds",
+    variant: "collection-mode",
   },
 ];

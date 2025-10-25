@@ -35,7 +35,11 @@ const Layout = ({
             style={tw.style(
               `h-16 w-full items-center justify-center `,
               showAppBar && "bg-white",
-              headerProps.variant === "rider-home" && "bg-primary"
+              headerProps.variant &&
+                ["rider-home", "collection-mode"].includes(
+                  headerProps.variant
+                ) &&
+                "bg-primary"
             )}
           >
             {/* App Bar */}

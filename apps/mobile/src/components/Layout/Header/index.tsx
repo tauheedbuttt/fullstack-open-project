@@ -8,11 +8,13 @@ import { AppDispatch } from "../../../store";
 import { setSearch } from "../../../features/searchSlice";
 import Button from "../../Button";
 import { useNavigate } from "react-router-native";
+import CollectionHeader from "./CollectionHeader";
 
 export type AppVariants =
   | "owner-home"
   | "rider-home"
   | "normal"
+  | "collection-mode"
   | "rider-houses";
 
 export interface AppHeaderProps {
@@ -39,6 +41,8 @@ const AppHeader = ({
 
   const renderHeader = () => {
     switch (variant) {
+      case "collection-mode":
+        return <CollectionHeader title={title} subtitle={subtitle} />;
       case "rider-home":
         return (
           <BaseHomeHeader route={routes.rider.profile} variant={variant} />
@@ -71,7 +75,7 @@ const AppHeader = ({
     <View
       style={tw.style(
         `flex-row items-center gap-3 min-h-18 w-full px-5 py-1 pb-5 bg-white rounded-b-3xl `,
-        variant === "rider-home" && "bg-primary"
+        ["rider-home", "collection-mode"].includes(variant) && "bg-primary"
       )}
     >
       {back && (
