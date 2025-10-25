@@ -17,9 +17,11 @@ import {
 } from "../../../../assets";
 import IconCard from "../../../components/IconCard";
 import { paymentStatusChip } from "../../../config/constants";
+import { onCall, openMapForAddress } from "../../../config/utils";
 
-interface ActionButtonProps extends ButtonProps {
+interface ActionButtonProps extends Omit<ButtonProps, "onPress"> {
   key: string;
+  onPress?: (value: any) => void;
 }
 
 const Collection = () => {
@@ -55,8 +57,18 @@ const Collection = () => {
   const actions: ActionButtonProps[] = [
     { key: "collection", Icon: PaidIcon, text: "Collect" },
     { key: "skip", Icon: CrossOutlinedIcon, text: "Skip", variant: "outlined" },
-    { key: "phone", Icon: PhoneIcon, variant: "outlined" },
-    { key: "direction", Icon: DirectionIcon, variant: "outlined" },
+    {
+      key: "phone",
+      Icon: PhoneIcon,
+      variant: "outlined",
+      onPress: (item) => onCall(item.owner.phone),
+    },
+    {
+      key: "direction",
+      Icon: DirectionIcon,
+      variant: "outlined",
+      onPress: (item) => openMapForAddress(item.address),
+    },
   ];
 
   return (
@@ -149,13 +161,14 @@ const Collection = () => {
                   </View>
                 )}
                 {!isPaid &&
-                  actions.map((item) => (
+                  actions.map((button) => (
                     <Button
-                      {...item}
-                      key={item.key}
+                      {...button}
+                      key={button.key}
                       iconSize={18}
                       textStyle={tw`text-base`}
-                      style={tw.style(`p-1 px-4`, item.text && "flex-1")}
+                      style={tw.style(`p-1 px-4`, button.text && "flex-1")}
+                      onPress={() => button.onPress && button.onPress(item)}
                     />
                   ))}
               </View>

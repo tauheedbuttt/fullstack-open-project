@@ -1,4 +1,4 @@
-import { Linking } from "react-native";
+import { Linking, Platform } from "react-native";
 import * as Location from "expo-location";
 import { IPaymentDuration } from "shared";
 
@@ -13,6 +13,44 @@ export const onCall = async (phone: string) => {
     }
   } catch (err) {
     console.warn("Failed to open dialer:", err);
+  }
+};
+
+export const openMapForAddress = async (address: string) => {
+  if (!address) {
+    console.warn("No address provided to openMapForAddress");
+    return;
+  }
+  // Encode address for URL
+  const encodedAddress = encodeURIComponent(address);
+  let url = "";
+
+  // Both Android and iOS support the geo: protocol, but the format slightly differs on iOS
+  if (Platform.OS === "ios") {
+    url = `http://maps.apple.com/?q=${encodedAddress}`;
+  } else {
+    url = `geo:0,0?q=${encodedAddress}`;
+  }
+
+  try {
+    const supported = await Linking.canOpenURL(url);
+    if (supported) {
+      await Linking.openURL(url);
+    } else {
+      // Fallback: Try with Google Maps in browser
+      const googleUrl = `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+      const googleSupported = await Linking.canOpenURL(googleUrl);
+      if (googleSupported) {
+        await Linking.openURL(googleUrl);
+      } else {
+        console.warn(
+          "No supported map application found for address:",
+          address
+        );
+      }
+    }
+  } catch (err) {
+    console.warn("Failed to open maps for address:", err);
   }
 };
 
