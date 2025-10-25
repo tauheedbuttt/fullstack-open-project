@@ -1,1 +1,3 @@
-export const modal = {};
+export const modal = {
+  viewHouse: "view-house",
+};

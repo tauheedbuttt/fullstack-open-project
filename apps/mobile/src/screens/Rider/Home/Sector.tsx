@@ -36,7 +36,10 @@ const Sector = () => {
           const remaining = item.address.replace(`${first},`, "").trim();
           const colors = paymentStatusChip[item.status];
           return (
-            <Card style={tw`bg-gray-50 flex-row justify-between`}>
+            <Card
+              key={item.address}
+              style={tw`bg-gray-50 flex-row justify-between`}
+            >
               <View style={tw`flex-row items-center gap-2`}>
                 <IconCard Icon={HouseIcon} />
                 <View>
@@ -55,7 +58,7 @@ const Sector = () => {
 
         {houses.length > 3 && (
           <Button
-            text="View All "
+            text="View All  →"
             variant="secondary"
             textStyle={tw`text-sm text-primary`}
             onPress={() => navigate(routes.rider.houses)}
