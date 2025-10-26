@@ -1,4 +1,4 @@
-[![WakaTime](https://img.shields.io/badge/project-18%20hrs%2027%20mins-blue)](https://wakatime.com/@436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/projects/rzpbwqrxrj?start=2025-10-12&end=2025-10-18)
+[![WakaTime](https://img.shields.io/badge/project-31%20hrs%2012%20mins-blue)](https://wakatime.com/@436e4a6b-ccd5-49ff-b80f-1e57d59d7ee3/projects/rzpbwqrxrj?start=2025-10-12&end=2025-10-18)
 
 **⏱️ Total Time on project:** 11 hrs 50 mins
 
