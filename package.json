@@ -69,6 +69,7 @@
     "nx": "21.6.4",
     "postcss": "8.4.38",
     "react-native-svg-transformer": "^1.5.1",
+    "rollup": "^4.17.2",
     "tailwindcss": "3.4.3",
     "ts-jest": "^29.4.0",
     "ts-node": "10.9.1",
