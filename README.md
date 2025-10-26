@@ -57,16 +57,6 @@ See [Project Documentation](./docs/USAGE.md) for advanced flow and usage.
 
 ---
 
-## 🕒 Work Hours & Timekeeping
-
-> **Total Time Spent:** _11 hrs 50 mins_
-
-- Detailed [Work Hours Log](./work_hours.md).
-- Significant work is reflected in the commit history.
-- For group contributors, individual logs are available per user.
-
----
-
 ## 📊 Entity Relationship Diagram (ERD)
 
 ### ENUMS
