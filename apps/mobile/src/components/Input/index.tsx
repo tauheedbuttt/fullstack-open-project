@@ -4,8 +4,10 @@ import tw from "../../lib/tailwind";
 import Button from "../Button";
 import { SearchIcon } from "../../../assets";
 import { SvgProps } from "react-native-svg";
+import { Style } from "twrnc";
+import ImageInput from "./ImageInput";
 
-type InputTypes = "password" | "search";
+type InputTypes = "password" | "search" | "image";
 
 export interface InputProps extends TextInputProps {
   variant?: InputTypes;
@@ -13,6 +15,7 @@ export interface InputProps extends TextInputProps {
   subLabel?: string;
   error?: string;
   options?: { value: any; label: string }[];
+  containerClassName?: Style;
 }
 
 interface VariantProps {
@@ -22,13 +25,16 @@ interface VariantProps {
   containerClassName?: string;
 }
 
-const Input = ({ label, error, ...props }: InputProps) => {
+const Input = ({ label, error, containerClassName, ...props }: InputProps) => {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const variants: Record<InputTypes, VariantProps> = {
     password: {},
     search: {
       icon: SearchIcon,
+    },
+    image: {
+      component: <ImageInput {...props} />,
     },
   };
 
@@ -43,7 +49,10 @@ const Input = ({ label, error, ...props }: InputProps) => {
       {component}
       {!component && (
         <View
-          style={tw`mt-2 px-4 py-4 flex-row items-center rounded-lg bg-gray-50`}
+          style={tw.style(
+            `mt-2 px-4 py-4 flex-row items-center rounded-lg bg-gray-50`,
+            containerClassName
+          )}
         >
           {Icon && (
             <Icon width={20} height={20} style={tw`mr-3 text-secondary`} />

@@ -39,7 +39,7 @@ const Modal = ({ children, modalKey, title }: ModalProps) => {
       >
         {/* Inner modal container — stop touches from propagating */}
         <View
-          style={tw`m-20 bg-white rounded-lg px-3 py-3 pb-5 max-h-100 shadow-md w-[90%]`}
+          style={tw`m-20 bg-white rounded-lg px-3 py-3 pb-5 shadow-md w-[90%]`}
           onStartShouldSetResponder={() => true}
           onTouchEnd={(e) => e.stopPropagation()}
         >

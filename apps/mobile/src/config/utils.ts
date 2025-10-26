@@ -1,6 +1,7 @@
-import { Linking, Platform } from "react-native";
+import { Alert, Linking, Platform } from "react-native";
 import * as Location from "expo-location";
 import { IPaymentDuration } from "shared";
+import * as ImagePicker from "expo-image-picker";
 
 export const onCall = async (phone: string) => {
   const url = `tel:${phone}`;
@@ -135,3 +136,33 @@ export async function getCoordinatesFromAddress(
     console.error("Geocoding error:", error);
   }
 }
+
+export const openGallery = async (): Promise<
+  ImagePicker.ImagePickerSuccessResult | undefined
+> => {
+  try {
+    // Ask for permission
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Permission denied", "We need access to your gallery!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes:
+        (ImagePicker as any).MediaType?.IMAGE ||
+        ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) return result;
+    else {
+      console.log("User cancelled image picker");
+    }
+
+    return undefined;
+  } catch (error) {
+    console.log("Error picking image:", error);
+  }
+};

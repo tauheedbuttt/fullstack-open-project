@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 import { IPaymentStatus } from "shared";
@@ -6,13 +5,12 @@ import { ClockIcon, LocationIcon, PaidIcon } from "../../../../assets";
 import Card from "../../../components/Card";
 import Chip from "../../../components/Chip";
 import IconCard from "../../../components/IconCard";
-import Modal from "../../../components/Modal";
 import { paymentStatusChip } from "../../../config/constants";
+import { modal } from "../../../config/modal";
 import { SearchState } from "../../../features/searchSlice";
+import useModal from "../../../hooks/useModal";
 import tw from "../../../lib/tailwind";
 import { RootState } from "../../../store";
-import useModal from "../../../hooks/useModal";
-import { modal } from "../../../config/modal";
 import ViewHouseModal from "./ViewHouseModal";
 
 const Houses = () => {

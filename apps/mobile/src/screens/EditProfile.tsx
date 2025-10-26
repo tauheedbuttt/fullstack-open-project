@@ -12,6 +12,7 @@ import { ProfileFormInputs } from "../types/auth";
 import { profileValidationSchema } from "../validation/profile";
 import * as ImagePicker from "expo-image-picker";
 import { Image } from "react-native";
+import { openGallery } from "../config/utils";
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -33,32 +34,11 @@ const EditProfile = () => {
   const onSubmit = () => handleSubmit();
   const onBack = () => navigate(-1);
 
-  const openGallery = async () => {
-    try {
-      // Ask for permission
-      const { status } =
-        await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Permission denied", "We need access to your gallery!");
-        return;
-      }
+  const handleOpenGallery = async () => {
+    const result = await openGallery();
+    if (!result) return;
 
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes:
-          (ImagePicker as any).MediaType?.IMAGE ||
-          ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        quality: 1,
-      });
-
-      if (!result.canceled) {
-        setValues({ ...values, image: result.assets[0].uri });
-      } else {
-        console.log("User cancelled image picker");
-      }
-    } catch (error) {
-      console.log("Error picking image:", error);
-    }
+    setValues({ ...values, image: result.assets[0].uri });
   };
 
   const fields: ProfileFormInputs[] = [
@@ -74,7 +54,7 @@ const EditProfile = () => {
         activeOpacity={0.7}
         style={tw`relative w-full items-center `}
         // open gallery to select image
-        onPress={openGallery}
+        onPress={handleOpenGallery}
       >
         {/* Avatar */}
         <View
