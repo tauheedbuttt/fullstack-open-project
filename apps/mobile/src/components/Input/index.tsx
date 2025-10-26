@@ -25,7 +25,13 @@ interface VariantProps {
   containerClassName?: string;
 }
 
-const Input = ({ label, error, containerClassName, ...props }: InputProps) => {
+const Input = ({
+  label,
+  error,
+  containerClassName,
+  style,
+  ...props
+}: InputProps) => {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const variants: Record<InputTypes, VariantProps> = {
@@ -59,7 +65,7 @@ const Input = ({ label, error, containerClassName, ...props }: InputProps) => {
           )}
           <TextInput
             {...props}
-            style={tw` text-primary p-0 m-0 flex-1`}
+            style={[tw.style(` text-primary p-0 m-0 flex-1`), style]}
             autoCapitalize={"none"}
             secureTextEntry={props.variant === "password" && !showPassword}
           />
