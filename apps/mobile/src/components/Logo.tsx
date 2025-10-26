@@ -1,8 +1,9 @@
 import { Text, View } from "react-native";
 import tw from "../lib/tailwind";
+import { LogoSize } from "../types";
 
 interface LogoProps {
-  size: "xs" | "sm" | "md" | "lg" | "xl";
+  size: LogoSize;
 }
 
 const Logo = ({ size = "md" }: LogoProps) => {

@@ -1,0 +1,16 @@
+export interface ILoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface IResetRequest {
+  password: string;
+  confirmPassword: string;
+}
+
+export interface IChangeProfileRequest {
+  name?: string;
+  email?: string;
+  phone?: string;
+  image?: string;
+}

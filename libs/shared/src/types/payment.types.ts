@@ -1,9 +1,14 @@
-import { IHouse } from "./house.types.js";
-import { IUser } from "./user.types.js";
+import { IHouse } from "./house.types";
+import { IUser } from "./user.types";
 
 export enum IPaymentStatus {
   PENDING = "Pending",
   COMPLETED = "Completed",
+}
+
+export enum IPaymentDuration {
+  QUARTER = "Quarter",
+  MONTH = "Month",
 }
 
 export interface IPayment {
@@ -18,4 +23,10 @@ export interface IPayment {
   rider: IUser;
   recieptNumber?: string;
   collectionTime?: string; // ISO date string
+}
+
+export interface IPaymentDurationOptions {
+  number: number;
+  year: number;
+  type: IPaymentDuration;
 }
