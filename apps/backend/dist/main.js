@@ -22,7 +22,7 @@ const swagger_1 = __webpack_require__(7);
 const auth_module_1 = __webpack_require__(8);
 const typeorm_1 = __webpack_require__(12);
 const ormconfig_1 = __webpack_require__(13);
-const config_1 = __webpack_require__(14);
+const config_1 = __webpack_require__(18);
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -212,11 +212,15 @@ module.exports = require("@nestjs/typeorm");
 
 /***/ }),
 /* 13 */
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getOrmConfig = void 0;
+const _1761569196818_create_user_1 = __webpack_require__(14);
+const entities_1 = __webpack_require__(15);
+const entities = [entities_1.User];
+const migrations = [_1761569196818_create_user_1.CreateUser1761569196818];
 const getOrmConfig = () => {
     return {
         type: "postgres",
@@ -227,11 +231,11 @@ const getOrmConfig = () => {
         database: process.env.DB_NAME,
         migrationsTransactionMode: "each",
         schema: "public",
-        entities: [],
+        entities,
         migrationsTableName: "migrations",
         migrationsRun: true,
         synchronize: false,
-        migrations: [],
+        migrations,
     };
 };
 exports.getOrmConfig = getOrmConfig;
@@ -239,6 +243,156 @@ exports.getOrmConfig = getOrmConfig;
 
 /***/ }),
 /* 14 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreateUser1761569196818 = void 0;
+class CreateUser1761569196818 {
+    async up(queryRunner) {
+        // user role enum
+        await queryRunner.query(`
+      CREATE TYPE "user_role_enum"
+      AS ENUM(
+        'Admin',
+        'Rider',
+        'Owner'
+      );
+    `);
+        // order status enum
+        await queryRunner.query(`
+      CREATE TYPE "user_status_enum"
+      AS ENUM(
+        'Active',
+        'Inactive'
+      );
+    `);
+        // Create user table
+        await queryRunner.query(`
+      CREATE TABLE "user" (
+        id SERIAL PRIMARY KEY,
+        "userId" varchar,
+        
+        "name" varchar,
+        "phone" varchar,
+        "email" varchar,
+        "cnic" varchar,
+        "address" varchar,
+        
+        "password" varchar,
+        "role" user_role_enum,
+        "status" user_status_enum,
+        
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP NOT NULL DEFAULT now()
+      );
+    `);
+    }
+    async down(queryRunner) {
+        await queryRunner.query(`DROP TABLE user;`);
+        await queryRunner.query(`DROP TYPE "user_role_enum";`);
+        await queryRunner.query(`DROP TYPE "user_status_enum";`);
+    }
+}
+exports.CreateUser1761569196818 = CreateUser1761569196818;
+
+
+/***/ }),
+/* 15 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.User = void 0;
+var user_entity_1 = __webpack_require__(16);
+Object.defineProperty(exports, "User", ({ enumerable: true, get: function () { return user_entity_1.User; } }));
+
+
+/***/ }),
+/* 16 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a, _b, _c, _d;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.User = void 0;
+const tslib_1 = __webpack_require__(3);
+const shared_1 = __webpack_require__(17);
+const typeorm_1 = __webpack_require__(11);
+let User = class User {
+};
+exports.User = User;
+tslib_1.__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    tslib_1.__metadata("design:type", Number)
+], User.prototype, "id", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    tslib_1.__metadata("design:type", String)
+], User.prototype, "userId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    tslib_1.__metadata("design:type", String)
+], User.prototype, "name", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    tslib_1.__metadata("design:type", String)
+], User.prototype, "phone", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    tslib_1.__metadata("design:type", String)
+], User.prototype, "email", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    tslib_1.__metadata("design:type", String)
+], User.prototype, "cnic", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    tslib_1.__metadata("design:type", String)
+], User.prototype, "address", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    tslib_1.__metadata("design:type", String)
+], User.prototype, "password", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "enum",
+        enum: shared_1.IUserRole,
+        enumName: "user_role_enum",
+        nullable: true,
+    }),
+    tslib_1.__metadata("design:type", typeof (_a = typeof shared_1.IUserRole !== "undefined" && shared_1.IUserRole) === "function" ? _a : Object)
+], User.prototype, "role", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({
+        type: "enum",
+        enum: shared_1.IUserStatus,
+        enumName: "user_status_enum",
+        nullable: true,
+    }),
+    tslib_1.__metadata("design:type", typeof (_b = typeof shared_1.IUserStatus !== "undefined" && shared_1.IUserStatus) === "function" ? _b : Object)
+], User.prototype, "status", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    tslib_1.__metadata("design:type", typeof (_c = typeof Date !== "undefined" && Date) === "function" ? _c : Object)
+], User.prototype, "createdAt", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    tslib_1.__metadata("design:type", typeof (_d = typeof Date !== "undefined" && Date) === "function" ? _d : Object)
+], User.prototype, "updatedAt", void 0);
+exports.User = User = tslib_1.__decorate([
+    (0, typeorm_1.Entity)("user")
+], User);
+
+
+/***/ }),
+/* 17 */
+/***/ ((module) => {
+
+module.exports = require("shared");
+
+/***/ }),
+/* 18 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/config");

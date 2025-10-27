@@ -1,4 +1,9 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { CreateUser1761569196818 } from "./migrations/1761569196818-create-user";
+import { User } from "./entities";
+
+const entities = [User];
+const migrations = [CreateUser1761569196818];
 
 export const getOrmConfig = (): TypeOrmModuleOptions => {
   return {
@@ -10,10 +15,10 @@ export const getOrmConfig = (): TypeOrmModuleOptions => {
     database: process.env.DB_NAME,
     migrationsTransactionMode: "each",
     schema: "public",
-    entities: [],
+    entities,
     migrationsTableName: "migrations",
     migrationsRun: true,
     synchronize: false,
-    migrations: [],
+    migrations,
   };
 };
