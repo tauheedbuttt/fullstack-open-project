@@ -20,9 +20,10 @@ const app_controller_1 = __webpack_require__(5);
 const app_service_1 = __webpack_require__(6);
 const swagger_1 = __webpack_require__(7);
 const auth_module_1 = __webpack_require__(8);
-const typeorm_1 = __webpack_require__(12);
-const ormconfig_1 = __webpack_require__(13);
-const config_1 = __webpack_require__(18);
+const typeorm_1 = __webpack_require__(20);
+const ormconfig_1 = __webpack_require__(21);
+const config_1 = __webpack_require__(19);
+const services = [app_service_1.AppService, config_1.ConfigService];
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -36,7 +37,8 @@ exports.AppModule = AppModule = tslib_1.__decorate([
             AppModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService, config_1.ConfigService],
+        providers: services,
+        exports: services,
     })
 ], AppModule);
 
@@ -127,13 +129,27 @@ const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
 const auth_controller_1 = __webpack_require__(9);
 const auth_service_1 = __webpack_require__(10);
+const jwt_1 = __webpack_require__(11);
+const config_1 = __webpack_require__(19);
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = tslib_1.__decorate([
     (0, common_1.Module)({
+        imports: [
+            config_1.ConfigModule,
+            jwt_1.JwtModule.registerAsync({
+                imports: [config_1.ConfigModule],
+                useFactory: async (configService) => ({
+                    secret: configService.get("JWT_SECRET"),
+                    signOptions: { expiresIn: "1d" },
+                }),
+                inject: [config_1.ConfigService],
+            }),
+        ],
         controllers: [auth_controller_1.AuthController],
         providers: [auth_service_1.AuthService],
+        exports: [auth_service_1.AuthService],
     })
 ], AuthModule);
 
@@ -143,26 +159,30 @@ exports.AuthModule = AuthModule = tslib_1.__decorate([
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
-var _a;
+var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthController = void 0;
 const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
 const swagger_1 = __webpack_require__(7);
 const auth_service_1 = __webpack_require__(10);
+const auth_dto_1 = __webpack_require__(17);
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
-    async login() {
-        return await this.authService.login();
+    async login(params, body) {
+        const { role } = params;
+        return await this.authService.login(role, body);
     }
 };
 exports.AuthController = AuthController;
 tslib_1.__decorate([
-    (0, common_1.Post)("login"),
+    (0, common_1.Post)("/:role/login"),
+    tslib_1.__param(0, (0, common_1.Param)()),
+    tslib_1.__param(1, (0, common_1.Body)()),
     tslib_1.__metadata("design:type", Function),
-    tslib_1.__metadata("design:paramtypes", []),
+    tslib_1.__metadata("design:paramtypes", [typeof (_b = typeof auth_dto_1.LoginParamsDro !== "undefined" && auth_dto_1.LoginParamsDro) === "function" ? _b : Object, typeof (_c = typeof auth_dto_1.LoginDto !== "undefined" && auth_dto_1.LoginDto) === "function" ? _c : Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 exports.AuthController = AuthController = tslib_1.__decorate([
@@ -177,24 +197,44 @@ exports.AuthController = AuthController = tslib_1.__decorate([
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
-var _a;
+var _a, _b;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthService = void 0;
 const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
-const typeorm_1 = __webpack_require__(11);
+const jwt_1 = __webpack_require__(11);
+const bcrypt = __webpack_require__(12);
+const shared_1 = __webpack_require__(13);
+const typeorm_1 = __webpack_require__(14);
+const user_entity_1 = __webpack_require__(15);
+const exceptions_1 = __webpack_require__(16);
 let AuthService = class AuthService {
-    constructor(dataSource) {
+    constructor(dataSource, jwtService) {
         this.dataSource = dataSource;
+        this.jwtService = jwtService;
+        this.userRepository = this.dataSource.getRepository(user_entity_1.User);
     }
-    async login() {
-        return await this.dataSource.query("SELECT 1");
+    async login(role, body) {
+        const user = await this.userRepository.findOne({
+            where: { email: body.email, role, status: shared_1.IUserStatus.ACTIVE },
+        });
+        if (!user)
+            throw new exceptions_1.Forbidden("User not found");
+        // use bcrypt to compare passwords in a real application
+        const comparison = await bcrypt.compare(body.password, user.password);
+        if (!comparison)
+            throw new exceptions_1.Forbidden("Invalid credentials");
+        const token = await this.jwtService.signAsync({
+            iam: user.userId,
+            role: user.role,
+        });
+        return { token, role: user.role };
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = tslib_1.__decorate([
     (0, common_1.Injectable)(),
-    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof typeorm_1.DataSource !== "undefined" && typeorm_1.DataSource) === "function" ? _a : Object])
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof typeorm_1.DataSource !== "undefined" && typeorm_1.DataSource) === "function" ? _a : Object, typeof (_b = typeof jwt_1.JwtService !== "undefined" && jwt_1.JwtService) === "function" ? _b : Object])
 ], AuthService);
 
 
@@ -202,114 +242,28 @@ exports.AuthService = AuthService = tslib_1.__decorate([
 /* 11 */
 /***/ ((module) => {
 
-module.exports = require("typeorm");
+module.exports = require("@nestjs/jwt");
 
 /***/ }),
 /* 12 */
 /***/ ((module) => {
 
-module.exports = require("@nestjs/typeorm");
+module.exports = require("bcrypt");
 
 /***/ }),
 /* 13 */
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ ((module) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getOrmConfig = void 0;
-const _1761569196818_create_user_1 = __webpack_require__(14);
-const entities_1 = __webpack_require__(15);
-const entities = [entities_1.User];
-const migrations = [_1761569196818_create_user_1.CreateUser1761569196818];
-const getOrmConfig = () => {
-    return {
-        type: "postgres",
-        host: process.env.DB_HOST,
-        port: parseInt(process.env.DB_PORT ?? "5432", 10),
-        username: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME,
-        migrationsTransactionMode: "each",
-        schema: "public",
-        entities,
-        migrationsTableName: "migrations",
-        migrationsRun: true,
-        synchronize: false,
-        migrations,
-    };
-};
-exports.getOrmConfig = getOrmConfig;
-
+module.exports = require("shared");
 
 /***/ }),
 /* 14 */
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((module) => {
 
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.CreateUser1761569196818 = void 0;
-class CreateUser1761569196818 {
-    async up(queryRunner) {
-        // user role enum
-        await queryRunner.query(`
-      CREATE TYPE "user_role_enum"
-      AS ENUM(
-        'Admin',
-        'Rider',
-        'Owner'
-      );
-    `);
-        // order status enum
-        await queryRunner.query(`
-      CREATE TYPE "user_status_enum"
-      AS ENUM(
-        'Active',
-        'Inactive'
-      );
-    `);
-        // Create user table
-        await queryRunner.query(`
-      CREATE TABLE "user" (
-        id SERIAL PRIMARY KEY,
-        "userId" varchar,
-        
-        "name" varchar,
-        "phone" varchar,
-        "email" varchar,
-        "cnic" varchar,
-        "address" varchar,
-        
-        "password" varchar,
-        "role" user_role_enum,
-        "status" user_status_enum,
-        
-        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
-        "updatedAt" TIMESTAMP NOT NULL DEFAULT now()
-      );
-    `);
-    }
-    async down(queryRunner) {
-        await queryRunner.query(`DROP TABLE user;`);
-        await queryRunner.query(`DROP TYPE "user_role_enum";`);
-        await queryRunner.query(`DROP TYPE "user_status_enum";`);
-    }
-}
-exports.CreateUser1761569196818 = CreateUser1761569196818;
-
+module.exports = require("typeorm");
 
 /***/ }),
 /* 15 */
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.User = void 0;
-var user_entity_1 = __webpack_require__(16);
-Object.defineProperty(exports, "User", ({ enumerable: true, get: function () { return user_entity_1.User; } }));
-
-
-/***/ }),
-/* 16 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -317,8 +271,8 @@ var _a, _b, _c, _d;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.User = void 0;
 const tslib_1 = __webpack_require__(3);
-const shared_1 = __webpack_require__(17);
-const typeorm_1 = __webpack_require__(11);
+const shared_1 = __webpack_require__(13);
+const typeorm_1 = __webpack_require__(14);
 let User = class User {
 };
 exports.User = User;
@@ -386,16 +340,213 @@ exports.User = User = tslib_1.__decorate([
 
 
 /***/ }),
-/* 17 */
-/***/ ((module) => {
+/* 16 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-module.exports = require("shared");
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Unauthorized = exports.BadRequest = exports.Forbidden = exports.NotFound = exports.BaseHttpException = void 0;
+const common_1 = __webpack_require__(4);
+class BaseHttpException extends common_1.HttpException {
+    constructor(message, status, data) {
+        super({ message, data }, status);
+    }
+}
+exports.BaseHttpException = BaseHttpException;
+class NotFound extends BaseHttpException {
+    constructor(message, data) {
+        super(message, common_1.HttpStatus.NOT_FOUND, data);
+    }
+}
+exports.NotFound = NotFound;
+class Forbidden extends BaseHttpException {
+    constructor(message, data) {
+        super(message, common_1.HttpStatus.FORBIDDEN, data);
+    }
+}
+exports.Forbidden = Forbidden;
+class BadRequest extends BaseHttpException {
+    constructor(message, data) {
+        super(message, common_1.HttpStatus.BAD_REQUEST, data);
+    }
+}
+exports.BadRequest = BadRequest;
+class Unauthorized extends BaseHttpException {
+    constructor(message, data) {
+        super(message, common_1.HttpStatus.UNAUTHORIZED, data);
+    }
+}
+exports.Unauthorized = Unauthorized;
+
+
+/***/ }),
+/* 17 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.LoginDto = exports.LoginParamsDro = void 0;
+const tslib_1 = __webpack_require__(3);
+const swagger_1 = __webpack_require__(7);
+const class_validator_1 = __webpack_require__(18);
+const shared_1 = __webpack_require__(13);
+class LoginParamsDro {
+}
+exports.LoginParamsDro = LoginParamsDro;
+tslib_1.__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsEnum)(shared_1.IUserRole),
+    (0, class_validator_1.IsNotEmpty)(),
+    tslib_1.__metadata("design:type", typeof (_a = typeof shared_1.IUserRole !== "undefined" && shared_1.IUserRole) === "function" ? _a : Object)
+], LoginParamsDro.prototype, "role", void 0);
+class LoginDto {
+}
+exports.LoginDto = LoginDto;
+tslib_1.__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    tslib_1.__metadata("design:type", String)
+], LoginDto.prototype, "email", void 0);
+tslib_1.__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    tslib_1.__metadata("design:type", String)
+], LoginDto.prototype, "password", void 0);
+
 
 /***/ }),
 /* 18 */
 /***/ ((module) => {
 
+module.exports = require("class-validator");
+
+/***/ }),
+/* 19 */
+/***/ ((module) => {
+
 module.exports = require("@nestjs/config");
+
+/***/ }),
+/* 20 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/typeorm");
+
+/***/ }),
+/* 21 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getOrmConfig = void 0;
+const _1761569196818_create_user_1 = __webpack_require__(22);
+const user_entity_1 = __webpack_require__(15);
+const entities = [user_entity_1.User];
+const migrations = [_1761569196818_create_user_1.CreateUser1761569196818];
+const getOrmConfig = () => {
+    return {
+        type: "postgres",
+        host: process.env.DB_HOST,
+        port: parseInt(process.env.DB_PORT ?? "5432", 10),
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        migrationsTransactionMode: "each",
+        schema: "public",
+        entities,
+        migrationsTableName: "migrations",
+        migrationsRun: true,
+        synchronize: false,
+        migrations,
+    };
+};
+exports.getOrmConfig = getOrmConfig;
+
+
+/***/ }),
+/* 22 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreateUser1761569196818 = void 0;
+class CreateUser1761569196818 {
+    async up(queryRunner) {
+        // user role enum
+        await queryRunner.query(`
+      CREATE TYPE "user_role_enum"
+      AS ENUM(
+        'Admin',
+        'Rider',
+        'Owner'
+      );
+    `);
+        // order status enum
+        await queryRunner.query(`
+      CREATE TYPE "user_status_enum"
+      AS ENUM(
+        'Active',
+        'Inactive'
+      );
+    `);
+        // Create user table
+        await queryRunner.query(`
+      CREATE TABLE "user" (
+        id SERIAL PRIMARY KEY,
+        "userId" varchar,
+        
+        "name" varchar,
+        "phone" varchar,
+        "email" varchar,
+        "cnic" varchar,
+        "address" varchar,
+        
+        "password" varchar,
+        "role" user_role_enum,
+        "status" user_status_enum,
+        
+        "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+        "updatedAt" TIMESTAMP NOT NULL DEFAULT now()
+      );
+    `);
+    }
+    async down(queryRunner) {
+        await queryRunner.query(`DROP TABLE user;`);
+        await queryRunner.query(`DROP TYPE "user_role_enum";`);
+        await queryRunner.query(`DROP TYPE "user_status_enum";`);
+    }
+}
+exports.CreateUser1761569196818 = CreateUser1761569196818;
+
+
+/***/ }),
+/* 23 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HttpExceptionFilter = void 0;
+const tslib_1 = __webpack_require__(3);
+const common_1 = __webpack_require__(4);
+let HttpExceptionFilter = class HttpExceptionFilter {
+    catch(exception, host) {
+        host
+            .switchToHttp()
+            .getResponse()
+            .status(exception.getStatus())
+            .send({
+            status: exception.getStatus(),
+            ...exception.getResponse(),
+        });
+    }
+};
+exports.HttpExceptionFilter = HttpExceptionFilter;
+exports.HttpExceptionFilter = HttpExceptionFilter = tslib_1.__decorate([
+    (0, common_1.Catch)(common_1.HttpException)
+], HttpExceptionFilter);
+
 
 /***/ })
 /******/ 	]);
@@ -436,12 +587,16 @@ const core_1 = __webpack_require__(1);
 const app_module_1 = __webpack_require__(2);
 const common_1 = __webpack_require__(4);
 const swagger_1 = __webpack_require__(7);
+const exception_filter_1 = __webpack_require__(23);
 let cachedApp;
 const isVercel = !!process.env.VERCEL_ENV;
 const isDevelopment = process.env.NODE_ENV === "development";
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule); // no express passed
+    app.enableCors({ origin: "*" });
     app.setGlobalPrefix("api");
+    app.useGlobalPipes(new common_1.ValidationPipe());
+    app.useGlobalFilters(new exception_filter_1.HttpExceptionFilter());
     if (!isVercel) {
         const PORT = process.env.PORT || 3000;
         if (isDevelopment) {

@@ -7,6 +7,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { getOrmConfig } from "../ormconfig";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 
+const services = [AppService, ConfigService];
+
 @Module({
   imports: [
     ConfigModule,
@@ -16,6 +18,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
     AppModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ConfigService],
+  providers: services,
+  exports: services,
 })
 export class AppModule {}

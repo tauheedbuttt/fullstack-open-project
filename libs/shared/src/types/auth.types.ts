@@ -1,3 +1,5 @@
+import { IUserRole } from "./user.types";
+
 export interface ILoginRequest {
   email: string;
   password: string;
@@ -13,4 +15,9 @@ export interface IChangeProfileRequest {
   email?: string;
   phone?: string;
   image?: string;
+}
+
+export interface ILoginResponse {
+  token: string;
+  role: IUserRole;
 }

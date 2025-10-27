@@ -4,6 +4,8 @@ import * as ReactDOM from "react-dom/client";
 import App from "./App";
 import { store } from "./store";
 import { Provider } from "react-redux";
+import { QueryClientProvider } from "@tanstack/react-query";
+import queryClient from "./config/queryClient";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -11,10 +13,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </QueryClientProvider>
   </StrictMode>
 );

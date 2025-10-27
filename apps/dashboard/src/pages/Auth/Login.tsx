@@ -6,7 +6,10 @@ import { routes } from "../../config/routeConfig";
 import Button from "../../components/Button";
 import { loginValidationSchema } from "../../validations/auth";
 import { formikError } from "../../utils/utils";
-import { LoginForm, LoginFormInputs } from "../../types/auth";
+import { LoginFormInputs } from "../../types/auth";
+import { ILoginRequest } from "shared";
+import useMutation from "../../hooks/useMutation";
+import { endpoints } from "../../config/endpoints";
 
 const initialValues = {
   email: "",
@@ -15,11 +18,21 @@ const initialValues = {
 
 const Login = () => {
   useBreadcrumb("Neighborhood Fee Management", "D-12 Admin Dashboard");
-  const formik = useFormik<LoginForm>({
+
+  const { mutate: login } = useMutation<ILoginRequest>(endpoints.auth.login, {
+    onSuccess: (res) => {
+      console.log("Login successful", res);
+    },
+    onError: (error) => {
+      console.error("Login failed", error);
+    },
+  });
+
+  const formik = useFormik<ILoginRequest>({
     initialValues,
     validationSchema: loginValidationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      login(values);
     },
   });
   const { handleSubmit, handleChange, values } = formik;

@@ -1,3 +1,7 @@
+import { IUserRole } from "shared";
+
 export const endpoints = {
-  login: "/api/login",
+  auth: {
+    login: `/auth/${IUserRole.ADMIN}/login`,
+  },
 };

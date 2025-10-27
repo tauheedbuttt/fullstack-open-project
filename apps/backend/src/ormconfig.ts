@@ -1,6 +1,6 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { CreateUser1761569196818 } from "./migrations/1761569196818-create-user";
-import { User } from "./entities";
+import { User } from "./entities/user.entity";
 
 const entities = [User];
 const migrations = [CreateUser1761569196818];

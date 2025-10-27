@@ -1,8 +1,9 @@
 import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app/app.module";
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { Logger } from "@nestjs/common";
+import { Logger, ValidationPipe } from "@nestjs/common";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
+import { HttpExceptionFilter } from "./filters/exception.filter";
 
 let cachedApp: any;
 const isVercel = !!process.env.VERCEL_ENV;
@@ -10,8 +11,10 @@ const isDevelopment = process.env.NODE_ENV === "development";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule); // no express passed
+  app.enableCors({ origin: "*" });
   app.setGlobalPrefix("api");
-
+  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new HttpExceptionFilter());
   if (!isVercel) {
     const PORT = process.env.PORT || 3000;
     if (isDevelopment) {
