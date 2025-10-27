@@ -6,7 +6,9 @@
     "emitDeclarationOnly": true,
     "importHelpers": true,
     "isolatedModules": true,
-    "lib": ["es2022"],
+    "lib": [
+      "es2022"
+    ],
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
@@ -18,8 +20,12 @@
     "strict": true,
     "target": "es2022",
     "paths": {
-      "@libs/shared": ["libs/shared/src/index.ts"],
-      "shared": ["libs/shared/src/index.ts"]
+      "@libs/shared": [
+        "libs/shared/src/index.ts"
+      ],
+      "shared": [
+        "libs/shared/src/index.ts"
+      ]
     }
   }
 }

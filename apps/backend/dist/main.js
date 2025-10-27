@@ -18,14 +18,25 @@ const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
 const app_controller_1 = __webpack_require__(5);
 const app_service_1 = __webpack_require__(6);
+const swagger_1 = __webpack_require__(7);
+const auth_module_1 = __webpack_require__(8);
+const typeorm_1 = __webpack_require__(12);
+const ormconfig_1 = __webpack_require__(13);
+const config_1 = __webpack_require__(14);
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = tslib_1.__decorate([
     (0, common_1.Module)({
-        imports: [],
+        imports: [
+            config_1.ConfigModule,
+            typeorm_1.TypeOrmModule.forRoot((0, ormconfig_1.getOrmConfig)()),
+            swagger_1.SwaggerModule,
+            auth_module_1.AuthModule,
+            AppModule,
+        ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [app_service_1.AppService, config_1.ConfigService],
     })
 ], AppModule);
 
@@ -99,6 +110,139 @@ exports.AppService = AppService = tslib_1.__decorate([
 ], AppService);
 
 
+/***/ }),
+/* 7 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/swagger");
+
+/***/ }),
+/* 8 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthModule = void 0;
+const tslib_1 = __webpack_require__(3);
+const common_1 = __webpack_require__(4);
+const auth_controller_1 = __webpack_require__(9);
+const auth_service_1 = __webpack_require__(10);
+let AuthModule = class AuthModule {
+};
+exports.AuthModule = AuthModule;
+exports.AuthModule = AuthModule = tslib_1.__decorate([
+    (0, common_1.Module)({
+        controllers: [auth_controller_1.AuthController],
+        providers: [auth_service_1.AuthService],
+    })
+], AuthModule);
+
+
+/***/ }),
+/* 9 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthController = void 0;
+const tslib_1 = __webpack_require__(3);
+const common_1 = __webpack_require__(4);
+const swagger_1 = __webpack_require__(7);
+const auth_service_1 = __webpack_require__(10);
+let AuthController = class AuthController {
+    constructor(authService) {
+        this.authService = authService;
+    }
+    async login() {
+        return await this.authService.login();
+    }
+};
+exports.AuthController = AuthController;
+tslib_1.__decorate([
+    (0, common_1.Post)("login"),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", []),
+    tslib_1.__metadata("design:returntype", Promise)
+], AuthController.prototype, "login", null);
+exports.AuthController = AuthController = tslib_1.__decorate([
+    (0, common_1.Controller)("auth"),
+    (0, swagger_1.ApiTags)("Authentication"),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof auth_service_1.AuthService !== "undefined" && auth_service_1.AuthService) === "function" ? _a : Object])
+], AuthController);
+
+
+/***/ }),
+/* 10 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthService = void 0;
+const tslib_1 = __webpack_require__(3);
+const common_1 = __webpack_require__(4);
+const typeorm_1 = __webpack_require__(11);
+let AuthService = class AuthService {
+    constructor(dataSource) {
+        this.dataSource = dataSource;
+    }
+    async login() {
+        return await this.dataSource.query("SELECT 1");
+    }
+};
+exports.AuthService = AuthService;
+exports.AuthService = AuthService = tslib_1.__decorate([
+    (0, common_1.Injectable)(),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof typeorm_1.DataSource !== "undefined" && typeorm_1.DataSource) === "function" ? _a : Object])
+], AuthService);
+
+
+/***/ }),
+/* 11 */
+/***/ ((module) => {
+
+module.exports = require("typeorm");
+
+/***/ }),
+/* 12 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/typeorm");
+
+/***/ }),
+/* 13 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getOrmConfig = void 0;
+const getOrmConfig = () => {
+    return {
+        type: "postgres",
+        host: process.env.DB_HOST,
+        port: parseInt(process.env.DB_PORT ?? "5432", 10),
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        migrationsTransactionMode: "each",
+        schema: "public",
+        entities: [],
+        migrationsTableName: "migrations",
+        migrationsRun: true,
+        synchronize: false,
+        migrations: [],
+    };
+};
+exports.getOrmConfig = getOrmConfig;
+
+
+/***/ }),
+/* 14 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/config");
+
 /***/ })
 /******/ 	]);
 /************************************************************************/
@@ -136,12 +280,36 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports["default"] = handler;
 const core_1 = __webpack_require__(1);
 const app_module_1 = __webpack_require__(2);
+const common_1 = __webpack_require__(4);
+const swagger_1 = __webpack_require__(7);
 let cachedApp;
+const isVercel = !!process.env.VERCEL_ENV;
+const isDevelopment = process.env.NODE_ENV === "development";
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule); // no express passed
     app.setGlobalPrefix("api");
-    await app.init();
-    return app.getHttpAdapter().getInstance(); // get internal express instance
+    if (!isVercel) {
+        const PORT = process.env.PORT || 3000;
+        if (isDevelopment) {
+            const config = new swagger_1.DocumentBuilder()
+                .setTitle("Cats example")
+                .setDescription("The cats API description")
+                .setVersion("1.0")
+                .build();
+            const documentFactory = () => swagger_1.SwaggerModule.createDocument(app, config);
+            swagger_1.SwaggerModule.setup("docs", app, documentFactory);
+            swagger_1.SwaggerModule.setup("docs.json", app, documentFactory, {
+                swaggerOptions: { docExpansion: "none" },
+            });
+        }
+        await app.listen(PORT);
+        common_1.Logger.log(`Starting server on http://localhost:${PORT}`);
+        common_1.Logger.log(`Swagger on http://localhost:${PORT}/docs`);
+    }
+    else {
+        await app.init();
+        return app.getHttpAdapter().getInstance(); // get internal express instance
+    }
 }
 async function handler(req, res) {
     if (!cachedApp) {
@@ -149,9 +317,12 @@ async function handler(req, res) {
     }
     cachedApp(req, res);
 }
+if (!isVercel)
+    bootstrap();
 
 })();
 
 module.exports = __webpack_exports__;
 /******/ })()
 ;
+//# sourceMappingURL=main.js.map
