@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { View } from "react-native";
-import { formikError, IUserRole } from "shared";
+import { formikError, ILoginRequest, ILoginResponse, IUserRole } from "shared";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import LogoData from "../../components/LogoData";
@@ -11,12 +11,31 @@ import { useNavigate } from "react-router-native";
 import { routes } from "../../config/routeConfig";
 import { loginValidationSchema } from "../../validation/auth";
 import useAuth from "../../hooks/useAuth";
+import { endpoints } from "../../config/endpoints";
+import useMutation from "../../hooks/useMutation";
 
 export default function LoginScreen() {
   const navigate = useNavigate();
   const { onLogin } = useAuth();
 
   const [role, setRole] = useState<IUserRole | undefined>();
+
+  const { mutate: login } = useMutation<ILoginRequest, ILoginResponse>(
+    endpoints.auth.login.replace(":role", `${role}`),
+    {
+      onSuccess: (res) => {
+        if (!role) return;
+        onLogin(role, res.token);
+        const baseHome =
+          role === IUserRole.OWNER ? routes.owner.home : routes.rider.home;
+        navigate(baseHome);
+      },
+      onError: (error) => {
+        console.error("Login failed", error.response?.data?.message);
+      },
+    }
+  );
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -25,10 +44,7 @@ export default function LoginScreen() {
     validationSchema: loginValidationSchema,
     onSubmit: (values) => {
       if (!role) return;
-      onLogin(role);
-      const baseHome =
-        role === IUserRole.OWNER ? routes.owner.home : routes.rider.home;
-      navigate(baseHome);
+      login(values);
     },
   });
 

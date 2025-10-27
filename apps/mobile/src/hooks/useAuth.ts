@@ -6,8 +6,8 @@ import { type RootState } from "../store";
 const useAuth = () => {
   const auth = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-  const onLogin = (role: IUserRole) => {
-    dispatch(login({ role }));
+  const onLogin = (role: IUserRole, token: string) => {
+    dispatch(login({ role, token }));
   };
   const onLogout = () => {
     dispatch(logout());

@@ -1,3 +1,5 @@
 export const endpoints = {
-  login: "/api/login",
+  auth: {
+    login: "/auth/:role/login",
+  },
 };
