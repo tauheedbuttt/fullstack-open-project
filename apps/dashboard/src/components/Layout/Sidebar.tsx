@@ -4,15 +4,18 @@ import {
   CardIcon,
   DashboardIcon,
   HouseIcon,
+  LogoutIcon,
   OwnersIcon,
   ReportIcon,
   RiderIcon,
   SettingIcon,
 } from "../../assets";
 import clsx from "clsx";
+import useAuth from "../../hooks/useAuth";
 
 const Sidebar = () => {
   const location = useLocation();
+  const { onLogout } = useAuth();
 
   const pages = [
     {
@@ -83,6 +86,19 @@ const Sidebar = () => {
             {page.name}
           </Link>
         ))}
+        {/* Logout Button */}
+        <div className="w-full h-full flex flex-col  items-end justify-end">
+          <button
+            onClick={onLogout}
+            className={clsx(
+              "flex gap-2 w-full items-center px-4 active:shadow-sm py-3 text-gray-700 rounded-lg active:bg-primary active:text-white",
+              "hover:bg-gray-100"
+            )}
+          >
+            {<LogoutIcon />}
+            Logout
+          </button>
+        </div>
       </nav>
     </aside>
   );

@@ -1,15 +1,16 @@
 import { useFormik } from "formik";
 import useBreadcrumb from "../../hooks/useBreadcrumb";
 import Input from "../../components/Input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { routes } from "../../config/routeConfig";
 import Button from "../../components/Button";
 import { loginValidationSchema } from "../../validations/auth";
 import { formikError } from "../../utils/utils";
 import { LoginFormInputs } from "../../types/auth";
-import { ILoginRequest } from "shared";
+import { ILoginRequest, ILoginResponse } from "shared";
 import useMutation from "../../hooks/useMutation";
 import { endpoints } from "../../config/endpoints";
+import useAuth from "../../hooks/useAuth";
 
 const initialValues = {
   email: "",
@@ -19,11 +20,19 @@ const initialValues = {
 const Login = () => {
   useBreadcrumb("Neighborhood Fee Management", "D-12 Admin Dashboard");
 
-  const { mutate: login } = useMutation<ILoginRequest>(endpoints.auth.login, {
-    onSuccess: (res) => {
-      console.log("Login successful", res);
-    },
-  });
+  const navigate = useNavigate();
+  const { onLogin } = useAuth();
+
+  const { mutate: login } = useMutation<ILoginRequest, ILoginResponse>(
+    endpoints.auth.login,
+    {
+      onSuccess: (res) => {
+        console.log("Login successful", res);
+        onLogin(res.token);
+        navigate(routes.dashboard);
+      },
+    }
+  );
 
   const formik = useFormik<ILoginRequest>({
     initialValues,

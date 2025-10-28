@@ -295,7 +295,7 @@ let AuthService = class AuthService {
         if (!user)
             throw new exceptions_1.NotFound("Invalid OTP");
         // check if otp is expired
-        if (user.resetOtpExpiry && user.resetOtpExpiry < new Date()) {
+        if (user.resetOtpExpiry && new Date(user.resetOtpExpiry) < new Date()) {
             throw new exceptions_1.Forbidden("OTP has expired");
         }
         return { message: "OTP verified successfully" };
@@ -307,7 +307,7 @@ let AuthService = class AuthService {
         if (!user)
             throw new exceptions_1.NotFound("Invalid OTP");
         // check if otp is expired
-        if (user.resetOtpExpiry && user.resetOtpExpiry < new Date()) {
+        if (user.resetOtpExpiry && new Date(user.resetOtpExpiry) < new Date()) {
             throw new exceptions_1.Forbidden("OTP has expired");
         }
         // hash the new password
