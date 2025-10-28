@@ -28,7 +28,7 @@ const Router = () => {
             key={route}
             path={route}
             element={
-              <Layout>
+              <Layout auth>
                 <Element />
               </Layout>
             }

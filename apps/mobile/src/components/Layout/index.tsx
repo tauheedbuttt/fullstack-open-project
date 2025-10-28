@@ -10,12 +10,14 @@ interface Props extends AppHeaderProps {
   children?: React.ReactNode;
   showAppBar?: boolean;
   showTabBar?: boolean;
+  auth?: boolean;
 }
 
 const Layout = ({
   children,
   showAppBar = true,
   showTabBar = false,
+  auth = false,
   fab,
   ...headerProps
 }: Props) => {
@@ -35,6 +37,7 @@ const Layout = ({
             style={tw.style(
               `h-16 w-full items-center justify-center `,
               showAppBar && "bg-white",
+              auth && "bg-transparent",
               headerProps.variant &&
                 ["rider-home", "collection-mode"].includes(
                   headerProps.variant

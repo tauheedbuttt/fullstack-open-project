@@ -95,14 +95,14 @@ export default function LoginScreen() {
         {/* Actions */}
         <View style={tw`mt-6 gap-2`}>
           <Button
-            text="Login as Rider"
-            variant="outlined"
-            onPress={() => onSubmit(IUserRole.RIDER)}
+            text="Login as Owner"
+            onPress={() => onSubmit(IUserRole.OWNER)}
             disabled={isPending}
           />
           <Button
-            text="Login as Owner"
-            onPress={() => onSubmit(IUserRole.OWNER)}
+            text="Login as Rider"
+            variant="white"
+            onPress={() => onSubmit(IUserRole.RIDER)}
             disabled={isPending}
           />
         </View>
