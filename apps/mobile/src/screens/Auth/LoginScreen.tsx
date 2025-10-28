@@ -20,21 +20,18 @@ export default function LoginScreen() {
 
   const [role, setRole] = useState<IUserRole | undefined>();
 
-  const { mutate: login } = useMutation<ILoginRequest, ILoginResponse>(
-    endpoints.auth.login.replace(":role", `${role}`),
-    {
-      onSuccess: (res) => {
-        if (!role) return;
-        onLogin(role, res.token);
-        const baseHome =
-          role === IUserRole.OWNER ? routes.owner.home : routes.rider.home;
-        navigate(baseHome);
-      },
-      onError: (error) => {
-        console.error("Login failed", error.response?.data?.message);
-      },
-    }
-  );
+  const { mutate: login, isPending } = useMutation<
+    ILoginRequest,
+    ILoginResponse
+  >(endpoints.auth.login.replace(":role", `${role}`), {
+    onSuccess: (res) => {
+      if (!role) return;
+      onLogin(role, res.token);
+      const baseHome =
+        role === IUserRole.OWNER ? routes.owner.home : routes.rider.home;
+      navigate(baseHome);
+    },
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -101,10 +98,12 @@ export default function LoginScreen() {
             text="Login as Rider"
             variant="outlined"
             onPress={() => onSubmit(IUserRole.RIDER)}
+            disabled={isPending}
           />
           <Button
             text="Login as Owner"
             onPress={() => onSubmit(IUserRole.OWNER)}
+            disabled={isPending}
           />
         </View>
       </View>

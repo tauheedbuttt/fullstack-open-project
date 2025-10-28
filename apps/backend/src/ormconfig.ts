@@ -1,9 +1,10 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { CreateUser1761569196818 } from "./migrations/1761569196818-create-user";
 import { User } from "./entities/user.entity";
+import { AddOtpFields1761647706957 } from "./migrations/1761647706957-add-otp-fields";
 
 const entities = [User];
-const migrations = [CreateUser1761569196818];
+const migrations = [CreateUser1761569196818, AddOtpFields1761647706957];
 
 export const getOrmConfig = (): TypeOrmModuleOptions => {
   return {

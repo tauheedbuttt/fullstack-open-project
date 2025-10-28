@@ -19,3 +19,10 @@ export class LoginDto implements ILoginRequest {
   @IsNotEmpty()
   password!: string;
 }
+
+export class ForgotDto {
+  @ApiProperty()
+  @IsEmail()
+  @IsNotEmpty()
+  email!: string;
+}

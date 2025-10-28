@@ -20,9 +20,9 @@ const app_controller_1 = __webpack_require__(5);
 const app_service_1 = __webpack_require__(6);
 const swagger_1 = __webpack_require__(7);
 const auth_module_1 = __webpack_require__(8);
-const typeorm_1 = __webpack_require__(20);
-const ormconfig_1 = __webpack_require__(21);
-const config_1 = __webpack_require__(19);
+const typeorm_1 = __webpack_require__(21);
+const ormconfig_1 = __webpack_require__(22);
+const config_1 = __webpack_require__(20);
 const services = [app_service_1.AppService, config_1.ConfigService];
 let AppModule = class AppModule {
 };
@@ -130,7 +130,7 @@ const common_1 = __webpack_require__(4);
 const auth_controller_1 = __webpack_require__(9);
 const auth_service_1 = __webpack_require__(10);
 const jwt_1 = __webpack_require__(11);
-const config_1 = __webpack_require__(19);
+const config_1 = __webpack_require__(20);
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -159,14 +159,14 @@ exports.AuthModule = AuthModule = tslib_1.__decorate([
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
-var _a, _b, _c;
+var _a, _b, _c, _d;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthController = void 0;
 const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
 const swagger_1 = __webpack_require__(7);
 const auth_service_1 = __webpack_require__(10);
-const auth_dto_1 = __webpack_require__(17);
+const auth_dto_1 = __webpack_require__(18);
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -174,6 +174,9 @@ let AuthController = class AuthController {
     async login(params, body) {
         const { role } = params;
         return await this.authService.login(role, body);
+    }
+    async forgot(body) {
+        return await this.authService.forgot(body);
     }
 };
 exports.AuthController = AuthController;
@@ -185,6 +188,13 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", [typeof (_b = typeof auth_dto_1.LoginParamsDro !== "undefined" && auth_dto_1.LoginParamsDro) === "function" ? _b : Object, typeof (_c = typeof auth_dto_1.LoginDto !== "undefined" && auth_dto_1.LoginDto) === "function" ? _c : Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
+tslib_1.__decorate([
+    (0, common_1.Post)("/forgot"),
+    tslib_1.__param(0, (0, common_1.Body)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [typeof (_d = typeof auth_dto_1.ForgotDto !== "undefined" && auth_dto_1.ForgotDto) === "function" ? _d : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], AuthController.prototype, "forgot", null);
 exports.AuthController = AuthController = tslib_1.__decorate([
     (0, common_1.Controller)("auth"),
     (0, swagger_1.ApiTags)("Authentication"),
@@ -204,10 +214,11 @@ const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
 const jwt_1 = __webpack_require__(11);
 const bcrypt = __webpack_require__(12);
-const shared_1 = __webpack_require__(13);
-const typeorm_1 = __webpack_require__(14);
-const user_entity_1 = __webpack_require__(15);
-const exceptions_1 = __webpack_require__(16);
+const crypto = __webpack_require__(13);
+const shared_1 = __webpack_require__(14);
+const typeorm_1 = __webpack_require__(15);
+const user_entity_1 = __webpack_require__(16);
+const exceptions_1 = __webpack_require__(17);
 let AuthService = class AuthService {
     constructor(dataSource, jwtService) {
         this.dataSource = dataSource;
@@ -219,7 +230,7 @@ let AuthService = class AuthService {
             where: { email: body.email, role, status: shared_1.IUserStatus.ACTIVE },
         });
         if (!user)
-            throw new exceptions_1.Forbidden("User not found");
+            throw new exceptions_1.Forbidden("Invalid credentials");
         // use bcrypt to compare passwords in a real application
         const comparison = await bcrypt.compare(body.password, user.password);
         if (!comparison)
@@ -229,6 +240,26 @@ let AuthService = class AuthService {
             role: user.role,
         });
         return { token, role: user.role };
+    }
+    async forgot(body) {
+        const user = await this.userRepository.findOne({
+            where: { email: body.email, status: shared_1.IUserStatus.ACTIVE },
+        });
+        if (!user)
+            throw new exceptions_1.NotFound("User not found");
+        // generate reset token
+        const expiryMinutes = parseInt(process.env.OTP_EXPIRY ?? "") || 15;
+        const resetOtp = crypto
+            .randomInt(0, 1000000)
+            .toString()
+            .padStart(6, "0")
+            .toUpperCase();
+        const resetOtpExpiry = new Date(Date.now() + expiryMinutes * 60 * 1000);
+        user.resetOtp = resetOtp;
+        user.resetOtpExpiry = resetOtpExpiry;
+        await this.userRepository.save(user);
+        // Send Email Here
+        return { message: "Password reset OTP sent to email" };
     }
 };
 exports.AuthService = AuthService;
@@ -254,25 +285,31 @@ module.exports = require("bcrypt");
 /* 13 */
 /***/ ((module) => {
 
-module.exports = require("shared");
+module.exports = require("crypto");
 
 /***/ }),
 /* 14 */
 /***/ ((module) => {
 
-module.exports = require("typeorm");
+module.exports = require("shared");
 
 /***/ }),
 /* 15 */
+/***/ ((module) => {
+
+module.exports = require("typeorm");
+
+/***/ }),
+/* 16 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
-var _a, _b, _c, _d;
+var _a, _b, _c, _d, _e;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.User = void 0;
 const tslib_1 = __webpack_require__(3);
-const shared_1 = __webpack_require__(13);
-const typeorm_1 = __webpack_require__(14);
+const shared_1 = __webpack_require__(14);
+const typeorm_1 = __webpack_require__(15);
 let User = class User {
 };
 exports.User = User;
@@ -281,31 +318,31 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", Number)
 ], User.prototype, "id", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar" }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "userId", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar" }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "name", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar" }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "phone", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar" }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "email", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar" }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "cnic", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar" }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "address", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "varchar", nullable: true }),
+    (0, typeorm_1.Column)({ type: "varchar" }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "password", void 0);
 tslib_1.__decorate([
@@ -313,7 +350,6 @@ tslib_1.__decorate([
         type: "enum",
         enum: shared_1.IUserRole,
         enumName: "user_role_enum",
-        nullable: true,
     }),
     tslib_1.__metadata("design:type", typeof (_a = typeof shared_1.IUserRole !== "undefined" && shared_1.IUserRole) === "function" ? _a : Object)
 ], User.prototype, "role", void 0);
@@ -322,17 +358,24 @@ tslib_1.__decorate([
         type: "enum",
         enum: shared_1.IUserStatus,
         enumName: "user_status_enum",
-        nullable: true,
     }),
     tslib_1.__metadata("design:type", typeof (_b = typeof shared_1.IUserStatus !== "undefined" && shared_1.IUserStatus) === "function" ? _b : Object)
 ], User.prototype, "status", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.CreateDateColumn)(),
+    (0, typeorm_1.Column)({ type: "varchar" }),
+    tslib_1.__metadata("design:type", String)
+], User.prototype, "resetOtp", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "date" }),
     tslib_1.__metadata("design:type", typeof (_c = typeof Date !== "undefined" && Date) === "function" ? _c : Object)
+], User.prototype, "resetOtpExpiry", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    tslib_1.__metadata("design:type", typeof (_d = typeof Date !== "undefined" && Date) === "function" ? _d : Object)
 ], User.prototype, "createdAt", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.UpdateDateColumn)(),
-    tslib_1.__metadata("design:type", typeof (_d = typeof Date !== "undefined" && Date) === "function" ? _d : Object)
+    tslib_1.__metadata("design:type", typeof (_e = typeof Date !== "undefined" && Date) === "function" ? _e : Object)
 ], User.prototype, "updatedAt", void 0);
 exports.User = User = tslib_1.__decorate([
     (0, typeorm_1.Entity)("user")
@@ -340,7 +383,7 @@ exports.User = User = tslib_1.__decorate([
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -380,17 +423,17 @@ exports.Unauthorized = Unauthorized;
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.LoginDto = exports.LoginParamsDro = void 0;
+exports.ForgotDto = exports.LoginDto = exports.LoginParamsDro = void 0;
 const tslib_1 = __webpack_require__(3);
 const swagger_1 = __webpack_require__(7);
-const class_validator_1 = __webpack_require__(18);
-const shared_1 = __webpack_require__(13);
+const class_validator_1 = __webpack_require__(19);
+const shared_1 = __webpack_require__(14);
 class LoginParamsDro {
 }
 exports.LoginParamsDro = LoginParamsDro;
@@ -414,37 +457,47 @@ tslib_1.__decorate([
     (0, class_validator_1.IsNotEmpty)(),
     tslib_1.__metadata("design:type", String)
 ], LoginDto.prototype, "password", void 0);
+class ForgotDto {
+}
+exports.ForgotDto = ForgotDto;
+tslib_1.__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsEmail)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    tslib_1.__metadata("design:type", String)
+], ForgotDto.prototype, "email", void 0);
 
-
-/***/ }),
-/* 18 */
-/***/ ((module) => {
-
-module.exports = require("class-validator");
 
 /***/ }),
 /* 19 */
 /***/ ((module) => {
 
-module.exports = require("@nestjs/config");
+module.exports = require("class-validator");
 
 /***/ }),
 /* 20 */
 /***/ ((module) => {
 
-module.exports = require("@nestjs/typeorm");
+module.exports = require("@nestjs/config");
 
 /***/ }),
 /* 21 */
+/***/ ((module) => {
+
+module.exports = require("@nestjs/typeorm");
+
+/***/ }),
+/* 22 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getOrmConfig = void 0;
-const _1761569196818_create_user_1 = __webpack_require__(22);
-const user_entity_1 = __webpack_require__(15);
+const _1761569196818_create_user_1 = __webpack_require__(23);
+const user_entity_1 = __webpack_require__(16);
+const _1761647706957_add_otp_fields_1 = __webpack_require__(24);
 const entities = [user_entity_1.User];
-const migrations = [_1761569196818_create_user_1.CreateUser1761569196818];
+const migrations = [_1761569196818_create_user_1.CreateUser1761569196818, _1761647706957_add_otp_fields_1.AddOtpFields1761647706957];
 const getOrmConfig = () => {
     return {
         type: "postgres",
@@ -466,7 +519,7 @@ exports.getOrmConfig = getOrmConfig;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -522,7 +575,33 @@ exports.CreateUser1761569196818 = CreateUser1761569196818;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AddOtpFields1761647706957 = void 0;
+class AddOtpFields1761647706957 {
+    async up(queryRunner) {
+        await queryRunner.query(`
+            ALTER TABLE "user"
+            ADD COLUMN "resetOtp" VARCHAR,
+            ADD COLUMN "resetOtpExpiry" TIMESTAMP;    
+        `);
+    }
+    async down(queryRunner) {
+        await queryRunner.query(`
+            ALTER TABLE "user"
+            DROP COLUMN "resetOtp",
+            DROP COLUMN "resetOtpExpiry";    
+        `);
+    }
+}
+exports.AddOtpFields1761647706957 = AddOtpFields1761647706957;
+
+
+/***/ }),
+/* 25 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -587,7 +666,7 @@ const core_1 = __webpack_require__(1);
 const app_module_1 = __webpack_require__(2);
 const common_1 = __webpack_require__(4);
 const swagger_1 = __webpack_require__(7);
-const exception_filter_1 = __webpack_require__(23);
+const exception_filter_1 = __webpack_require__(25);
 let cachedApp;
 const isVercel = !!process.env.VERCEL_ENV;
 const isDevelopment = process.env.NODE_ENV === "development";

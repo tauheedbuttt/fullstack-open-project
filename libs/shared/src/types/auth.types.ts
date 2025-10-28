@@ -21,3 +21,7 @@ export interface ILoginResponse {
   token: string;
   role: IUserRole;
 }
+
+export interface IForgotRequest {
+  email: string;
+}

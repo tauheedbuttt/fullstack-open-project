@@ -23,9 +23,6 @@ const Login = () => {
     onSuccess: (res) => {
       console.log("Login successful", res);
     },
-    onError: (error) => {
-      console.error("Login failed", error);
-    },
   });
 
   const formik = useFormik<ILoginRequest>({

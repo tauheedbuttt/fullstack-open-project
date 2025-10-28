@@ -1,6 +1,9 @@
+import { IForgotRequest } from "shared";
 import Button from "../../../components/Button";
 import Input from "../../../components/Input";
+import { endpoints } from "../../../config/endpoints";
 import useBreadcrumb from "../../../hooks/useBreadcrumb";
+import useMutation from "../../../hooks/useMutation";
 import { ForgotStepProps } from "../../../types/auth";
 
 interface EmailStepProps extends ForgotStepProps {
@@ -10,12 +13,21 @@ interface EmailStepProps extends ForgotStepProps {
 const EmailStep = ({ setEmail, nextStep }: EmailStepProps) => {
   useBreadcrumb("Reset Password", "Enter your email to receive OTP");
 
+  const { mutate: forgot } = useMutation<IForgotRequest>(
+    endpoints.auth.forgot,
+    {
+      onSuccess: (res) => {
+        console.log("Forgot password successful", res);
+        nextStep();
+      },
+    }
+  );
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const email = e.currentTarget.email.value;
-    console.log("Email submitted:", email);
+    forgot({ email });
     setEmail(email);
-    nextStep();
   };
 
   return (

@@ -12,32 +12,31 @@ export class User {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "varchar" })
   userId!: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "varchar" })
   name!: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "varchar" })
   phone!: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "varchar" })
   email!: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "varchar" })
   cnic!: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "varchar" })
   address!: string;
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "varchar" })
   password!: string;
 
   @Column({
     type: "enum",
     enum: IUserRole,
     enumName: "user_role_enum",
-    nullable: true,
   })
   role!: IUserRole;
 
@@ -45,9 +44,14 @@ export class User {
     type: "enum",
     enum: IUserStatus,
     enumName: "user_status_enum",
-    nullable: true,
   })
   status!: IUserStatus;
+
+  @Column({ type: "varchar" })
+  resetOtp!: string;
+
+  @Column({ type: "date" })
+  resetOtpExpiry!: Date;
 
   @CreateDateColumn()
   createdAt!: Date;

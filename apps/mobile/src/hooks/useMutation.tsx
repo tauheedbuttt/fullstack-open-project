@@ -9,12 +9,19 @@ const useMutation = <TVariables, TData = unknown, TError = unknown>(
   endpoint: string,
   props?: UseMutationOptions<TData, TanstackError<TError>, TVariables>
 ) => {
+  const { onError, ...baseProps } = props ? props : {};
   return useBaseMutation<TData, TanstackError<TError>, TVariables>({
     mutationFn: async (data: TVariables) => {
       const response = await api.post<TData>(endpoint, data);
       return response.data;
     },
-    ...props,
+    onError: (error, ...rest) => {
+      console.error(
+        error.response?.data?.message ?? "Oops! Something went wrong."
+      );
+      if (onError) onError(error, ...rest);
+    },
+    ...baseProps,
   });
 };
 
