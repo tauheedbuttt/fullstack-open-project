@@ -3,21 +3,43 @@ import { Text, View } from "react-native";
 import { OtpInput } from "react-native-otp-entry";
 import Button from "../../../components/Button";
 import tw from "../../../lib/tailwind";
-import { formikError, otpValidationSchema } from "shared";
+import {
+  formikError,
+  IForgotRequest,
+  IVerifyOtpRequest,
+  otpValidationSchema,
+} from "shared";
+import useMutation from "../../../hooks/useMutation";
+import { endpoints } from "../../../config/endpoints";
 
 type Props = {
-  nextStep: () => void;
+  nextStep: (otp: string) => void;
   email: string;
 };
 
 const OTPStep = ({ nextStep, email }: Props) => {
+  const { mutate: forgot, isPending: isForgotPending } =
+    useMutation<IForgotRequest>(endpoints.auth.forgot, {
+      onSuccess: () => {
+        console.log("OTP resent successfully");
+      },
+    });
+  const { mutate: verifyOtp, isPending } = useMutation<IVerifyOtpRequest>(
+    endpoints.auth.verifyOtp,
+    {
+      onSuccess: () => {
+        nextStep(formik.values.otp);
+      },
+    }
+  );
+
   const formik = useFormik({
     initialValues: {
       otp: "",
     },
     validationSchema: otpValidationSchema,
     onSubmit: (values) => {
-      nextStep();
+      verifyOtp({ ...values, email });
     },
   });
 
@@ -25,6 +47,10 @@ const OTPStep = ({ nextStep, email }: Props) => {
 
   const onVerify = () => {
     handleSubmit();
+  };
+
+  const onResend = () => {
+    forgot({ email });
   };
 
   const error = formikError(formik, "otp");
@@ -57,8 +83,14 @@ const OTPStep = ({ nextStep, email }: Props) => {
       {error && <Text style={tw`mt-2 ml-1 text-sm text-danger`}>{error}</Text>}
 
       <Text style={tw`text-center my-5`}>Didn't receive the OTP?</Text>
-      <Button text="Resend OTP" style={tw`mb-2`} variant="text" />
-      <Button text="Verify OTP" onPress={onVerify} />
+      <Button
+        text="Resend OTP"
+        onPress={onResend}
+        style={tw`mb-2`}
+        variant="text"
+        disabled={isForgotPending}
+      />
+      <Button text="Verify OTP" onPress={onVerify} disabled={isPending} />
     </View>
   );
 };

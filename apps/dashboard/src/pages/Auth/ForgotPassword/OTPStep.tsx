@@ -1,12 +1,15 @@
-import { useRef, useState } from "react";
-import Button from "../../../components/Button";
-import useBreadcrumb from "../../../hooks/useBreadcrumb";
-import { ForgotStepProps } from "../../../types/auth";
+import { useState } from "react";
 import OtpInput from "react-otp-input";
+import { IForgotRequest, IVerifyOtpRequest } from "shared";
+import Button from "../../../components/Button";
 import Input from "../../../components/Input";
+import { endpoints } from "../../../config/endpoints";
+import useBreadcrumb from "../../../hooks/useBreadcrumb";
+import useMutation from "../../../hooks/useMutation";
 
-interface OTPStepProps extends ForgotStepProps {
+interface OTPStepProps {
   email: string;
+  nextStep: (otp: string) => void;
 }
 
 const OTPStep = ({ email, nextStep }: OTPStepProps) => {
@@ -14,14 +17,28 @@ const OTPStep = ({ email, nextStep }: OTPStepProps) => {
 
   const [otp, setOtp] = useState("");
 
+  const { mutate: forgot, isPending: isForgotPending } =
+    useMutation<IForgotRequest>(endpoints.auth.forgot, {
+      onSuccess: () => {
+        console.log("OTP resent successfully");
+      },
+    });
+  const { mutate: verifyOtp, isPending } = useMutation<IVerifyOtpRequest>(
+    endpoints.auth.verifyOtp,
+    {
+      onSuccess: () => {
+        nextStep(otp);
+      },
+    }
+  );
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onOtpComplete(otp);
   };
 
   const onOtpComplete = (otp: string) => {
-    console.log("OTP entered:", otp);
-    nextStep();
+    verifyOtp({ otp, email });
   };
 
   return (
@@ -53,8 +70,14 @@ const OTPStep = ({ email, nextStep }: OTPStepProps) => {
       {/* Actions */}
       <div className="flex flex-col gap-2 text-center">
         <p>Didn't receive the OTP?</p>
-        <Button type="button" text="Resend OTP" variant="text" />
-        <Button type="submit" text="Verify OTP" />
+        <Button
+          type="button"
+          text="Resend OTP"
+          onClick={() => forgot({ email })}
+          variant="text"
+          disabled={isForgotPending}
+        />
+        <Button type="submit" text="Verify OTP" disabled={isPending} />
       </div>
     </form>
   );

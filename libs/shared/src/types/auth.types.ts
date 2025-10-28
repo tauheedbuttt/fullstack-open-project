@@ -5,11 +5,6 @@ export interface ILoginRequest {
   password: string;
 }
 
-export interface IResetRequest {
-  password: string;
-  confirmPassword: string;
-}
-
 export interface IChangeProfileRequest {
   name?: string;
   email?: string;
@@ -24,4 +19,13 @@ export interface ILoginResponse {
 
 export interface IForgotRequest {
   email: string;
+}
+
+export interface IVerifyOtpRequest extends IForgotRequest {
+  otp: string;
+}
+
+export interface IResetRequest extends IVerifyOtpRequest {
+  password: string;
+  confirmPassword: string;
 }

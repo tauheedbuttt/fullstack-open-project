@@ -1,6 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsEnum, IsNotEmpty } from "class-validator";
-import { ILoginRequest, IUserRole } from "shared";
+import { IsEmail, IsEnum, IsNotEmpty, MinLength } from "class-validator";
+import {
+  IForgotRequest,
+  ILoginRequest,
+  IResetRequest,
+  IUserRole,
+  IVerifyOtpRequest,
+} from "shared";
 
 export class LoginParamsDro {
   @ApiProperty()
@@ -20,9 +26,26 @@ export class LoginDto implements ILoginRequest {
   password!: string;
 }
 
-export class ForgotDto {
+export class ForgotDto implements IForgotRequest {
   @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
   email!: string;
+}
+
+export class VerifyOtpDto extends ForgotDto implements IVerifyOtpRequest {
+  @ApiProperty()
+  @MinLength(6)
+  @IsNotEmpty()
+  otp!: string;
+}
+
+export class ResetPasswordDto extends VerifyOtpDto implements IResetRequest {
+  @ApiProperty()
+  @IsNotEmpty()
+  password!: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  confirmPassword!: string;
 }

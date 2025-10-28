@@ -3,10 +3,31 @@ import { useFormik } from "formik";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import { ResetFormInputs } from "../../../types/auth";
-import { formikError, resetPasswordValidationSchema } from "shared";
+import {
+  formikError,
+  IResetRequest,
+  resetPasswordValidationSchema,
+} from "shared";
 import tw from "../../../lib/tailwind";
+import { endpoints } from "../../../config/endpoints";
+import useMutation from "../../../hooks/useMutation";
+import { useNavigate } from "react-router-native";
+import { routes } from "../../../config/routeConfig";
 
-const PasswordStep = () => {
+interface PasswordStepProps {
+  email: string;
+  otp: string;
+}
+
+const PasswordStep = ({ email, otp }: PasswordStepProps) => {
+  const navigate = useNavigate();
+  const { mutate: verifyOtp, isPending } = useMutation<IResetRequest>(
+    endpoints.auth.resetPassword,
+    {
+      onSuccess: () => navigate(routes.auth.login),
+    }
+  );
+
   const formik = useFormik({
     initialValues: {
       password: "",
@@ -14,7 +35,7 @@ const PasswordStep = () => {
     },
     validationSchema: resetPasswordValidationSchema,
     onSubmit: (values) => {
-      console.log(values);
+      verifyOtp({ ...values, email, otp });
     },
   });
 
@@ -50,7 +71,7 @@ const PasswordStep = () => {
           error={formikError(formik, field.name)}
         />
       ))}
-      <Button text="Reset Password" onPress={onSubmit} />
+      <Button text="Reset Password" onPress={onSubmit} disabled={isPending} />
     </View>
   );
 };

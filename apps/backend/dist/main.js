@@ -159,7 +159,7 @@ exports.AuthModule = AuthModule = tslib_1.__decorate([
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
-var _a, _b, _c, _d;
+var _a, _b, _c, _d, _e, _f;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AuthController = void 0;
 const tslib_1 = __webpack_require__(3);
@@ -178,6 +178,12 @@ let AuthController = class AuthController {
     async forgot(body) {
         return await this.authService.forgot(body);
     }
+    async verifyOtp(body) {
+        return await this.authService.verifyOtp(body);
+    }
+    async resetPassword(body) {
+        return await this.authService.resetPassword(body);
+    }
 };
 exports.AuthController = AuthController;
 tslib_1.__decorate([
@@ -195,6 +201,20 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", [typeof (_d = typeof auth_dto_1.ForgotDto !== "undefined" && auth_dto_1.ForgotDto) === "function" ? _d : Object]),
     tslib_1.__metadata("design:returntype", Promise)
 ], AuthController.prototype, "forgot", null);
+tslib_1.__decorate([
+    (0, common_1.Post)("/verify-otp"),
+    tslib_1.__param(0, (0, common_1.Body)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [typeof (_e = typeof auth_dto_1.VerifyOtpDto !== "undefined" && auth_dto_1.VerifyOtpDto) === "function" ? _e : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], AuthController.prototype, "verifyOtp", null);
+tslib_1.__decorate([
+    (0, common_1.Post)("/reset-password"),
+    tslib_1.__param(0, (0, common_1.Body)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [typeof (_f = typeof auth_dto_1.ResetPasswordDto !== "undefined" && auth_dto_1.ResetPasswordDto) === "function" ? _f : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], AuthController.prototype, "resetPassword", null);
 exports.AuthController = AuthController = tslib_1.__decorate([
     (0, common_1.Controller)("auth"),
     (0, swagger_1.ApiTags)("Authentication"),
@@ -247,6 +267,12 @@ let AuthService = class AuthService {
         });
         if (!user)
             throw new exceptions_1.NotFound("User not found");
+        // check if requested 5 minutes ago
+        if (user.resetRequest &&
+            new Date().getTime() - new Date(user.resetRequest).getTime() <
+                5 * 60 * 1000) {
+            throw new exceptions_1.Forbidden("Password reset already requested. Please wait.");
+        }
         // generate reset token
         const expiryMinutes = parseInt(process.env.OTP_EXPIRY ?? "") || 15;
         const resetOtp = crypto
@@ -257,9 +283,42 @@ let AuthService = class AuthService {
         const resetOtpExpiry = new Date(Date.now() + expiryMinutes * 60 * 1000);
         user.resetOtp = resetOtp;
         user.resetOtpExpiry = resetOtpExpiry;
+        user.resetRequest = new Date();
         await this.userRepository.save(user);
         // Send Email Here
         return { message: "Password reset OTP sent to email" };
+    }
+    async verifyOtp(body) {
+        const user = await this.userRepository.findOne({
+            where: { email: body.email, resetOtp: body.otp },
+        });
+        if (!user)
+            throw new exceptions_1.NotFound("Invalid OTP");
+        // check if otp is expired
+        if (user.resetOtpExpiry && user.resetOtpExpiry < new Date()) {
+            throw new exceptions_1.Forbidden("OTP has expired");
+        }
+        return { message: "OTP verified successfully" };
+    }
+    async resetPassword(body) {
+        const user = await this.userRepository.findOne({
+            where: { email: body.email, resetOtp: body.otp },
+        });
+        if (!user)
+            throw new exceptions_1.NotFound("Invalid OTP");
+        // check if otp is expired
+        if (user.resetOtpExpiry && user.resetOtpExpiry < new Date()) {
+            throw new exceptions_1.Forbidden("OTP has expired");
+        }
+        // hash the new password
+        const hashedPassword = await bcrypt.hash(body.password, 10);
+        user.password = hashedPassword;
+        // clear reset otp fields
+        user.resetOtp = null;
+        user.resetOtpExpiry = null;
+        user.resetRequest = null;
+        await this.userRepository.save(user);
+        return { message: "Password reset successfully" };
     }
 };
 exports.AuthService = AuthService;
@@ -304,7 +363,7 @@ module.exports = require("typeorm");
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
-var _a, _b, _c, _d, _e;
+var _a, _b, _c, _d, _e, _f;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.User = void 0;
 const tslib_1 = __webpack_require__(3);
@@ -363,19 +422,23 @@ tslib_1.__decorate([
 ], User.prototype, "status", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({ type: "varchar" }),
-    tslib_1.__metadata("design:type", String)
+    tslib_1.__metadata("design:type", Object)
 ], User.prototype, "resetOtp", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.Column)({ type: "date" }),
-    tslib_1.__metadata("design:type", typeof (_c = typeof Date !== "undefined" && Date) === "function" ? _c : Object)
+    tslib_1.__metadata("design:type", Object)
 ], User.prototype, "resetOtpExpiry", void 0);
 tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "date" }),
+    tslib_1.__metadata("design:type", Object)
+], User.prototype, "resetRequest", void 0);
+tslib_1.__decorate([
     (0, typeorm_1.CreateDateColumn)(),
-    tslib_1.__metadata("design:type", typeof (_d = typeof Date !== "undefined" && Date) === "function" ? _d : Object)
+    tslib_1.__metadata("design:type", typeof (_e = typeof Date !== "undefined" && Date) === "function" ? _e : Object)
 ], User.prototype, "createdAt", void 0);
 tslib_1.__decorate([
     (0, typeorm_1.UpdateDateColumn)(),
-    tslib_1.__metadata("design:type", typeof (_e = typeof Date !== "undefined" && Date) === "function" ? _e : Object)
+    tslib_1.__metadata("design:type", typeof (_f = typeof Date !== "undefined" && Date) === "function" ? _f : Object)
 ], User.prototype, "updatedAt", void 0);
 exports.User = User = tslib_1.__decorate([
     (0, typeorm_1.Entity)("user")
@@ -429,7 +492,7 @@ exports.Unauthorized = Unauthorized;
 
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.ForgotDto = exports.LoginDto = exports.LoginParamsDro = void 0;
+exports.ResetPasswordDto = exports.VerifyOtpDto = exports.ForgotDto = exports.LoginDto = exports.LoginParamsDro = void 0;
 const tslib_1 = __webpack_require__(3);
 const swagger_1 = __webpack_require__(7);
 const class_validator_1 = __webpack_require__(19);
@@ -466,6 +529,28 @@ tslib_1.__decorate([
     (0, class_validator_1.IsNotEmpty)(),
     tslib_1.__metadata("design:type", String)
 ], ForgotDto.prototype, "email", void 0);
+class VerifyOtpDto extends ForgotDto {
+}
+exports.VerifyOtpDto = VerifyOtpDto;
+tslib_1.__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.MinLength)(6),
+    (0, class_validator_1.IsNotEmpty)(),
+    tslib_1.__metadata("design:type", String)
+], VerifyOtpDto.prototype, "otp", void 0);
+class ResetPasswordDto extends VerifyOtpDto {
+}
+exports.ResetPasswordDto = ResetPasswordDto;
+tslib_1.__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    tslib_1.__metadata("design:type", String)
+], ResetPasswordDto.prototype, "password", void 0);
+tslib_1.__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    tslib_1.__metadata("design:type", String)
+], ResetPasswordDto.prototype, "confirmPassword", void 0);
 
 
 /***/ }),
@@ -586,6 +671,7 @@ class AddOtpFields1761647706957 {
         await queryRunner.query(`
             ALTER TABLE "user"
             ADD COLUMN "resetOtp" VARCHAR,
+            ADD COLUMN "resetRequest" TIMESTAMP,
             ADD COLUMN "resetOtpExpiry" TIMESTAMP;    
         `);
     }
@@ -593,6 +679,7 @@ class AddOtpFields1761647706957 {
         await queryRunner.query(`
             ALTER TABLE "user"
             DROP COLUMN "resetOtp",
+            DROP COLUMN "resetRequest",
             DROP COLUMN "resetOtpExpiry";    
         `);
     }

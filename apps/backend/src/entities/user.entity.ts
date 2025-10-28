@@ -48,10 +48,13 @@ export class User {
   status!: IUserStatus;
 
   @Column({ type: "varchar" })
-  resetOtp!: string;
+  resetOtp!: string | null;
 
   @Column({ type: "date" })
-  resetOtpExpiry!: Date;
+  resetOtpExpiry!: Date | null;
+
+  @Column({ type: "date" })
+  resetRequest!: Date | null;
 
   @CreateDateColumn()
   createdAt!: Date;

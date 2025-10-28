@@ -1,22 +1,43 @@
 import { useFormik } from "formik";
-import useBreadcrumb from "../../../hooks/useBreadcrumb";
-import { ForgotStepProps, ResetFormInputs } from "../../../types/auth";
-import Input from "../../../components/Input";
-import { formikError } from "../../../utils/utils";
+import { useNavigate } from "react-router-dom";
+import { IResetRequest } from "shared";
 import Button from "../../../components/Button";
+import Input from "../../../components/Input";
+import { endpoints } from "../../../config/endpoints";
+import { routes } from "../../../config/routeConfig";
+import useBreadcrumb from "../../../hooks/useBreadcrumb";
+import useMutation from "../../../hooks/useMutation";
+import { ResetFormInputs } from "../../../types/auth";
+import { formikError } from "../../../utils/utils";
 import { resetPasswordValidationSchema } from "../../../validations/auth";
 
-const PasswordStep = ({}: ForgotStepProps) => {
+interface PasswordStepProps {
+  email: string;
+  otp: string;
+}
+
+const PasswordStep = ({ email, otp }: PasswordStepProps) => {
   useBreadcrumb("Reset Password", "Create your new password");
+
+  const navigate = useNavigate();
+  const { mutate: verifyOtp, isPending } = useMutation<IResetRequest>(
+    endpoints.auth.resetPassword,
+    {
+      onSuccess: () => navigate(routes.auth.login),
+    }
+  );
 
   const formik = useFormik({
     initialValues: {
       password: "",
       confirmPassword: "",
+      email,
+      otp,
     },
     validationSchema: resetPasswordValidationSchema,
+    enableReinitialize: true,
     onSubmit: (values) => {
-      console.log(values);
+      verifyOtp(values);
     },
   });
   const { handleSubmit, handleChange, values } = formik;
@@ -44,7 +65,7 @@ const PasswordStep = ({}: ForgotStepProps) => {
           {...field}
         />
       ))}
-      <Button text="Reset Password" type="submit" />
+      <Button text="Reset Password" type="submit" disabled={isPending} />
     </form>
   );
 };

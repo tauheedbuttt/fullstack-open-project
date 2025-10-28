@@ -12,13 +12,17 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
 
-  const nextStep = () => setStep((prev) => prev + 1);
+  const nextStep = (otp?: string) => {
+    setStep((prev) => prev + 1);
+    if (otp) setOtp(otp);
+  };
 
   const steps: { [key in number]: JSX.Element } = {
     1: <EmailStep nextStep={nextStep} setEmail={setEmail} />,
     2: <OTPStep nextStep={nextStep} email={email} />,
-    3: <PasswordStep nextStep={nextStep} />,
+    3: <PasswordStep email={email} otp={otp} />,
   };
 
   return (

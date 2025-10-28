@@ -5,6 +5,7 @@ export class AddOtpFields1761647706957 implements MigrationInterface {
     await queryRunner.query(`
             ALTER TABLE "user"
             ADD COLUMN "resetOtp" VARCHAR,
+            ADD COLUMN "resetRequest" TIMESTAMP,
             ADD COLUMN "resetOtpExpiry" TIMESTAMP;    
         `);
   }
@@ -13,6 +14,7 @@ export class AddOtpFields1761647706957 implements MigrationInterface {
     await queryRunner.query(`
             ALTER TABLE "user"
             DROP COLUMN "resetOtp",
+            DROP COLUMN "resetRequest",
             DROP COLUMN "resetOtpExpiry";    
         `);
   }

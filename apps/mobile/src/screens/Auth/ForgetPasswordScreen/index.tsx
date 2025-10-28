@@ -14,8 +14,12 @@ export default function ForgetPasswordScreen() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
 
-  const nextStep = () => setStep((prev) => prev + 1);
+  const nextStep = (otp?: string) => {
+    if (otp) setOtp(otp);
+    setStep((prev) => prev + 1);
+  };
 
   const steps: {
     [key in number]: {
@@ -34,7 +38,7 @@ export default function ForgetPasswordScreen() {
       description: "Enter the OTP sent to your email",
     },
     3: {
-      component: <PasswordStep />,
+      component: <PasswordStep email={email} otp={otp} />,
       description: "Set your new password",
     },
   };

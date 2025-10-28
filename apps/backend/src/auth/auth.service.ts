@@ -6,7 +6,12 @@ import { ILoginResponse, IUserRole, IUserStatus } from "shared";
 import { DataSource, Repository } from "typeorm";
 import { User } from "../entities/user.entity";
 import { Forbidden, NotFound } from "../filters/exceptions";
-import { ForgotDto, LoginDto } from "./auth.dto";
+import {
+  ForgotDto,
+  LoginDto,
+  ResetPasswordDto,
+  VerifyOtpDto,
+} from "./auth.dto";
 
 @Injectable()
 export class AuthService {
@@ -40,6 +45,15 @@ export class AuthService {
     });
     if (!user) throw new NotFound("User not found");
 
+    // check if requested 5 minutes ago
+    if (
+      user.resetRequest &&
+      new Date().getTime() - new Date(user.resetRequest).getTime() <
+        5 * 60 * 1000
+    ) {
+      throw new Forbidden("Password reset already requested. Please wait.");
+    }
+
     // generate reset token
     const expiryMinutes = parseInt(process.env.OTP_EXPIRY ?? "") || 15;
     const resetOtp = crypto
@@ -51,11 +65,51 @@ export class AuthService {
 
     user.resetOtp = resetOtp;
     user.resetOtpExpiry = resetOtpExpiry;
+    user.resetRequest = new Date();
 
     await this.userRepository.save(user);
 
     // Send Email Here
 
     return { message: "Password reset OTP sent to email" };
+  }
+
+  async verifyOtp(body: VerifyOtpDto) {
+    const user = await this.userRepository.findOne({
+      where: { email: body.email, resetOtp: body.otp },
+    });
+    if (!user) throw new NotFound("Invalid OTP");
+
+    // check if otp is expired
+    if (user.resetOtpExpiry && new Date(user.resetOtpExpiry) < new Date()) {
+      throw new Forbidden("OTP has expired");
+    }
+
+    return { message: "OTP verified successfully" };
+  }
+
+  async resetPassword(body: ResetPasswordDto) {
+    const user = await this.userRepository.findOne({
+      where: { email: body.email, resetOtp: body.otp },
+    });
+    if (!user) throw new NotFound("Invalid OTP");
+
+    // check if otp is expired
+    if (user.resetOtpExpiry && new Date(user.resetOtpExpiry) < new Date()) {
+      throw new Forbidden("OTP has expired");
+    }
+
+    // hash the new password
+    const hashedPassword = await bcrypt.hash(body.password, 10);
+    user.password = hashedPassword;
+
+    // clear reset otp fields
+    user.resetOtp = null;
+    user.resetOtpExpiry = null;
+    user.resetRequest = null;
+
+    await this.userRepository.save(user);
+
+    return { message: "Password reset successfully" };
   }
 }
