@@ -285,7 +285,7 @@ let AuthService = class AuthService {
         user.resetOtpExpiry = resetOtpExpiry;
         user.resetRequest = new Date();
         await this.userRepository.save(user);
-        // Send Email Here
+        // TODO: Send Email Here
         return { message: "Password reset OTP sent to email" };
     }
     async verifyOtp(body) {
