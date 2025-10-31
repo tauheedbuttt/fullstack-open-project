@@ -60,6 +60,7 @@ See [Project Documentation](./docs/USAGE.md) for advanced flow and usage.
 ## 🚀 Quick Start & Usage
 
 See [USAGE.md](./docs/USAGE.md) for workspace setup, app usage, and development instructions.
+See [ERD.md](./docs/ERD.md) for viewing Database ERD.
 
 For demo requests or issues, please contact the maintainer.
 
