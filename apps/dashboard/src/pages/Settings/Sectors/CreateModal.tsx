@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { useSelector } from "react-redux";
-import { ISector } from "shared";
+import { BASE_SECTOR_FEE, ISector } from "shared";
 import Button from "../../../components/Button";
 import Input from "../../../components/Input";
 import Modal from "../../../components/Modal";
@@ -21,7 +21,7 @@ const CreateModal = () => {
   const formik = useFormik({
     initialValues: {
       name: data?.name || "",
-      fees: data?.fees || "",
+      fees: data?.fees || BASE_SECTOR_FEE,
       description: data?.description || "",
     },
     enableReinitialize: true,

@@ -24,6 +24,7 @@ export class UserService {
         { email: ILike(`%${query.search}%`) },
         { phone: ILike(`%${query.search}%`) },
       ].map((condition) => ({ ...condition, ...filters })),
+      relations: ["adminRiderStats"],
     });
 
     return { riders };

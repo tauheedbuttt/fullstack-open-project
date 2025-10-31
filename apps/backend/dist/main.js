@@ -20,10 +20,10 @@ const app_controller_1 = __webpack_require__(5);
 const app_service_1 = __webpack_require__(6);
 const swagger_1 = __webpack_require__(7);
 const auth_module_1 = __webpack_require__(8);
-const typeorm_1 = __webpack_require__(21);
-const ormconfig_1 = __webpack_require__(22);
-const config_1 = __webpack_require__(20);
-const user_module_1 = __webpack_require__(26);
+const typeorm_1 = __webpack_require__(25);
+const ormconfig_1 = __webpack_require__(26);
+const config_1 = __webpack_require__(24);
+const user_module_1 = __webpack_require__(37);
 const services = [app_service_1.AppService, config_1.ConfigService];
 let AppModule = class AppModule {
 };
@@ -127,7 +127,7 @@ const common_1 = __webpack_require__(4);
 const auth_controller_1 = __webpack_require__(9);
 const auth_service_1 = __webpack_require__(10);
 const jwt_1 = __webpack_require__(11);
-const config_1 = __webpack_require__(20);
+const config_1 = __webpack_require__(24);
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -163,7 +163,7 @@ const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
 const swagger_1 = __webpack_require__(7);
 const auth_service_1 = __webpack_require__(10);
-const auth_dto_1 = __webpack_require__(18);
+const auth_dto_1 = __webpack_require__(22);
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -235,7 +235,7 @@ const crypto = __webpack_require__(13);
 const shared_1 = __webpack_require__(14);
 const typeorm_1 = __webpack_require__(15);
 const user_entity_1 = __webpack_require__(16);
-const exceptions_1 = __webpack_require__(17);
+const exceptions_1 = __webpack_require__(21);
 let AuthService = class AuthService {
     constructor(dataSource, jwtService) {
         this.dataSource = dataSource;
@@ -365,12 +365,16 @@ module.exports = require("typeorm");
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
-var _a, _b, _c, _d, _e, _f;
+var _a, _b, _c, _d, _e, _f, _g;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.User = void 0;
 const tslib_1 = __webpack_require__(3);
 const shared_1 = __webpack_require__(14);
 const typeorm_1 = __webpack_require__(15);
+const sector_entity_1 = __webpack_require__(17);
+const adminRiderStats_view_1 = __webpack_require__(20);
+const payment_entity_1 = __webpack_require__(19);
+const house_entity_1 = __webpack_require__(18);
 let User = class User {
 };
 exports.User = User;
@@ -442,6 +446,30 @@ tslib_1.__decorate([
     (0, typeorm_1.UpdateDateColumn)(),
     tslib_1.__metadata("design:type", typeof (_f = typeof Date !== "undefined" && Date) === "function" ? _f : Object)
 ], User.prototype, "updatedAt", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.OneToMany)(() => sector_entity_1.Sector, (sector) => sector.rider),
+    tslib_1.__metadata("design:type", Array)
+], User.prototype, "sectors", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.OneToOne)(() => adminRiderStats_view_1.AdminRiderStatsView, (stats) => stats.rider),
+    tslib_1.__metadata("design:type", typeof (_g = typeof adminRiderStats_view_1.AdminRiderStatsView !== "undefined" && adminRiderStats_view_1.AdminRiderStatsView) === "function" ? _g : Object)
+], User.prototype, "adminRiderStats", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.OneToMany)(() => payment_entity_1.Payment, (payment) => payment.rider),
+    tslib_1.__metadata("design:type", Array)
+], User.prototype, "riderPayments", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.OneToMany)(() => payment_entity_1.Payment, (payment) => payment.owner),
+    tslib_1.__metadata("design:type", Array)
+], User.prototype, "ownerPayments", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.OneToMany)(() => house_entity_1.House, (house) => house.rider),
+    tslib_1.__metadata("design:type", Array)
+], User.prototype, "riderHouses", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.OneToMany)(() => house_entity_1.House, (house) => house.owner),
+    tslib_1.__metadata("design:type", Array)
+], User.prototype, "ownerHouses", void 0);
 exports.User = User = tslib_1.__decorate([
     (0, typeorm_1.Entity)("user")
 ], User);
@@ -449,6 +477,273 @@ exports.User = User = tslib_1.__decorate([
 
 /***/ }),
 /* 17 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Sector = void 0;
+const tslib_1 = __webpack_require__(3);
+const typeorm_1 = __webpack_require__(15);
+const user_entity_1 = __webpack_require__(16);
+const house_entity_1 = __webpack_require__(18);
+let Sector = class Sector {
+};
+exports.Sector = Sector;
+tslib_1.__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    tslib_1.__metadata("design:type", Number)
+], Sector.prototype, "id", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", unique: true }),
+    tslib_1.__metadata("design:type", String)
+], Sector.prototype, "sectorId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar" }),
+    tslib_1.__metadata("design:type", String)
+], Sector.prototype, "name", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "int" }),
+    tslib_1.__metadata("design:type", Number)
+], Sector.prototype, "fees", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "text" }),
+    tslib_1.__metadata("design:type", String)
+], Sector.prototype, "description", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "int" }),
+    tslib_1.__metadata("design:type", Number)
+], Sector.prototype, "riderId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (rider) => rider.sectors),
+    (0, typeorm_1.JoinColumn)({ name: "riderId" }),
+    tslib_1.__metadata("design:type", typeof (_a = typeof user_entity_1.User !== "undefined" && user_entity_1.User) === "function" ? _a : Object)
+], Sector.prototype, "rider", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    tslib_1.__metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], Sector.prototype, "createdAt", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    tslib_1.__metadata("design:type", typeof (_c = typeof Date !== "undefined" && Date) === "function" ? _c : Object)
+], Sector.prototype, "updatedAt", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.OneToMany)(() => house_entity_1.House, (house) => house.sector),
+    tslib_1.__metadata("design:type", Array)
+], Sector.prototype, "houses", void 0);
+exports.Sector = Sector = tslib_1.__decorate([
+    (0, typeorm_1.Entity)("sector")
+], Sector);
+
+
+/***/ }),
+/* 18 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a, _b, _c, _d, _e;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.House = void 0;
+const tslib_1 = __webpack_require__(3);
+const typeorm_1 = __webpack_require__(15);
+const user_entity_1 = __webpack_require__(16);
+const sector_entity_1 = __webpack_require__(17);
+const payment_entity_1 = __webpack_require__(19);
+let House = class House {
+};
+exports.House = House;
+tslib_1.__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    tslib_1.__metadata("design:type", Number)
+], House.prototype, "id", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", unique: true }),
+    tslib_1.__metadata("design:type", String)
+], House.prototype, "houseId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "int" }),
+    tslib_1.__metadata("design:type", Number)
+], House.prototype, "fees", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", nullable: false }),
+    tslib_1.__metadata("design:type", String)
+], House.prototype, "house", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", nullable: false }),
+    tslib_1.__metadata("design:type", String)
+], House.prototype, "street", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", nullable: false }),
+    tslib_1.__metadata("design:type", String)
+], House.prototype, "address", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar" }),
+    tslib_1.__metadata("design:type", String)
+], House.prototype, "plotSize", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "int" }),
+    tslib_1.__metadata("design:type", Number)
+], House.prototype, "riderId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "int" }),
+    tslib_1.__metadata("design:type", Number)
+], House.prototype, "ownerId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "int" }),
+    tslib_1.__metadata("design:type", Number)
+], House.prototype, "sectorId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    tslib_1.__metadata("design:type", typeof (_a = typeof Date !== "undefined" && Date) === "function" ? _a : Object)
+], House.prototype, "createdAt", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    tslib_1.__metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], House.prototype, "updatedAt", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (rider) => rider.riderHouses),
+    (0, typeorm_1.JoinColumn)({ name: "riderId" }),
+    tslib_1.__metadata("design:type", typeof (_c = typeof user_entity_1.User !== "undefined" && user_entity_1.User) === "function" ? _c : Object)
+], House.prototype, "rider", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (owner) => owner.ownerHouses),
+    (0, typeorm_1.JoinColumn)({ name: "ownerId" }),
+    tslib_1.__metadata("design:type", typeof (_d = typeof user_entity_1.User !== "undefined" && user_entity_1.User) === "function" ? _d : Object)
+], House.prototype, "owner", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.ManyToOne)(() => sector_entity_1.Sector, (sector) => sector.houses),
+    (0, typeorm_1.JoinColumn)({ name: "sectorId" }),
+    tslib_1.__metadata("design:type", typeof (_e = typeof sector_entity_1.Sector !== "undefined" && sector_entity_1.Sector) === "function" ? _e : Object)
+], House.prototype, "sector", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.OneToMany)(() => payment_entity_1.Payment, (payment) => payment.house),
+    tslib_1.__metadata("design:type", Array)
+], House.prototype, "payments", void 0);
+exports.House = House = tslib_1.__decorate([
+    (0, typeorm_1.Entity)("house")
+], House);
+
+
+/***/ }),
+/* 19 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a, _b, _c, _d, _e;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Payment = void 0;
+const tslib_1 = __webpack_require__(3);
+const typeorm_1 = __webpack_require__(15);
+const user_entity_1 = __webpack_require__(16);
+const house_entity_1 = __webpack_require__(18);
+let Payment = class Payment {
+};
+exports.Payment = Payment;
+tslib_1.__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    tslib_1.__metadata("design:type", Number)
+], Payment.prototype, "id", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "varchar", unique: true }),
+    tslib_1.__metadata("design:type", String)
+], Payment.prototype, "paymentId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "int", nullable: false }),
+    tslib_1.__metadata("design:type", Number)
+], Payment.prototype, "amount", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "date" }),
+    tslib_1.__metadata("design:type", String)
+], Payment.prototype, "paymentDate", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "time" }),
+    tslib_1.__metadata("design:type", String)
+], Payment.prototype, "paymentTime", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "text" }),
+    tslib_1.__metadata("design:type", String)
+], Payment.prototype, "reason", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "int" }),
+    tslib_1.__metadata("design:type", Number)
+], Payment.prototype, "riderId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "int" }),
+    tslib_1.__metadata("design:type", Number)
+], Payment.prototype, "ownerId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.Column)({ type: "int" }),
+    tslib_1.__metadata("design:type", Number)
+], Payment.prototype, "houseId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    tslib_1.__metadata("design:type", typeof (_a = typeof Date !== "undefined" && Date) === "function" ? _a : Object)
+], Payment.prototype, "createdAt", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    tslib_1.__metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], Payment.prototype, "updatedAt", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (rider) => rider.riderPayments),
+    (0, typeorm_1.JoinColumn)({ name: "riderId" }),
+    tslib_1.__metadata("design:type", typeof (_c = typeof user_entity_1.User !== "undefined" && user_entity_1.User) === "function" ? _c : Object)
+], Payment.prototype, "rider", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (owner) => owner.ownerPayments),
+    (0, typeorm_1.JoinColumn)({ name: "ownerId" }),
+    tslib_1.__metadata("design:type", typeof (_d = typeof user_entity_1.User !== "undefined" && user_entity_1.User) === "function" ? _d : Object)
+], Payment.prototype, "owner", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.ManyToOne)(() => house_entity_1.House, (house) => house.payments),
+    (0, typeorm_1.JoinColumn)({ name: "riderId" }),
+    tslib_1.__metadata("design:type", typeof (_e = typeof house_entity_1.House !== "undefined" && house_entity_1.House) === "function" ? _e : Object)
+], Payment.prototype, "house", void 0);
+exports.Payment = Payment = tslib_1.__decorate([
+    (0, typeorm_1.Entity)("payment")
+], Payment);
+
+
+/***/ }),
+/* 20 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AdminRiderStatsView = void 0;
+const tslib_1 = __webpack_require__(3);
+const typeorm_1 = __webpack_require__(15);
+const user_entity_1 = __webpack_require__(16);
+let AdminRiderStatsView = class AdminRiderStatsView {
+};
+exports.AdminRiderStatsView = AdminRiderStatsView;
+tslib_1.__decorate([
+    (0, typeorm_1.ViewColumn)(),
+    tslib_1.__metadata("design:type", String)
+], AdminRiderStatsView.prototype, "riderId", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.OneToOne)(() => user_entity_1.User, (user) => user.adminRiderStats),
+    (0, typeorm_1.JoinColumn)({ name: "riderId" }),
+    tslib_1.__metadata("design:type", typeof (_a = typeof user_entity_1.User !== "undefined" && user_entity_1.User) === "function" ? _a : Object)
+], AdminRiderStatsView.prototype, "rider", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.ViewColumn)(),
+    tslib_1.__metadata("design:type", Number)
+], AdminRiderStatsView.prototype, "assignedHouses", void 0);
+tslib_1.__decorate([
+    (0, typeorm_1.ViewColumn)(),
+    tslib_1.__metadata("design:type", Number)
+], AdminRiderStatsView.prototype, "collectedAmount", void 0);
+exports.AdminRiderStatsView = AdminRiderStatsView = tslib_1.__decorate([
+    (0, typeorm_1.ViewEntity)({
+        name: "admin_riders_stats",
+        materialized: true,
+    })
+], AdminRiderStatsView);
+
+
+/***/ }),
+/* 21 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -488,7 +783,7 @@ exports.Unauthorized = Unauthorized;
 
 
 /***/ }),
-/* 18 */
+/* 22 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -497,7 +792,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.ResetPasswordDto = exports.VerifyOtpDto = exports.ForgotDto = exports.LoginDto = exports.LoginParamsDro = void 0;
 const tslib_1 = __webpack_require__(3);
 const swagger_1 = __webpack_require__(7);
-const class_validator_1 = __webpack_require__(19);
+const class_validator_1 = __webpack_require__(23);
 const shared_1 = __webpack_require__(14);
 class LoginParamsDro {
 }
@@ -556,39 +851,53 @@ tslib_1.__decorate([
 
 
 /***/ }),
-/* 19 */
+/* 23 */
 /***/ ((module) => {
 
 module.exports = require("class-validator");
 
 /***/ }),
-/* 20 */
+/* 24 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/config");
 
 /***/ }),
-/* 21 */
+/* 25 */
 /***/ ((module) => {
 
 module.exports = require("@nestjs/typeorm");
 
 /***/ }),
-/* 22 */
+/* 26 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getOrmConfig = void 0;
-const user_entity_1 = __webpack_require__(16);
-const _1730419200000_populate_user_id_1 = __webpack_require__(23);
-const _1761569196818_create_user_1 = __webpack_require__(24);
-const _1761647706957_add_otp_fields_1 = __webpack_require__(25);
-const entities = [user_entity_1.User];
+const entities_1 = __webpack_require__(27);
+const _1730419200000_populate_user_id_1 = __webpack_require__(28);
+const _1761569196818_create_user_1 = __webpack_require__(29);
+const _1761647706957_add_otp_fields_1 = __webpack_require__(30);
+const _1761895013315_create_sector_1 = __webpack_require__(31);
+const _1761895759479_store_sectors_1 = __webpack_require__(32);
+const _1761895956017_create_house_1 = __webpack_require__(33);
+const _1761896669705_auto_generate_house_fields_1 = __webpack_require__(34);
+const _1761898314920_create_payment_1 = __webpack_require__(35);
+const house_entity_1 = __webpack_require__(18);
+const payment_entity_1 = __webpack_require__(19);
+const _1761899382721_create_admin_riders_stats_1 = __webpack_require__(36);
+const entities = [entities_1.User, entities_1.Sector, entities_1.AdminRiderStatsView, house_entity_1.House, payment_entity_1.Payment];
 const migrations = [
     _1761569196818_create_user_1.CreateUser1761569196818,
     _1761647706957_add_otp_fields_1.AddOtpFields1761647706957,
     _1730419200000_populate_user_id_1.PopulateUserId1730419200000,
+    _1761895013315_create_sector_1.CreateSector1761895013315,
+    _1761895759479_store_sectors_1.StoreSectors1761895759479,
+    _1761895956017_create_house_1.CreateHouse1761895956017,
+    _1761896669705_auto_generate_house_fields_1.AutoGenerateHouseFields1761896669705,
+    _1761898314920_create_payment_1.CreatePayment1761898314920,
+    _1761899382721_create_admin_riders_stats_1.CreateAdminRidersStats1761899382721,
 ];
 const getOrmConfig = () => {
     return {
@@ -613,7 +922,19 @@ exports.getOrmConfig = getOrmConfig;
 
 
 /***/ }),
-/* 23 */
+/* 27 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const tslib_1 = __webpack_require__(3);
+tslib_1.__exportStar(__webpack_require__(16), exports);
+tslib_1.__exportStar(__webpack_require__(17), exports);
+tslib_1.__exportStar(__webpack_require__(20), exports);
+
+
+/***/ }),
+/* 28 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -674,7 +995,7 @@ exports.PopulateUserId1730419200000 = PopulateUserId1730419200000;
 
 
 /***/ }),
-/* 24 */
+/* 29 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -730,7 +1051,7 @@ exports.CreateUser1761569196818 = CreateUser1761569196818;
 
 
 /***/ }),
-/* 25 */
+/* 30 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -758,7 +1079,426 @@ exports.AddOtpFields1761647706957 = AddOtpFields1761647706957;
 
 
 /***/ }),
-/* 26 */
+/* 31 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreateSector1761895013315 = void 0;
+class CreateSector1761895013315 {
+    async up(queryRunner) {
+        // Create sector table
+        await queryRunner.query(`
+            CREATE TABLE sector (
+                id SERIAL PRIMARY KEY,
+                "sectorId" varchar,
+                
+                "name" varchar,
+                "fees" int,
+                "description" text,
+                
+                "riderId" int,
+                
+                "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+                "updatedAt" TIMESTAMP NOT NULL DEFAULT now()
+            );
+        `);
+        // create foreign key constraint with user table
+        await queryRunner.query(`
+            ALTER TABLE sector
+            ADD CONSTRAINT "FK_sector_rider"
+            FOREIGN KEY ("riderId") REFERENCES "user"(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE;
+        `);
+        // Create a function to auto-generate sectorId for new inserts
+        await queryRunner.query(`
+      CREATE OR REPLACE FUNCTION generate_sector_id()
+      RETURNS TRIGGER AS $$
+      BEGIN
+        -- Update the sectorId after insert when we have the ID
+        UPDATE "sector" 
+        SET "sectorId" = 'S-' || LPAD(NEW.id::text, 3, '0')
+        WHERE id = NEW.id AND ("sectorId" IS NULL OR "sectorId" = '');
+        
+        RETURN NEW;
+      END;
+      $$ LANGUAGE plpgsql;
+    `);
+        // Create trigger to auto-generate sectorId after insert
+        await queryRunner.query(`
+      CREATE TRIGGER sector_id_trigger
+      AFTER INSERT ON "sector"
+      FOR EACH ROW
+      EXECUTE FUNCTION generate_sector_id();
+    `);
+    }
+    async down(queryRunner) {
+        await queryRunner.query(`DROP TABLE sector;`);
+        await queryRunner.query(`DROP FUNCTION IF EXISTS generate_sector_id();`);
+    }
+}
+exports.CreateSector1761895013315 = CreateSector1761895013315;
+
+
+/***/ }),
+/* 32 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.StoreSectors1761895759479 = void 0;
+const shared_1 = __webpack_require__(14);
+class StoreSectors1761895759479 {
+    async up(queryRunner) {
+        const sectors = [
+            { name: "D-12/1", fees: shared_1.BASE_SECTOR_FEE },
+            { name: "D-12/2", fees: shared_1.BASE_SECTOR_FEE },
+            { name: "D-12/3", fees: shared_1.BASE_SECTOR_FEE },
+            { name: "D-12/4", fees: shared_1.BASE_SECTOR_FEE },
+        ];
+        await queryRunner.query(`
+            INSERT INTO "sector" (name, fees)
+            VALUES ${sectors.map((s) => `('${s.name}', ${s.fees})`).join(", ")}
+        `);
+    }
+    async down(queryRunner) {
+        await queryRunner.query(`DELETE FROM sector`);
+    }
+}
+exports.StoreSectors1761895759479 = StoreSectors1761895759479;
+
+
+/***/ }),
+/* 33 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreateHouse1761895956017 = void 0;
+class CreateHouse1761895956017 {
+    async up(queryRunner) {
+        // Create house table
+        await queryRunner.query(`
+            CREATE TABLE house (
+                id SERIAL PRIMARY KEY,
+                "houseId" varchar,
+                
+                "house" varchar NOT NULL,
+                "street" varchar NOT NULL,
+                "address" varchar,
+                "plotSize" varchar,
+                "notes" text,
+                "fees" int NOT NULL,
+                
+                "riderId" int,
+                "ownerId" int,
+                "sectorId" int NOT NULL,
+                
+                "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+                "updatedAt" TIMESTAMP NOT NULL DEFAULT now()
+            );
+        `);
+        // create foreign keys
+        await queryRunner.query(`
+            ALTER TABLE house
+            ADD CONSTRAINT "FK_house_rider"
+            FOREIGN KEY ("riderId") REFERENCES "user"(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE;
+        `);
+        await queryRunner.query(`
+            ALTER TABLE house
+            ADD CONSTRAINT "FK_house_owner"
+            FOREIGN KEY ("ownerId") REFERENCES "user"(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE;
+        `);
+        await queryRunner.query(`
+            ALTER TABLE house
+            ADD CONSTRAINT "FK_house_sector"
+            FOREIGN KEY ("sectorId") REFERENCES "sector"(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE;
+        `);
+    }
+    async down(queryRunner) {
+        await queryRunner.query(`DROP TABLE house;`);
+    }
+}
+exports.CreateHouse1761895956017 = CreateHouse1761895956017;
+
+
+/***/ }),
+/* 34 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AutoGenerateHouseFields1761896669705 = void 0;
+class AutoGenerateHouseFields1761896669705 {
+    async up(queryRunner) {
+        // auto generated address field (house + street + sector.name)
+        await queryRunner.query(`
+          CREATE OR REPLACE FUNCTION generate_full_address()
+          RETURNS TRIGGER AS $$
+          DECLARE
+            sector_name varchar;
+          BEGIN
+            SELECT name INTO sector_name FROM sector WHERE id = NEW."sectorId";
+            NEW.address = NEW.house || ', ' || NEW.street || ', ' || sector_name;
+            RETURN NEW;
+          END;
+          $$ LANGUAGE plpgsql;
+        `);
+        // trigger on update of house
+        await queryRunner.query(`
+            CREATE TRIGGER full_address_trigger
+            BEFORE INSERT OR UPDATE ON "house"
+            FOR EACH ROW
+            EXECUTE FUNCTION generate_full_address();
+            `);
+        // auto generated id sector.name-street-house eg. D-12/3-12-177
+        await queryRunner.query(`
+          CREATE OR REPLACE FUNCTION generate_house_id()
+          RETURNS TRIGGER AS $$
+          DECLARE
+            sector_name varchar;
+          BEGIN
+            SELECT name INTO sector_name FROM sector WHERE id = NEW."sectorId";
+            NEW."houseId" = sector_name || '-' || NEW.street || '-' || NEW.house;
+            RETURN NEW;
+          END;
+          $$ LANGUAGE plpgsql;
+        `);
+        await queryRunner.query(`
+          CREATE TRIGGER house_id_trigger
+          BEFORE INSERT ON "house"
+          FOR EACH ROW
+          EXECUTE FUNCTION generate_house_id();
+        `);
+        // function to update house fields when sector name changes
+        await queryRunner.query(`
+          CREATE OR REPLACE FUNCTION update_houses_on_sector_change()
+          RETURNS TRIGGER AS $$
+          BEGIN
+            -- Update address and houseId for all houses in the updated sector
+            UPDATE "house" 
+            SET 
+              address = house || ', ' || street || ', ' || NEW.name,
+              "houseId" = NEW.name || '-' || street || '-' || house
+            WHERE "sectorId" = NEW.id;
+            
+            RETURN NEW;
+          END;
+          $$ LANGUAGE plpgsql;
+        `);
+        // trigger on sector name update
+        await queryRunner.query(`
+          CREATE TRIGGER sector_update_trigger
+          AFTER UPDATE OF name ON "sector"
+          FOR EACH ROW
+          WHEN (OLD.name IS DISTINCT FROM NEW.name)
+          EXECUTE FUNCTION update_houses_on_sector_change();
+        `);
+    }
+    async down(queryRunner) {
+        await queryRunner.query(`DROP TRIGGER IF EXISTS sector_update_trigger ON "sector";`);
+        await queryRunner.query(`DROP FUNCTION IF EXISTS generate_full_address();`);
+        await queryRunner.query(`DROP FUNCTION IF EXISTS generate_house_id();`);
+        await queryRunner.query(`DROP FUNCTION IF EXISTS update_houses_on_sector_change();`);
+    }
+}
+exports.AutoGenerateHouseFields1761896669705 = AutoGenerateHouseFields1761896669705;
+
+
+/***/ }),
+/* 35 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreatePayment1761898314920 = void 0;
+class CreatePayment1761898314920 {
+    async up(queryRunner) {
+        // payment status enum
+        await queryRunner.query(`
+      CREATE TYPE "payment_status_enum"
+      AS ENUM(
+        'Pending',
+        'Completed'
+      );
+    `);
+        // payment method enum
+        await queryRunner.query(`
+      CREATE TYPE "payment_method_enum"
+      AS ENUM(
+        'Cash',
+        'Card',
+        'Online'
+      );
+    `);
+        // Create payment table
+        await queryRunner.query(`
+            CREATE TABLE payment (
+                id SERIAL PRIMARY KEY,
+                "paymentId" varchar,
+                
+                "amount" float NOT NULL,
+                "paymentDate" date,
+                "paymentTime" time,
+                "reason" text,
+                "status" payment_status_enum DEFAULT 'Pending',
+                "paymentMethod" payment_method_enum,
+                
+                "riderId" int,
+                "houseId" int,
+                "ownerId" int,
+                
+                "createdAt" TIMESTAMP NOT NULL DEFAULT now(),
+                "updatedAt" TIMESTAMP NOT NULL DEFAULT now()
+            );
+        `);
+        // relations
+        await queryRunner.query(`
+            ALTER TABLE payment
+            ADD CONSTRAINT "FK_payment_house"
+            FOREIGN KEY ("houseId") REFERENCES "house"(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE;
+        `);
+        await queryRunner.query(`
+            ALTER TABLE payment
+            ADD CONSTRAINT "FK_payment_rider"
+            FOREIGN KEY ("riderId") REFERENCES "user"(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE;
+        `);
+        await queryRunner.query(`
+            ALTER TABLE payment
+            ADD CONSTRAINT "FK_payment_owner"
+            FOREIGN KEY ("ownerId") REFERENCES "user"(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE;
+        `);
+        // Create a function to auto-generate paymentId for new inserts
+        await queryRunner.query(`
+      CREATE OR REPLACE FUNCTION generate_payment_id()
+      RETURNS TRIGGER AS $$
+      BEGIN
+        -- Update the paymentId after insert when we have the ID
+        UPDATE "payment" 
+        SET "paymentId" = 'P-' || LPAD(NEW.id::text, 3, '0')
+        WHERE id = NEW.id AND ("paymentId" IS NULL OR "paymentId" = '');
+        
+        RETURN NEW;
+      END;
+      $$ LANGUAGE plpgsql;
+    `);
+        // Create trigger to auto-generate paymentId after insert
+        await queryRunner.query(`
+      CREATE TRIGGER payment_id_trigger
+      AFTER INSERT ON "payment"
+      FOR EACH ROW
+      EXECUTE FUNCTION generate_payment_id();
+    `);
+    }
+    async down(queryRunner) {
+        await queryRunner.query(`DROP TABLE payment;`);
+        await queryRunner.query(`DROP TYPE IF EXISTS "payment_status_enum";`);
+        await queryRunner.query(`DROP TYPE IF EXISTS "payment_method_enum";`);
+        await queryRunner.query(`DROP FUNCTION IF EXISTS generate_payment_id();`);
+    }
+}
+exports.CreatePayment1761898314920 = CreatePayment1761898314920;
+
+
+/***/ }),
+/* 36 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.CreateAdminRidersStats1761899382721 = void 0;
+class CreateAdminRidersStats1761899382721 {
+    async up(queryRunner) {
+        await queryRunner.query(`
+            CREATE MATERIALIZED VIEW admin_riders_stats AS
+            SELECT 
+                r.id AS "riderId",
+                COUNT(h.id)::int AS "assignedHouses",
+                SUM(p.amount)::float AS "collectedAmount"
+            FROM "user" r
+            LEFT JOIN "house" h on h."riderId" = r.id
+            LEFT JOIN payment p
+                on p."riderId" = r.id 
+                AND p.status = 'Completed'
+            WHERE r.role = 'Rider'
+            GROUP BY r.id;
+            `);
+        // Create unique index to support concurrent refresh
+        await queryRunner.query(`
+            CREATE UNIQUE INDEX admin_riders_stats_rider_id_idx 
+            ON admin_riders_stats ("riderId");
+            `);
+        // refresh this view on house insert, or update of riderId
+        await queryRunner.query(`
+            CREATE OR REPLACE FUNCTION refresh_admin_riders_stats()
+            RETURNS TRIGGER AS $$
+            BEGIN
+                REFRESH MATERIALIZED VIEW CONCURRENTLY admin_riders_stats;
+                RETURN NEW;
+            END;
+            $$ LANGUAGE plpgsql;
+        `);
+        await queryRunner.query(`
+            CREATE TRIGGER admin_riders_stats_trigger
+            AFTER INSERT OR UPDATE OF "riderId" ON "house"
+            FOR EACH ROW
+            EXECUTE FUNCTION refresh_admin_riders_stats();
+        `);
+        // refresh the view whenever a payment row is inserted
+        await queryRunner.query(`
+            CREATE TRIGGER admin_riders_stats_payment_insert_trigger
+            AFTER INSERT ON "payment"
+            FOR EACH ROW
+            EXECUTE FUNCTION refresh_admin_riders_stats();
+        `);
+        // refresh the view whenever a payment status changes
+        await queryRunner.query(`
+            CREATE TRIGGER admin_riders_stats_payment_update_trigger
+            AFTER UPDATE OF "status" ON "payment"
+            FOR EACH ROW
+            WHEN (OLD.status IS DISTINCT FROM NEW.status)
+            EXECUTE FUNCTION refresh_admin_riders_stats();
+        `);
+    }
+    async down(queryRunner) {
+        await queryRunner.query(`
+            DROP TRIGGER IF EXISTS admin_riders_stats_payment_insert_trigger ON "payment";
+        `);
+        await queryRunner.query(`
+            DROP TRIGGER IF EXISTS admin_riders_stats_payment_update_trigger ON "payment";
+        `);
+        await queryRunner.query(`
+            DROP TRIGGER IF EXISTS admin_riders_stats_trigger ON "house";
+        `);
+        await queryRunner.query(`
+            DROP FUNCTION IF EXISTS refresh_admin_riders_stats();
+        `);
+        await queryRunner.query(`
+            DROP INDEX IF EXISTS admin_riders_stats_rider_id_idx;
+        `);
+        await queryRunner.query(`
+            DROP MATERIALIZED VIEW IF EXISTS admin_riders_stats;
+            `);
+    }
+}
+exports.CreateAdminRidersStats1761899382721 = CreateAdminRidersStats1761899382721;
+
+
+/***/ }),
+/* 37 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -767,8 +1507,8 @@ exports.UserModule = void 0;
 const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
 const jwt_1 = __webpack_require__(11);
-const user_controller_1 = __webpack_require__(27);
-const user_service_1 = __webpack_require__(29);
+const user_controller_1 = __webpack_require__(38);
+const user_service_1 = __webpack_require__(40);
 let UserModule = class UserModule {
 };
 exports.UserModule = UserModule;
@@ -782,7 +1522,7 @@ exports.UserModule = UserModule = tslib_1.__decorate([
 
 
 /***/ }),
-/* 27 */
+/* 38 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -792,10 +1532,10 @@ exports.UserController = void 0;
 const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
 const swagger_1 = __webpack_require__(7);
-const user_dto_1 = __webpack_require__(28);
-const user_service_1 = __webpack_require__(29);
+const user_dto_1 = __webpack_require__(39);
+const user_service_1 = __webpack_require__(40);
 const shared_1 = __webpack_require__(14);
-const auth_guard_1 = __webpack_require__(30);
+const auth_guard_1 = __webpack_require__(41);
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -831,7 +1571,7 @@ exports.UserController = UserController = tslib_1.__decorate([
 
 
 /***/ }),
-/* 28 */
+/* 39 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -840,7 +1580,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.RidersQueryDto = void 0;
 const tslib_1 = __webpack_require__(3);
 const swagger_1 = __webpack_require__(7);
-const class_validator_1 = __webpack_require__(19);
+const class_validator_1 = __webpack_require__(23);
 const shared_1 = __webpack_require__(14);
 class RidersQueryDto {
 }
@@ -859,7 +1599,7 @@ tslib_1.__decorate([
 
 
 /***/ }),
-/* 29 */
+/* 40 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -886,6 +1626,7 @@ let UserService = class UserService {
                 { email: (0, typeorm_1.ILike)(`%${query.search}%`) },
                 { phone: (0, typeorm_1.ILike)(`%${query.search}%`) },
             ].map((condition) => ({ ...condition, ...filters })),
+            relations: ["adminRiderStats"],
         });
         return { riders };
     }
@@ -898,7 +1639,7 @@ exports.UserService = UserService = tslib_1.__decorate([
 
 
 /***/ }),
-/* 30 */
+/* 41 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -908,7 +1649,7 @@ exports.AuthGuard = void 0;
 const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
 const jwt_1 = __webpack_require__(11);
-const exceptions_1 = __webpack_require__(17);
+const exceptions_1 = __webpack_require__(21);
 const shared_1 = __webpack_require__(14);
 const typeorm_1 = __webpack_require__(15);
 const user_entity_1 = __webpack_require__(16);
@@ -953,7 +1694,7 @@ exports.AuthGuard = AuthGuard = tslib_1.__decorate([
 
 
 /***/ }),
-/* 31 */
+/* 42 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -1018,7 +1759,7 @@ const core_1 = __webpack_require__(1);
 const app_module_1 = __webpack_require__(2);
 const common_1 = __webpack_require__(4);
 const swagger_1 = __webpack_require__(7);
-const exception_filter_1 = __webpack_require__(31);
+const exception_filter_1 = __webpack_require__(42);
 let cachedApp;
 const isVercel = !!process.env.VERCEL_ENV;
 const isDevelopment = process.env.NODE_ENV === "development";

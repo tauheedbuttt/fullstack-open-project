@@ -8,3 +8,4 @@ export * from "./types/auth.types";
 export * from "./utils/index";
 export * from "./utils/validations";
 export * from "./types/base.types";
+export * from "./utils/constants";

@@ -5,7 +5,13 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  OneToOne,
 } from "typeorm";
+import { Sector } from "./sector.entity";
+import { AdminRiderStatsView } from "./views/adminRiderStats.view";
+import { Payment } from "./payment.entity";
+import { House } from "./house.entity";
 
 @Entity("user")
 export class User {
@@ -61,4 +67,22 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @OneToMany(() => Sector, (sector) => sector.rider)
+  sectors!: Sector[];
+
+  @OneToOne(() => AdminRiderStatsView, (stats) => stats.rider)
+  adminRiderStats!: AdminRiderStatsView;
+
+  @OneToMany(() => Payment, (payment) => payment.rider)
+  riderPayments!: Payment[];
+
+  @OneToMany(() => Payment, (payment) => payment.owner)
+  ownerPayments!: Payment[];
+
+  @OneToMany(() => House, (house) => house.rider)
+  riderHouses!: House[];
+
+  @OneToMany(() => House, (house) => house.owner)
+  ownerHouses!: House[];
 }

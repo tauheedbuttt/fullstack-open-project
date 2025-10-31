@@ -16,10 +16,11 @@ erDiagram
     payment_method_enum {
         CASH cash
         CARD card
+        ONLINE online
     }
     payment_status_enum {
-        PAID paid
-        SKIPPED skipped
+        PENDING pending
+        COMPLETED completed
     }
 ```
 
@@ -42,11 +43,14 @@ erDiagram
 
     HOUSE {
         int id PK
+        int houseId "*"
+        int fees "* Taken from sector on creation, can be edited later on"
+        varchar house "*"
+        varchar street "*"
         varchar address
         varchar plotSize
-        int fees "Taken from sector on creation, can be edited later on"
         int ownerId FK
-        int sectorId FK
+        int sectorId FK "*"
         int riderId FK "Taken from sector on creation, can be edited later on"
         varchar notes
     }
@@ -61,11 +65,12 @@ erDiagram
 
     PAYMENT {
         int id PK
-        varchar recieptNumber UK
+        varchar paymentId UK
+        int amount "*"
+        date paymentDate
+        time paymentTime
         int houseId FK
         int ownerId FK
-        int amount
-        timestamptz date
         int riderId FK
         payment_method_enum method
         payment_status_enum status

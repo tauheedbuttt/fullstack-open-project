@@ -4,7 +4,7 @@ import { modal } from "../../config/modal";
 import useModal from "../../hooks/useModal";
 import { RootState } from "../../store";
 import { ModalState } from "../../store/modalSlice";
-import { IHouse, ISector, IUser, IUserStatus } from "shared";
+import { BASE_SECTOR_FEE, IHouse, ISector, IUser, IUserStatus } from "shared";
 import { useFormik } from "formik";
 import { houseValidation } from "../../validations/house";
 import Input from "../../components/Input";
@@ -51,7 +51,7 @@ const CreateModal = ({ variant }: CreateModalProps) => {
       sector: data?.sector?.id || "",
       plotSize: data?.plotSize || "",
       rider: data?.rider?.id || "",
-      fee: data?.fee || "",
+      fee: data?.fee || BASE_SECTOR_FEE,
       owner: {
         name: data?.owner?.name || "",
         phone: data?.owner?.phone || "",

@@ -12,6 +12,12 @@ export enum IUserRole {
   OWNER = "Owner",
 }
 
+export interface IAdminRiderStats {
+  riderId: string;
+  assignedHouses: number;
+  collectedAmount: number;
+}
+
 export interface IUser {
   id: number;
   userId: string;
@@ -25,6 +31,7 @@ export interface IUser {
   sector?: ISector;
   house?: IHouse;
   createdAt: Date | string;
+  adminRiderStats?: IAdminRiderStats;
 }
 
 export interface IRidersResponse {

@@ -63,8 +63,8 @@ const Riders = () => {
   const rows = riders.map((item) => ({
     ...item,
     id: item.userId,
-    assignedHouses: 15,
-    collectedAmount: "$1,200",
+    assignedHouses: item.adminRiderStats?.assignedHouses || 0,
+    collectedAmount: item.adminRiderStats?.collectedAmount || 0,
   }));
 
   const columns: TableColumn<(typeof rows)[0]>[] = [
