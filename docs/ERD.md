@@ -96,4 +96,14 @@ erDiagram
     USER ||--o{ PAYMENT: "rider collected"
 ```
 
----
+### Views
+
+```mermaid
+erDiagram
+    AdminRiderStatus {
+        int riderId FK
+        int assignedHouses "houses assigned to rider"
+        int collectedAmount "collected payments by rider"
+    }
+
+```
