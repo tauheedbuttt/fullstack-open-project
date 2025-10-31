@@ -7,4 +7,9 @@ export const endpoints = {
     verifyOtp: "/auth/verify-otp",
     resetPassword: "/auth/reset-password",
   },
+  user: {
+    riders: {
+      get: `/user/riders`,
+    },
+  },
 };

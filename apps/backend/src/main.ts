@@ -19,8 +19,8 @@ async function bootstrap() {
     const PORT = process.env.PORT || 3000;
     if (isDevelopment) {
       const config = new DocumentBuilder()
-        .setTitle("Cats example")
-        .setDescription("The cats API description")
+        .setTitle("D-12 Security")
+        .setDescription("The D-12 Security API description")
         .setVersion("1.0")
         .build();
       const documentFactory = () => SwaggerModule.createDocument(app, config);

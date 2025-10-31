@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
 import * as crypto from "crypto";
-import { ILoginResponse, IUserRole, IUserStatus } from "shared";
+import { IJwtPayload, ILoginResponse, IUserRole, IUserStatus } from "shared";
 import { DataSource, Repository } from "typeorm";
 import { User } from "../entities/user.entity";
 import { Forbidden, NotFound } from "../filters/exceptions";
@@ -24,6 +24,7 @@ export class AuthService {
   async login(role: IUserRole, body: LoginDto): Promise<ILoginResponse> {
     const user = await this.userRepository.findOne({
       where: { email: body.email, role, status: IUserStatus.ACTIVE },
+      select: ["id", "password", "role"],
     });
     if (!user) throw new Forbidden("Invalid credentials");
 
@@ -32,9 +33,10 @@ export class AuthService {
     if (!comparison) throw new Forbidden("Invalid credentials");
 
     const token = await this.jwtService.signAsync({
-      iam: user.userId,
-      role: user.role,
-    });
+      uid: user.id,
+      uuid: user.userId,
+      iam: user.role,
+    } as IJwtPayload);
 
     return { token, role: user.role };
   }
@@ -42,6 +44,7 @@ export class AuthService {
   async forgot(body: ForgotDto): Promise<{ message: string }> {
     const user = await this.userRepository.findOne({
       where: { email: body.email, status: IUserStatus.ACTIVE },
+      select: ["id", "resetRequest"],
     });
     if (!user) throw new NotFound("User not found");
 
@@ -77,6 +80,7 @@ export class AuthService {
   async verifyOtp(body: VerifyOtpDto) {
     const user = await this.userRepository.findOne({
       where: { email: body.email, resetOtp: body.otp },
+      select: ["id", "resetOtpExpiry"],
     });
     if (!user) throw new NotFound("Invalid OTP");
 
@@ -91,6 +95,7 @@ export class AuthService {
   async resetPassword(body: ResetPasswordDto) {
     const user = await this.userRepository.findOne({
       where: { email: body.email, resetOtp: body.otp },
+      select: ["id", "password", "resetOtpExpiry", "resetOtp"],
     });
     if (!user) throw new NotFound("Invalid OTP");
 

@@ -10,5 +10,5 @@ export interface IBaseErrorResponse<T> extends IBaseResponse<T> {
 }
 
 export interface TanstackError<T> {
-  response?: { data?: IBaseErrorResponse<T> };
+  response?: { data?: IBaseErrorResponse<T>; status?: number };
 }

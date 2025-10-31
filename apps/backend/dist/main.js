@@ -23,6 +23,7 @@ const auth_module_1 = __webpack_require__(8);
 const typeorm_1 = __webpack_require__(21);
 const ormconfig_1 = __webpack_require__(22);
 const config_1 = __webpack_require__(20);
+const user_module_1 = __webpack_require__(26);
 const services = [app_service_1.AppService, config_1.ConfigService];
 let AppModule = class AppModule {
 };
@@ -35,6 +36,7 @@ exports.AppModule = AppModule = tslib_1.__decorate([
             swagger_1.SwaggerModule,
             auth_module_1.AuthModule,
             AppModule,
+            user_module_1.UserModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: services,
@@ -98,12 +100,7 @@ const tslib_1 = __webpack_require__(3);
 const common_1 = __webpack_require__(4);
 let AppService = class AppService {
     getData() {
-        const user = {
-            name: "John Doe",
-            id: 30,
-            email: "john.doe@example.com",
-        };
-        return { message: "Hello API", user };
+        return { message: "Hello API" };
     }
 };
 exports.AppService = AppService;
@@ -248,6 +245,7 @@ let AuthService = class AuthService {
     async login(role, body) {
         const user = await this.userRepository.findOne({
             where: { email: body.email, role, status: shared_1.IUserStatus.ACTIVE },
+            select: ["id", "password", "role"],
         });
         if (!user)
             throw new exceptions_1.Forbidden("Invalid credentials");
@@ -256,14 +254,16 @@ let AuthService = class AuthService {
         if (!comparison)
             throw new exceptions_1.Forbidden("Invalid credentials");
         const token = await this.jwtService.signAsync({
-            iam: user.userId,
-            role: user.role,
+            uid: user.id,
+            uuid: user.userId,
+            iam: user.role,
         });
         return { token, role: user.role };
     }
     async forgot(body) {
         const user = await this.userRepository.findOne({
             where: { email: body.email, status: shared_1.IUserStatus.ACTIVE },
+            select: ["id", "resetRequest"],
         });
         if (!user)
             throw new exceptions_1.NotFound("User not found");
@@ -291,6 +291,7 @@ let AuthService = class AuthService {
     async verifyOtp(body) {
         const user = await this.userRepository.findOne({
             where: { email: body.email, resetOtp: body.otp },
+            select: ["id", "resetOtpExpiry"],
         });
         if (!user)
             throw new exceptions_1.NotFound("Invalid OTP");
@@ -303,6 +304,7 @@ let AuthService = class AuthService {
     async resetPassword(body) {
         const user = await this.userRepository.findOne({
             where: { email: body.email, resetOtp: body.otp },
+            select: ["id", "password", "resetOtpExpiry", "resetOtp"],
         });
         if (!user)
             throw new exceptions_1.NotFound("Invalid OTP");
@@ -377,7 +379,7 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", Number)
 ], User.prototype, "id", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "varchar" }),
+    (0, typeorm_1.Column)({ type: "varchar", unique: true }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "userId", void 0);
 tslib_1.__decorate([
@@ -401,7 +403,7 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "address", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "varchar" }),
+    (0, typeorm_1.Column)({ type: "varchar", select: false }),
     tslib_1.__metadata("design:type", String)
 ], User.prototype, "password", void 0);
 tslib_1.__decorate([
@@ -421,15 +423,15 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", typeof (_b = typeof shared_1.IUserStatus !== "undefined" && shared_1.IUserStatus) === "function" ? _b : Object)
 ], User.prototype, "status", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "varchar" }),
+    (0, typeorm_1.Column)({ type: "varchar", select: false }),
     tslib_1.__metadata("design:type", Object)
 ], User.prototype, "resetOtp", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "date" }),
+    (0, typeorm_1.Column)({ type: "date", select: false }),
     tslib_1.__metadata("design:type", Object)
 ], User.prototype, "resetOtpExpiry", void 0);
 tslib_1.__decorate([
-    (0, typeorm_1.Column)({ type: "date" }),
+    (0, typeorm_1.Column)({ type: "date", select: false }),
     tslib_1.__metadata("design:type", Object)
 ], User.prototype, "resetRequest", void 0);
 tslib_1.__decorate([
@@ -578,11 +580,16 @@ module.exports = require("@nestjs/typeorm");
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getOrmConfig = void 0;
-const _1761569196818_create_user_1 = __webpack_require__(23);
 const user_entity_1 = __webpack_require__(16);
-const _1761647706957_add_otp_fields_1 = __webpack_require__(24);
+const _1730419200000_populate_user_id_1 = __webpack_require__(23);
+const _1761569196818_create_user_1 = __webpack_require__(24);
+const _1761647706957_add_otp_fields_1 = __webpack_require__(25);
 const entities = [user_entity_1.User];
-const migrations = [_1761569196818_create_user_1.CreateUser1761569196818, _1761647706957_add_otp_fields_1.AddOtpFields1761647706957];
+const migrations = [
+    _1761569196818_create_user_1.CreateUser1761569196818,
+    _1761647706957_add_otp_fields_1.AddOtpFields1761647706957,
+    _1730419200000_populate_user_id_1.PopulateUserId1730419200000,
+];
 const getOrmConfig = () => {
     return {
         type: "postgres",
@@ -598,6 +605,8 @@ const getOrmConfig = () => {
         migrationsRun: true,
         synchronize: false,
         migrations,
+        logging: process.env.NODE_ENV === "development" ? "all" : ["error"],
+        logger: "formatted-console",
     };
 };
 exports.getOrmConfig = getOrmConfig;
@@ -605,6 +614,67 @@ exports.getOrmConfig = getOrmConfig;
 
 /***/ }),
 /* 23 */
+/***/ ((__unused_webpack_module, exports) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.PopulateUserId1730419200000 = void 0;
+class PopulateUserId1730419200000 {
+    async up(queryRunner) {
+        // Populate existing records with auto-generated userId values
+        await queryRunner.query(`
+      UPDATE "user" 
+      SET "userId" = 'U-' || LPAD(id::text, 3, '0')
+      WHERE "userId" IS NULL OR "userId" = '';
+    `);
+        // Add unique constraint and make userId NOT NULL
+        await queryRunner.query(`
+      ALTER TABLE "user" 
+      ALTER COLUMN "userId" SET NOT NULL;
+    `);
+        await queryRunner.query(`
+      ALTER TABLE "user" 
+      ADD CONSTRAINT "UQ_user_userId" UNIQUE ("userId");
+    `);
+        // Create a function to auto-generate userId for new inserts
+        await queryRunner.query(`
+      CREATE OR REPLACE FUNCTION generate_user_id()
+      RETURNS TRIGGER AS $$
+      BEGIN
+        -- Update the userId after insert when we have the ID
+        UPDATE "user" 
+        SET "userId" = 'U-' || LPAD(NEW.id::text, 3, '0')
+        WHERE id = NEW.id AND ("userId" IS NULL OR "userId" = '');
+        
+        RETURN NEW;
+      END;
+      $$ LANGUAGE plpgsql;
+    `);
+        // Create trigger to auto-generate userId after insert
+        await queryRunner.query(`
+      CREATE TRIGGER user_id_trigger
+      AFTER INSERT ON "user"
+      FOR EACH ROW
+      EXECUTE FUNCTION generate_user_id();
+    `);
+    }
+    async down(queryRunner) {
+        // Remove trigger and function
+        await queryRunner.query(`DROP TRIGGER IF EXISTS user_id_trigger ON "user";`);
+        await queryRunner.query(`DROP FUNCTION IF EXISTS generate_user_id();`);
+        // Remove unique constraint
+        await queryRunner.query(`ALTER TABLE "user" DROP CONSTRAINT IF EXISTS "UQ_user_userId";`);
+        // Make userId nullable again
+        await queryRunner.query(`ALTER TABLE "user" ALTER COLUMN "userId" DROP NOT NULL;`);
+        // Clear userId values
+        await queryRunner.query(`UPDATE "user" SET "userId" = NULL;`);
+    }
+}
+exports.PopulateUserId1730419200000 = PopulateUserId1730419200000;
+
+
+/***/ }),
+/* 24 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -660,7 +730,7 @@ exports.CreateUser1761569196818 = CreateUser1761569196818;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ ((__unused_webpack_module, exports) => {
 
 
@@ -688,7 +758,202 @@ exports.AddOtpFields1761647706957 = AddOtpFields1761647706957;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UserModule = void 0;
+const tslib_1 = __webpack_require__(3);
+const common_1 = __webpack_require__(4);
+const jwt_1 = __webpack_require__(11);
+const user_controller_1 = __webpack_require__(27);
+const user_service_1 = __webpack_require__(29);
+let UserModule = class UserModule {
+};
+exports.UserModule = UserModule;
+exports.UserModule = UserModule = tslib_1.__decorate([
+    (0, common_1.Module)({
+        imports: [jwt_1.JwtModule],
+        controllers: [user_controller_1.UserController],
+        providers: [user_service_1.UserService],
+    })
+], UserModule);
+
+
+/***/ }),
+/* 27 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a, _b;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UserController = void 0;
+const tslib_1 = __webpack_require__(3);
+const common_1 = __webpack_require__(4);
+const swagger_1 = __webpack_require__(7);
+const user_dto_1 = __webpack_require__(28);
+const user_service_1 = __webpack_require__(29);
+const shared_1 = __webpack_require__(14);
+const auth_guard_1 = __webpack_require__(30);
+let UserController = class UserController {
+    constructor(userService) {
+        this.userService = userService;
+    }
+    async getRiders(query) {
+        return await this.userService.getRiders(query);
+    }
+};
+exports.UserController = UserController;
+tslib_1.__decorate([
+    (0, common_1.UseGuards)(auth_guard_1.AuthGuard),
+    (0, common_1.Get)("/riders"),
+    (0, swagger_1.ApiQuery)({
+        name: "search",
+        required: false,
+        description: "Search by name, email or phone",
+    }),
+    (0, swagger_1.ApiQuery)({
+        name: "status",
+        required: false,
+        description: `Filter by user status ${Object.values(shared_1.IUserStatus).join(", ")}`,
+    }),
+    tslib_1.__param(0, (0, common_1.Query)()),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [typeof (_b = typeof user_dto_1.RidersQueryDto !== "undefined" && user_dto_1.RidersQueryDto) === "function" ? _b : Object]),
+    tslib_1.__metadata("design:returntype", Promise)
+], UserController.prototype, "getRiders", null);
+exports.UserController = UserController = tslib_1.__decorate([
+    (0, common_1.Controller)("user"),
+    (0, swagger_1.ApiTags)("User"),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof user_service_1.UserService !== "undefined" && user_service_1.UserService) === "function" ? _a : Object])
+], UserController);
+
+
+/***/ }),
+/* 28 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.RidersQueryDto = void 0;
+const tslib_1 = __webpack_require__(3);
+const swagger_1 = __webpack_require__(7);
+const class_validator_1 = __webpack_require__(19);
+const shared_1 = __webpack_require__(14);
+class RidersQueryDto {
+}
+exports.RidersQueryDto = RidersQueryDto;
+tslib_1.__decorate([
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsOptional)(),
+    tslib_1.__metadata("design:type", String)
+], RidersQueryDto.prototype, "search", void 0);
+tslib_1.__decorate([
+    (0, swagger_1.ApiProperty)({ enum: shared_1.IUserStatus }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsEnum)(shared_1.IUserStatus),
+    tslib_1.__metadata("design:type", typeof (_a = typeof shared_1.IUserStatus !== "undefined" && shared_1.IUserStatus) === "function" ? _a : Object)
+], RidersQueryDto.prototype, "status", void 0);
+
+
+/***/ }),
+/* 29 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.UserService = void 0;
+const tslib_1 = __webpack_require__(3);
+const common_1 = __webpack_require__(4);
+const typeorm_1 = __webpack_require__(15);
+const user_entity_1 = __webpack_require__(16);
+const shared_1 = __webpack_require__(14);
+let UserService = class UserService {
+    constructor(dataSource) {
+        this.userRepository = dataSource.getRepository(user_entity_1.User);
+    }
+    async getRiders(query) {
+        const filters = {
+            role: shared_1.IUserRole.RIDER,
+            ...(query.status ? { status: query.status } : {}),
+        };
+        const riders = await this.userRepository.find({
+            where: [
+                { name: (0, typeorm_1.ILike)(`%${query.search}%`) },
+                { email: (0, typeorm_1.ILike)(`%${query.search}%`) },
+                { phone: (0, typeorm_1.ILike)(`%${query.search}%`) },
+            ].map((condition) => ({ ...condition, ...filters })),
+        });
+        return { riders };
+    }
+};
+exports.UserService = UserService;
+exports.UserService = UserService = tslib_1.__decorate([
+    (0, common_1.Injectable)(),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof typeorm_1.DataSource !== "undefined" && typeorm_1.DataSource) === "function" ? _a : Object])
+], UserService);
+
+
+/***/ }),
+/* 30 */
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+var _a, _b;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.AuthGuard = void 0;
+const tslib_1 = __webpack_require__(3);
+const common_1 = __webpack_require__(4);
+const jwt_1 = __webpack_require__(11);
+const exceptions_1 = __webpack_require__(17);
+const shared_1 = __webpack_require__(14);
+const typeorm_1 = __webpack_require__(15);
+const user_entity_1 = __webpack_require__(16);
+let AuthGuard = class AuthGuard {
+    constructor(jwtService, dataSource) {
+        this.jwtService = jwtService;
+        this.dataSource = dataSource;
+        this.userRepository = this.dataSource.getRepository(user_entity_1.User);
+    }
+    async canActivate(context) {
+        const request = context.switchToHttp().getRequest();
+        const token = this.extractTokenFromHeader(request);
+        if (!token) {
+            throw new exceptions_1.Unauthorized("No token provided");
+        }
+        try {
+            const payload = await this.jwtService.verifyAsync(token, {
+                secret: process.env.JWT_SECRET,
+            });
+            const user = await this.userRepository.findOne({
+                where: { id: payload.uid, status: shared_1.IUserStatus.ACTIVE },
+            });
+            if (!user)
+                throw new Error("User not found");
+            request.user = user;
+        }
+        catch {
+            throw new exceptions_1.Unauthorized("Invalid or expired token");
+        }
+        return true;
+    }
+    extractTokenFromHeader(request) {
+        const [type, token] = request.headers.authorization?.split(" ") ?? [];
+        return type === "Bearer" ? token : undefined;
+    }
+};
+exports.AuthGuard = AuthGuard;
+exports.AuthGuard = AuthGuard = tslib_1.__decorate([
+    (0, common_1.Injectable)(),
+    tslib_1.__metadata("design:paramtypes", [typeof (_a = typeof jwt_1.JwtService !== "undefined" && jwt_1.JwtService) === "function" ? _a : Object, typeof (_b = typeof typeorm_1.DataSource !== "undefined" && typeorm_1.DataSource) === "function" ? _b : Object])
+], AuthGuard);
+
+
+/***/ }),
+/* 31 */
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
@@ -753,7 +1018,7 @@ const core_1 = __webpack_require__(1);
 const app_module_1 = __webpack_require__(2);
 const common_1 = __webpack_require__(4);
 const swagger_1 = __webpack_require__(7);
-const exception_filter_1 = __webpack_require__(25);
+const exception_filter_1 = __webpack_require__(31);
 let cachedApp;
 const isVercel = !!process.env.VERCEL_ENV;
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -767,8 +1032,8 @@ async function bootstrap() {
         const PORT = process.env.PORT || 3000;
         if (isDevelopment) {
             const config = new swagger_1.DocumentBuilder()
-                .setTitle("Cats example")
-                .setDescription("The cats API description")
+                .setTitle("D-12 Security")
+                .setDescription("The D-12 Security API description")
                 .setVersion("1.0")
                 .build();
             const documentFactory = () => swagger_1.SwaggerModule.createDocument(app, config);

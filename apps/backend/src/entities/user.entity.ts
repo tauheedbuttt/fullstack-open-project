@@ -12,7 +12,7 @@ export class User {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar", unique: true })
   userId!: string;
 
   @Column({ type: "varchar" })
@@ -30,7 +30,7 @@ export class User {
   @Column({ type: "varchar" })
   address!: string;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar", select: false })
   password!: string;
 
   @Column({
@@ -47,13 +47,13 @@ export class User {
   })
   status!: IUserStatus;
 
-  @Column({ type: "varchar" })
+  @Column({ type: "varchar", select: false })
   resetOtp!: string | null;
 
-  @Column({ type: "date" })
+  @Column({ type: "date", select: false })
   resetOtpExpiry!: Date | null;
 
-  @Column({ type: "date" })
+  @Column({ type: "date", select: false })
   resetRequest!: Date | null;
 
   @CreateDateColumn()

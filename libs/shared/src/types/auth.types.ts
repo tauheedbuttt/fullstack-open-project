@@ -29,3 +29,9 @@ export interface IResetRequest extends IVerifyOtpRequest {
   password: string;
   confirmPassword: string;
 }
+
+export interface IJwtPayload {
+  uid: number;
+  uuid: string;
+  iam: IUserRole;
+}

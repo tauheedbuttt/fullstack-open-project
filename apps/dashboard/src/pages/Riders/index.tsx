@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { IUserStatus } from "shared";
+import { IRidersQuery, IRidersResponse, IUserStatus } from "shared";
 import { CrossIcon, EditIcon, EyeIcon, PlusIcon } from "../../assets";
 import Card from "../../components/Card";
 import Input from "../../components/Input";
@@ -9,6 +9,10 @@ import useBreadcrumb from "../../hooks/useBreadcrumb";
 import useModal from "../../hooks/useModal";
 import CreateModal from "./CreateModal";
 import ViewModal from "./ViewModal";
+import useQuery from "../../hooks/useQuery";
+import { endpoints } from "../../config/endpoints";
+import { useDebounce } from "@uidotdev/usehooks";
+import { queryKeys } from "../../config/queryKeys";
 
 const Riders = () => {
   const { openModal: openEditModal } = useModal(modal.editRider);
@@ -25,6 +29,21 @@ const Riders = () => {
     search: "",
     status: "",
   });
+  const debouncedSearch = useDebounce(filters.search, 300);
+  const params = {
+    status: filters.status || undefined,
+    search: debouncedSearch,
+  };
+
+  const { data: ridersData } = useQuery<IRidersResponse, IRidersQuery>(
+    endpoints.user.riders.get,
+    {
+      queryKey: [queryKeys.user.riders.get, params],
+      params,
+    }
+  );
+
+  const riders = ridersData?.riders || [];
 
   const handleView = (rider: (typeof rows)[0]) => {
     openViewModal(rider);
@@ -41,32 +60,13 @@ const Riders = () => {
     label: item,
   }));
 
-  const rows = [
-    {
-      id: "R001",
-      name: "John Doe",
-      phone: "123-456-7890",
-      status: IUserStatus.ACTIVE,
-      assignedHouses: 15,
-      collectedAmount: "$1,200",
-    },
-    {
-      id: "R002",
-      name: "Jane Smith",
-      phone: "987-654-3210",
-      status: IUserStatus.INACTIVE,
-      assignedHouses: 10,
-      collectedAmount: "$800",
-    },
-    {
-      id: "R003",
-      name: "Mike Johnson",
-      phone: "555-123-4567",
-      status: IUserStatus.ACTIVE,
-      assignedHouses: 8,
-      collectedAmount: "$500",
-    },
-  ];
+  const rows = riders.map((item) => ({
+    ...item,
+    id: item.userId,
+    assignedHouses: 15,
+    collectedAmount: "$1,200",
+  }));
+
   const columns: TableColumn<(typeof rows)[0]>[] = [
     { label: "Rider ID", field: "id" },
     { label: "Name", field: "name" },

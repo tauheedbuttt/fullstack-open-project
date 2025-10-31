@@ -24,5 +24,14 @@ export interface IUser {
   role: IUserRole;
   sector?: ISector;
   house?: IHouse;
-  createdAt: string;
+  createdAt: Date | string;
+}
+
+export interface IRidersResponse {
+  riders: IUser[];
+}
+
+export interface IRidersQuery {
+  search?: string;
+  status?: string | IUserStatus;
 }

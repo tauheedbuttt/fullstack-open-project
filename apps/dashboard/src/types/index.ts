@@ -3,3 +3,7 @@ export interface Action<T> {
   text?: string;
   onClick: (data: T) => void;
 }
+
+export interface BaseQueryParams {
+  search?: string;
+}
